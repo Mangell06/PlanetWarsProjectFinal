@@ -28,7 +28,7 @@
     left: 0; 
     width: 100%; 
     height: 100%; 
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 1) 100%); 
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 1) 100%); 
     z-index: 1; 
 }
 
@@ -90,7 +90,7 @@ section {
 .navbar {
   position: sticky; /* Hace que la barra sea sticky */
   top: 0; /* Define el punto de adherencia en la parte superior */
-  background-color: #333; /* Color de fondo */
+  background-color: #000000; /* Color de fondo */
   color: white;
   z-index: 1000; /* Mantiene la barra sobre otros elementos */
   padding: 10px 20px;
@@ -134,7 +134,7 @@ section {
 }
 
 .navbar nav ul li a:hover {
-  background-color: #575757; /* Color al pasar el mouse */
+  background-color: #1A1C40; /* Color al pasar el mouse */
   border-radius: 5px; /* Bordes redondeados en hover */
 }
 
@@ -190,7 +190,7 @@ section {
 }
 
 .footer{
-  background-color: #333; /* Color de fondo */
+  background-color: #000000; /* Color de fondo */
   color: white;
   height: 5vh;
   justify-content: center; /* Centra horizontalmente */
@@ -212,7 +212,7 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #333;
+  background-color: #000000;
   padding: 10px 10px;
   color: white;
   position: sticky; /* Hace que el encabezado sea sticky */
@@ -301,7 +301,7 @@ flex: 1 0 100%; /* Cada imagen ocupa el 100% del contenedor */
 
 /*Boton del menu*/
 .menu-btn{
-  background-color: #333;
+  background-color: #000000;
     border: none;
     color: white;
     padding: 10px;
@@ -453,7 +453,7 @@ flex: 1 0 100%; /* Cada imagen ocupa el 100% del contenedor */
   /* Estilo para la barra de navegación */
   .navbar {
     display: flex;
-    background-color: #333; /* Color de fondo */
+    background-color: #000000; /* Color de fondo */
     color: white;
     z-index: 1000; /* Mantiene la barra sobre otros elementos */
     left: 0;
@@ -502,7 +502,7 @@ flex: 1 0 100%; /* Cada imagen ocupa el 100% del contenedor */
   }
 
   .footer{
-    background-color: #333; /* Color de fondo */
+    background-color: #000000; /* Color de fondo */
     color: white;
     height: 5vh;
     justify-content: center; /* Centra horizontalmente */
@@ -523,7 +523,7 @@ flex: 1 0 100%; /* Cada imagen ocupa el 100% del contenedor */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #333;
+    background-color: #000000;
     padding: 10px;
     color: white;
     position: fixed; /* Hace que el encabezado sea sticky */
@@ -587,7 +587,7 @@ flex: 1 0 100%; /* Cada imagen ocupa el 100% del contenedor */
     position: absolute;
     top: 60px;
     align-items: center;
-    background-color: #333;
+    background-color: #000000;
     width: auto;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
     padding: auto;

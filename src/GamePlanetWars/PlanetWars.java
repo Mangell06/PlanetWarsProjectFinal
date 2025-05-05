@@ -114,7 +114,7 @@ class Planet {
 			if (Variables.METAL_COST_LIGTHHUNTER > metal || Variables.DEUTERIUM_COST_LIGTHHUNTER > deuterium) {
 				new ResourceException("You don't have enough resource");
 			}
-			army[0].add(new LightHunter(Variables.ARMOR_LIGTHHUNTER + (technologyDefense*Variables.PLUS_ARMOR_LIGTHHUNTER_BY_TECHNOLOGY)%1000,Variables.BASE_DAMAGE_LIGTHHUNTER + (technologyAttack*Variables.PLUS_ATTACK_LIGTHHUNTER_BY_TECHNOLOGY)%1000));
+			army[0].add(new LigthHunter(Variables.ARMOR_LIGTHHUNTER + (technologyDefense*Variables.PLUS_ARMOR_LIGTHHUNTER_BY_TECHNOLOGY)%1000,Variables.BASE_DAMAGE_LIGTHHUNTER + (technologyAttack*Variables.PLUS_ATTACK_LIGTHHUNTER_BY_TECHNOLOGY)%1000));
 		}
 	}
 	
@@ -302,10 +302,14 @@ interface Variables {
 	public final int PERCENTATGE_WASTE = 70;
 }
 
-class LightHunter extends ship {
+class LigthHunter extends ship {
 
-	public LightHunter(int armor, int baseDamage) {
+	public LigthHunter(int armor, int baseDamage) {
 		super(armor,baseDamage);
+	}
+	
+	public LigthHunter() {
+		super(ARMOR_LIGTHHUNTER,BASE_DAMAGE_LIGTHHUNTER);
 	}
 
 	public int attack() {
@@ -348,6 +352,10 @@ class HeavyHunter extends ship {
 		super(armor, baseDamage);
 	}
 	
+	public HeavyHunter() {
+		super(ARMOR_HEAVYHUNTER,BASE_DAMAGE_HEAVYHUNTER);
+	}
+	
 	public int attack() {
 		return 0;
 	}
@@ -386,6 +394,10 @@ class BattleShip extends ship {
 
 	public BattleShip(int armor, int baseDamage) {
 		super(armor,baseDamage);
+	}
+	
+	public BattleShip() {
+		super(ARMOR_BATTLESHIP,BASE_DAMAGE_BATTLESHIP);
 	}
 	
 	public int attack() {
@@ -428,6 +440,10 @@ class ArmoredShip extends ship {
 		super(armor, baseDamage);
 	}
 	
+	public ArmoredShip() {
+		super(ARMOR_ARMOREDSHIP,BASE_DAMAGE_ARMOREDSHIP);
+	}
+	
 	public int attack() {
 		return 0;
 	}
@@ -466,6 +482,7 @@ abstract class Defense implements MilitaryUnit,  Variables{
 	private int armor;
 	private int initialArmor;
 	private int baseDamage;
+	
 	public Defense(int armor, int baseDamage) {
 		super();
 		this.armor = armor;

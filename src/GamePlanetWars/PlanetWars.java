@@ -179,6 +179,7 @@ class ResourceException extends Exception {
 }
 
 abstract class ship implements MilitaryUnit, Variables{
+	public static final int DEUTERIUM_COST_HEAVYHUNTERU = 0;
 	private int armor;
 	private int initialArmor;
 	private int baseDamage;
@@ -190,6 +191,26 @@ abstract class ship implements MilitaryUnit, Variables{
 		this.baseDamage = baseDamage;
 	}
 
+	public int getArmor() {
+		return armor;
+	}
+	public void setArmor(int armor) {
+		this.armor = armor;
+	}
+
+	public int getInitialArmor() {
+		return initialArmor;
+	}
+	public void setInitialArmor(int initialArmor) {
+		this.initialArmor = initialArmor;
+	}
+
+	public int getBaseDamage() {
+		return baseDamage;
+	}
+	public void setBaseDamage(int baseDamage) {
+		this.baseDamage = baseDamage;
+	}
 }
 
 interface MilitaryUnit {
@@ -313,35 +334,40 @@ class LigthHunter extends ship {
 	}
 
 	public int attack() {
-		return 0;
+		return getBaseDamage();
 	}
 
 	public void tekeDamage(int receivedDamage) {
+		int damage = getArmor() - receivedDamage;
+		if (damage <= 0) {
+			damage = 0;
+		}
 		
+		setArmor(damage);
 	}
 
 	public int getActualArmor() {
-		return 0;
+		return getArmor();
 	}
 
 	public int getMetalCost() {
-		return 0;
+		return METAL_COST_LIGTHHUNTER;
 	}
 
 	public int getDeuteriumCost() {
-		return 0;
+		return DEUTERIUM_COST_LIGTHHUNTER;
 	}
 
 	public int getChanceGeneratinWaste() {
-		return 0;
+		return CHANCE_GENERATNG_WASTE_LIGTHHUNTER;
 	}
 
 	public int getChanceAttackAgain() {
-		return 0;
+		return CHANCE_ATTACK_AGAIN_LIGTHHUNTER;
 	}
 
 	public void resetArmor() {
-		
+		setArmor(getInitialArmor());
 	}
 	
 }
@@ -357,35 +383,40 @@ class HeavyHunter extends ship {
 	}
 	
 	public int attack() {
-		return 0;
+		return getBaseDamage();
 	}
 
 	public void tekeDamage(int receivedDamage) {
+		int damage = getArmor() - receivedDamage;
+		if (damage <= 0) {
+			damage = 0;
+		}
 		
+		setArmor(damage);
 	}
 
 	public int getActualArmor() {
-		return 0;
+		return getArmor();
 	}
 
 	public int getMetalCost() {
-		return 0;
+		return METAL_COST_HEAVYHUNTER;
 	}
 
 	public int getDeuteriumCost() {
-		return 0;
+		return DEUTERIUM_COST_HEAVYHUNTERU;
 	}
 
 	public int getChanceGeneratinWaste() {
-		return 0;
+		return CHANCE_GENERATNG_WASTE_HEAVYHUNTER;
 	}
 
 	public int getChanceAttackAgain() {
-		return 0;
+		return CHANCE_ATTACK_AGAIN_HEAVYHUNTER;
 	}
 
 	public void resetArmor() {
-		
+		setArmor(getInitialArmor());
 	}
 	
 }
@@ -393,7 +424,7 @@ class HeavyHunter extends ship {
 class BattleShip extends ship {
 
 	public BattleShip(int armor, int baseDamage) {
-		super(armor,baseDamage);
+		super(armor, baseDamage);	
 	}
 	
 	public BattleShip() {
@@ -401,35 +432,40 @@ class BattleShip extends ship {
 	}
 	
 	public int attack() {
-		return 0;
+		return getBaseDamage();
 	}
 
 	public void tekeDamage(int receivedDamage) {
+		int damage = getArmor() - receivedDamage;
+		if (damage <= 0) {
+			damage = 0;
+		}
 		
+		setArmor(damage);
 	}
 
 	public int getActualArmor() {
-		return 0;
+		return getArmor();
 	}
 
 	public int getMetalCost() {
-		return 0;
+		return METAL_COST_BATTLESHIP;
 	}
 
 	public int getDeuteriumCost() {
-		return 0;
+		return DEUTERIUM_COST_BATTLESHIP;
 	}
 
 	public int getChanceGeneratinWaste() {
-		return 0;
+		return CHANCE_GENERATNG_WASTE_BATTLESHIP;
 	}
 
 	public int getChanceAttackAgain() {
-		return 0;
+		return CHANCE_ATTACK_AGAIN_BATTLESHIP;
 	}
 
 	public void resetArmor() {
-		
+		setArmor(getInitialArmor());
 	}
 	
 }
@@ -437,7 +473,7 @@ class BattleShip extends ship {
 class ArmoredShip extends ship {
 
 	public ArmoredShip(int armor, int baseDamage) {
-		super(armor, baseDamage);
+		super(armor, baseDamage);	
 	}
 	
 	public ArmoredShip() {
@@ -445,37 +481,181 @@ class ArmoredShip extends ship {
 	}
 	
 	public int attack() {
-		return 0;
+		return getBaseDamage();
 	}
 
 	public void tekeDamage(int receivedDamage) {
+		int damage = getArmor() - receivedDamage;
+		if (damage <= 0) {
+			damage = 0;
+		}
 		
+		setArmor(damage);
 	}
 
 	public int getActualArmor() {
-		return 0;
+		return getArmor();
 	}
 
 	public int getMetalCost() {
-		return 0;
+		return METAL_COST_ARMOREDSHIP;
 	}
 
 	public int getDeuteriumCost() {
-		return 0;
+		return DEUTERIUM_COST_ARMOREDSHIP;
 	}
 
 	public int getChanceGeneratinWaste() {
-		return 0;
+		return CHANCE_GENERATNG_WASTE_ARMOREDSHIP;
 	}
 
 	public int getChanceAttackAgain() {
-		return 0;
+		return CHANCE_ATTACK_AGAIN_ARMOREDSHIP;
 	}
 
 	public void resetArmor() {
-		
+		setArmor(getInitialArmor());
 	}
 	
+}
+
+abstract class Defense implements MilitaryUnit,  Variables{
+	private int armor;
+	private int initialArmor;
+	private int baseDamage;
+	
+	public Defense(int armor, int baseDamage) {
+		super();
+		this.armor = armor;
+		this.initialArmor = armor;
+		this.baseDamage = baseDamage;
+	}
+	
+	public int getArmor() {
+		return armor;
+	}
+	public void setArmor(int armor) {
+		this.armor = armor;
+	}
+	
+	public int getInitialArmor() {
+		return initialArmor;
+	}
+	public void setInitialArmor(int initialArmor) {
+		this.initialArmor = initialArmor;
+	}
+	
+	public int getBaseDamage() {
+		return baseDamage;
+	}
+	public void setBaseDamage(int baseDamage) {
+		this.baseDamage = baseDamage;
+	}
+}
+
+class MissileLauncher extends Defense {
+	
+	public MissileLauncher(int armor, int baseDamage) {
+		super(armor, baseDamage);	
+	}
+	
+	// === METODOS INTERFAZ ===
+	@Override
+	public int attack() {
+		return getBaseDamage();
+	}
+	
+	@Override
+	public void tekeDamage(int receivedDamage) {
+		int damage = getArmor() - receivedDamage;
+		if (damage < 0) {
+			damage = 0;
+		}
+		
+		setArmor(damage);
+	}
+	
+	@Override
+	public int getActualArmor() {
+		return getArmor();
+	}
+	
+	@Override
+	public int getMetalCost() {
+		return METAL_COST_MISSILELAUNCHER;
+	}
+
+	@Override
+	public int getDeuteriumCost() {
+		return DEUTERIUM_COST_MISSILELAUNCHER;
+	}
+
+	@Override
+	public int getChanceGeneratinWaste() {
+		return CHANCE_GENERATNG_WASTE_MISSILELAUNCHER;
+	}
+
+	@Override
+	public int getChanceAttackAgain() {
+		return CHANCE_ATTACK_AGAIN_MISSILELAUNCHER;
+	}
+
+	@Override
+	public void resetArmor() {
+		setArmor(getInitialArmor());
+	}
+}
+
+class IonCannon extends Defense {
+	public IonCannon(int armor, int baseDamage) {
+		super(armor, baseDamage);	
+	}
+	
+	// === METODOS INTERFAZ ===
+	@Override
+	public int attack() {
+		return getBaseDamage();
+	}
+
+	@Override
+	public void tekeDamage(int receivedDamage) {
+		int damage = getArmor() - receivedDamage;
+		if (damage < 0) {
+			damage = 0;
+		}
+		
+		setArmor(damage);
+	}
+
+	@Override
+	public int getActualArmor() {
+		return getArmor();
+	}
+
+	@Override
+	public int getMetalCost() {
+		return METAL_COST_IONCANNON;
+	}
+
+	@Override
+	public int getDeuteriumCost() {
+		return DEUTERIUM_COST_IONCANNON;
+	}
+
+	@Override
+	public int getChanceGeneratinWaste() {
+		return CHANCE_GENERATNG_WASTE_IONCANNON;
+	}
+
+	@Override
+	public int getChanceAttackAgain() {
+		return CHANCE_ATTACK_AGAIN_IONCANNON;
+	}
+
+	@Override
+	public void resetArmor() {
+		setArmor(getInitialArmor());
+	}
 }
 
 abstract class Defense implements MilitaryUnit,  Variables{

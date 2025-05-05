@@ -107,11 +107,7 @@ class Planet {
 		upgradeAttackTechnologyDeuteriumCost *= 1.1;
 	}
 	
-	public void newLightHunter(int n) {
-		for (int i = 0; i < n; i++) {
-			army[0].add(new LightHunter());
-		}
-	}
+	public void newLightHunter(int n) {}
 	
 	public void newHeavyHunter(int n) {}
 	
@@ -214,19 +210,34 @@ interface MilitaryUnit {
 interface Variables {
 	final int armor_Ligthhunter = 1000;
 	final int plus_armor_ligthhunter_by_technology = 5;
+	final int base_damage_ligthhunter = 1000;
+	final int plus_attack_ligthhunter_by_technology = 5;
 }
 
 class LightHunter extends ship {
 
 	public LightHunter(int armor, int baseDamage) {
 		super(armor, baseDamage);
-		// TODO Auto-generated constructor stub
+	}
+	
+}
+
+class HeavyHunter extends ship {
+
+	public HeavyHunter(int armor, int baseDamage) {
+		super(armor, baseDamage);
 	}}
 
-class HeavyHunter extends ship {}
+class BattleShip extends ship {
 
-class BattleShip extends ship {}
+	public BattleShip(int armor, int baseDamage) {
+		super(armor, baseDamage);
+	}}
 
-class ArmoredShip extends ship {}
+class ArmoredShip extends ship {
+
+	public ArmoredShip(int armor, int baseDamage) {
+		super(armor, baseDamage);
+	}}
 
 

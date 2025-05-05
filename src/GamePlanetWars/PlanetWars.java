@@ -560,12 +560,10 @@ class MissileLauncher extends Defense {
 	}
 	
 	// === METODOS INTERFAZ ===
-	@Override
 	public int attack() {
 		return getBaseDamage();
 	}
 	
-	@Override
 	public void tekeDamage(int receivedDamage) {
 		int damage = getArmor() - receivedDamage;
 		if (damage < 0) {
@@ -575,32 +573,26 @@ class MissileLauncher extends Defense {
 		setArmor(damage);
 	}
 	
-	@Override
 	public int getActualArmor() {
 		return getArmor();
 	}
 	
-	@Override
 	public int getMetalCost() {
 		return METAL_COST_MISSILELAUNCHER;
 	}
 
-	@Override
 	public int getDeuteriumCost() {
 		return DEUTERIUM_COST_MISSILELAUNCHER;
 	}
 
-	@Override
 	public int getChanceGeneratinWaste() {
 		return CHANCE_GENERATNG_WASTE_MISSILELAUNCHER;
 	}
 
-	@Override
 	public int getChanceAttackAgain() {
 		return CHANCE_ATTACK_AGAIN_MISSILELAUNCHER;
 	}
 
-	@Override
 	public void resetArmor() {
 		setArmor(getInitialArmor());
 	}
@@ -612,12 +604,10 @@ class IonCannon extends Defense {
 	}
 	
 	// === METODOS INTERFAZ ===
-	@Override
 	public int attack() {
 		return getBaseDamage();
 	}
 
-	@Override
 	public void tekeDamage(int receivedDamage) {
 		int damage = getArmor() - receivedDamage;
 		if (damage < 0) {
@@ -627,50 +617,29 @@ class IonCannon extends Defense {
 		setArmor(damage);
 	}
 
-	@Override
 	public int getActualArmor() {
 		return getArmor();
 	}
 
-	@Override
 	public int getMetalCost() {
 		return METAL_COST_IONCANNON;
 	}
 
-	@Override
 	public int getDeuteriumCost() {
 		return DEUTERIUM_COST_IONCANNON;
 	}
 
-	@Override
 	public int getChanceGeneratinWaste() {
 		return CHANCE_GENERATNG_WASTE_IONCANNON;
 	}
 
-	@Override
 	public int getChanceAttackAgain() {
 		return CHANCE_ATTACK_AGAIN_IONCANNON;
 	}
 
-	@Override
 	public void resetArmor() {
 		setArmor(getInitialArmor());
 	}
-}
-
-abstract class Defense implements MilitaryUnit,  Variables{
-	private int armor;
-	private int initialArmor;
-	private int baseDamage;
-	
-	public Defense(int armor, int baseDamage) {
-		super();
-		this.armor = armor;
-		this.initialArmor = armor;
-		this.baseDamage = baseDamage;
-	}
-	
-	
 }
 
 class PlasmaCannon extends Defense {
@@ -679,35 +648,51 @@ class PlasmaCannon extends Defense {
 		super(armor, baseDamage);
 	}
 
-	public int attack() {
-		return 0;
-	}
-
-	public void tekeDamage(int receivedDamage) {		
-	}
-
-	public int getActualArmor() {
-		return 0;
-	}
-
-	public int getMetalCost() {
-		return 0;
-	}
-
-	public int getDeuteriumCost() {
-		return 0;
-	}
-
-	public int getChanceGeneratinWaste() {
-		return 0;
-	}
-
-	public int getChanceAttackAgain() {
-		return 0;
-	}
-
-	public void resetArmor() {
+	// === METODOS INTERFAZ ===
+		public int attack() {
+			return getBaseDamage();
+		}
 		
-	}
+		public void tekeDamage(int receivedDamage) {
+			int damage = getArmor() - receivedDamage;
+			if (damage < 0) {
+				damage = 0;
+			}
+			setArmor(damage);
+		}
+		
+		public int getActualArmor() {
+			return getArmor();
+		}
+		
+		public int getMetalCost() {
+			return METAL_COST_MISSILELAUNCHER;
+		}
+
+		public int getDeuteriumCost() {
+			return DEUTERIUM_COST_MISSILELAUNCHER;
+		}
+
+		public int getChanceGeneratinWaste() {
+			return CHANCE_GENERATNG_WASTE_MISSILELAUNCHER;
+		}
+
+		public int getChanceAttackAgain() {
+			return CHANCE_ATTACK_AGAIN_MISSILELAUNCHER;
+		}
+
+		public void resetArmor() {
+			setArmor(getInitialArmor());
+		}
+	
+}
+
+class Battle implements Variables {
+	private ArrayList<MilitaryUnit>[] planetArmy, enemyArmy;
+	private ArrayList[][] armies;
+	private String battleDevelopment;
+	private int[][] initialCostFleet, resourcesLooses, initialArmies;
+	private int initialNumberUnitsPlanet, initialNumberUnitsEnemy;
+	private int[] wasteMetalDeuterium, enemyDrops, planetDrops, actualNumberUnitsPlanet, actualNumberUnitsEnemy;
 	
 }

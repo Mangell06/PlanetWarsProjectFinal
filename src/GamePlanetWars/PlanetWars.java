@@ -418,4 +418,16 @@ class ArmoredShip extends ship {
 	
 }
 
-
+abstract class Defense implements MilitaryUnit,  Variables{
+	private int armor;
+	private int initialArmor;
+	private int baseDamage;
+	public Defense(int armor, int baseDamage) {
+		super();
+		this.armor = armor;
+		this.initialArmor = armor;
+		this.baseDamage = baseDamage;
+	}
+	
+	
+}

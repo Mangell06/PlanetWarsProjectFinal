@@ -95,6 +95,9 @@ class Planet {
 		if (upgradeDefenseTechnologyDeuteriumCost > deuterium) {
 			new ResourceException("You don't have enough deuterium to upgrade defense technology.");
 		}
+		deuterium -= upgradeDefenseTechnologyDeuteriumCost;
+		technologyDefense += 1;
+		upgradeDefenseTechnologyDeuteriumCost *= 1.1;
 	}
 	
 

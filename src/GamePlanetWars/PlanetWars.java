@@ -134,7 +134,7 @@ class ResourceException extends Exception {
 	}
 }
 
-class ship implements MilitaryUnit, Variables{
+abstract class ship implements MilitaryUnit, Variables{
 	private int armor;
 	private int initialArmor;
 	private int baseDamage;
@@ -146,57 +146,6 @@ class ship implements MilitaryUnit, Variables{
 		this.baseDamage = baseDamage;
 	}
 
-	public int getArmor() {
-		return armor;
-	}
-
-	public void setArmor(int armor) {
-		this.armor = armor;
-	}
-
-	public int getInitialArmor() {
-		return initialArmor;
-	}
-
-	public void setInitialArmor(int initialArmor) {
-		this.initialArmor = initialArmor;
-	}
-
-	public int getBaseDamage() {
-		return baseDamage;
-	}
-
-	public void setBaseDamage(int baseDamage) {
-		this.baseDamage = baseDamage;
-	}
-
-	public int attack() {
-		return 0;
-	}
-
-	public void tekeDamage(int receivedDamage) {}
-
-	public int getActualArmor() {
-		return 0;
-	}
-
-	public int getMetalCost() {
-		return 0;
-	}
-
-	public int getDeuteriumCost() {
-		return 0;
-	}
-
-	public int getChanceGeneratinWaste() {
-		return 0;
-	}
-
-	public int getChanceAttackAgain() {
-		return 0;
-	}
-
-	public void resetArmor() {}
 }
 
 interface MilitaryUnit {
@@ -242,11 +191,8 @@ interface Variables {
 	public final int METAL_COST_PLASMACANNON = 50000;
 	// array units costs
 	public final int[] METAL_COST_UNITS =
-	{METAL_COST_LIGTHHUNTER,METAL_COST_HEAVYHUNTER,METAL_COST_BATTLESHIP,METAL_COST_ARMOREDSHIP,METAL_COST_MISSILELAUNCHER,METAL_COST_IONCANNON,METAL_
-	COST_PLASMACANNON};
-	public final int[] DEUTERIUM_COST_UNITS =
-	{DEUTERIUM_COST_LIGTHHUNTER,DEUTERIUM_COST_HEAVYHUNTER,DEUTERIUM_COST_BATTLESHIP,DEUTERIUM_COST_ARMOREDSHIP,DEUTERIUM_COST_MISSILELAUNCHER,DEUTERI
-	UM_COST_IONCANNON,DEUTERIUM_COST_PLASMACANNON};
+	{METAL_COST_LIGTHHUNTER,METAL_COST_HEAVYHUNTER,METAL_COST_BATTLESHIP,METAL_COST_ARMOREDSHIP,METAL_COST_MISSILELAUNCHER,METAL_COST_IONCANNON,METAL_COST_PLASMACANNON};
+	public final int[] DEUTERIUM_COST_UNITS = {DEUTERIUM_COST_LIGTHHUNTER,DEUTERIUM_COST_HEAVYHUNTER,DEUTERIUM_COST_BATTLESHIP,DEUTERIUM_COST_ARMOREDSHIP,DEUTERIUM_COST_MISSILELAUNCHER,DEUTERIUM_COST_IONCANNON,DEUTERIUM_COST_PLASMACANNON};
 	// BASE DAMAGE SHIPS
 	public final int BASE_DAMAGE_LIGTHHUNTER = 80;
 	public final int BASE_DAMAGE_HEAVYHUNTER = 150;
@@ -269,8 +215,6 @@ interface Variables {
 	public final int ARMOR_PLASMACANNON = 7000;
 	//fleet armor increase percentage per tech level
 	public final int PLUS_ARMOR_LIGTHHUNTER_BY_TECHNOLOGY = 5;
-	Pág. 8 de 25
-	Projecte Planet Wars
 	public final int PLUS_ARMOR_HEAVYHUNTER_BY_TECHNOLOGY = 5;
 	public final int PLUS_ARMOR_BATTLESHIP_BY_TECHNOLOGY = 5;
 	public final int PLUS_ARMOR_ARMOREDSHIP_BY_TECHNOLOGY = 5;
@@ -319,6 +263,38 @@ class LightHunter extends ship {
 	public LightHunter(int armor, int baseDamage) {
 		super(armor, baseDamage);
 	}
+
+	public int attack() {
+		return 0;
+	}
+
+	public void tekeDamage(int receivedDamage) {
+		
+	}
+
+	public int getActualArmor() {
+		return 0;
+	}
+
+	public int getMetalCost() {
+		return 0;
+	}
+
+	public int getDeuteriumCost() {
+		return 0;
+	}
+
+	public int getChanceGeneratinWaste() {
+		return 0;
+	}
+
+	public int getChanceAttackAgain() {
+		return 0;
+	}
+
+	public void resetArmor() {
+		
+	}
 	
 }
 
@@ -326,18 +302,120 @@ class HeavyHunter extends ship {
 
 	public HeavyHunter(int armor, int baseDamage) {
 		super(armor, baseDamage);
-	}}
+	}
+	
+	public int attack() {
+		return 0;
+	}
+
+	public void tekeDamage(int receivedDamage) {
+		
+	}
+
+	public int getActualArmor() {
+		return 0;
+	}
+
+	public int getMetalCost() {
+		return 0;
+	}
+
+	public int getDeuteriumCost() {
+		return 0;
+	}
+
+	public int getChanceGeneratinWaste() {
+		return 0;
+	}
+
+	public int getChanceAttackAgain() {
+		return 0;
+	}
+
+	public void resetArmor() {
+		
+	}
+	
+}
 
 class BattleShip extends ship {
 
 	public BattleShip(int armor, int baseDamage) {
 		super(armor, baseDamage);
-	}}
+	}
+	
+	public int attack() {
+		return 0;
+	}
+
+	public void tekeDamage(int receivedDamage) {
+		
+	}
+
+	public int getActualArmor() {
+		return 0;
+	}
+
+	public int getMetalCost() {
+		return 0;
+	}
+
+	public int getDeuteriumCost() {
+		return 0;
+	}
+
+	public int getChanceGeneratinWaste() {
+		return 0;
+	}
+
+	public int getChanceAttackAgain() {
+		return 0;
+	}
+
+	public void resetArmor() {
+		
+	}
+	
+}
 
 class ArmoredShip extends ship {
 
 	public ArmoredShip(int armor, int baseDamage) {
 		super(armor, baseDamage);
-	}}
+	}
+	
+	public int attack() {
+		return 0;
+	}
+
+	public void tekeDamage(int receivedDamage) {
+		
+	}
+
+	public int getActualArmor() {
+		return 0;
+	}
+
+	public int getMetalCost() {
+		return 0;
+	}
+
+	public int getDeuteriumCost() {
+		return 0;
+	}
+
+	public int getChanceGeneratinWaste() {
+		return 0;
+	}
+
+	public int getChanceAttackAgain() {
+		return 0;
+	}
+
+	public void resetArmor() {
+		
+	}
+	
+}
 
 

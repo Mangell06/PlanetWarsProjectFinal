@@ -159,8 +159,8 @@ section {
   display: flex;
   justify-content: center;
   align-items: top;
-  background-color: white;
-  color: black;
+  background-color: black;
+  color: white;
 }
 
 .column_espacio {
@@ -179,8 +179,21 @@ section {
   max-width: 600px;
   padding: 10px;
   text-align: center;
-  background-color: white;
-  color: black;
+  background-color: black;
+  color: white;
+}
+
+.texto_informativo{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  max-width: 0 auto;
+  padding: 5px;
+  text-align: center;
+  background-color: black;
+  color: white;
 }
 
 .flex-container {
@@ -417,7 +430,7 @@ flex: 1 0 100%; /* Cada imagen ocupa el 100% del contenedor */
       left: 0; 
       width: 100%; 
       height: 100%; 
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 1) 100%); 
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 1) 100%);  
       z-index: 1; 
   }
   
@@ -542,7 +555,9 @@ flex: 1 0 100%; /* Cada imagen ocupa el 100% del contenedor */
     padding: 20px;       /* Adds some padding for spacing */
     margin: 10px;        /* Adds space around each column */
     text-align: justify;
-  } 
+  }
+  
+  
   
   .column{
     display: flex;
@@ -553,8 +568,8 @@ flex: 1 0 100%; /* Cada imagen ocupa el 100% del contenedor */
     max-width: 600px;
     padding: 10px;
     text-align: center;
-    background-color: white;
-    color: black;
+    background-color: black;
+    color: white;
   }
 
   .container_foto{

@@ -715,41 +715,5 @@ class Battle implements Variables {
 	private int[][] initialCostFleet, resourcesLooses, initialArmies;
 	private int initialNumberUnitsPlanet, initialNumberUnitsEnemy;
 	private int[] wasteMetalDeuterium, enemyDrops, planetDrops, actualNumberUnitsPlanet, actualNumberUnitsEnemy;
-
-	public int attack() {
-		return getBaseDamage();
-	}
-
-	public void tekeDamage(int receivedDamage) {
-		int damage = getArmor() - receivedDamage;
-		if (damage <= 0) {
-			damage = 0;
-		}
-    setArmor(damage);
-	}
-
-	public int getActualArmor() {
-		return getArmor();
-	}
-
-	public int getMetalCost() {
-		return METAL_COST_PLASMACANNON;
-	}
-
-	public int getDeuteriumCost() {
-		return DEUTERIUM_COST_PLASMACANNON;
-	}
-
-	public int getChanceGeneratinWaste() {
-		return CHANCE_GENERATNG_WASTE_PLASMACANNON;
-	}
-
-	public int getChanceAttackAgain() {
-		return CHANCE_ATTACK_AGAIN_PLASMACANNON;
-	}
-
-	public void resetArmor() {
-		setArmor(getInitialArmor());
-	}
 	
 }

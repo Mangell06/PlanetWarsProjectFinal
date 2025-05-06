@@ -756,6 +756,21 @@ class Battle implements Variables {
 	    this.planetArmy = planetArmy;
 	    this.enemyArmy = enemyArmy;
 	    this.battleDevelopment = "";
+	    this.initialNumberUnitsPlanet = initialFleetNumber(planetArmy);
+	    this.initialNumberUnitsEnemy = initialFleetNumber(enemyArmy);
+	    this.initialCostFleet = new int[2][2];
+	    this.initialCostFleet[0] = fleetResourceCost(planetArmy);
+	    this.initialCostFleet[1] = fleetResourceCost(enemyArmy);
+	    this.initialNumberUnitsPlanet = initialFleetNumber(planetArmy);
+	    this.initialNumberUnitsEnemy = initialFleetNumber(enemyArmy);
+	}
+	
+	public String getBattleReport(int battles) {
+		return "";
+	}
+	
+	public String getBattleDevelopment() {
+		return battleDevelopment;
 	}
 	
 	public void initInitialArmies() {
@@ -766,7 +781,15 @@ class Battle implements Variables {
 		}
 	}
 	
-	public void updateResourcesLoose() {}
+	public void updateResourcesLoose() {
+		int[][] coste_recursos_actuales = new int[2][2];
+		coste_recursos_actuales[0] = fleetResourceCost(planetArmy);
+		coste_recursos_actuales[1] = fleetResourceCost(enemyArmy);
+		resourcesLooses[0][0] = coste_recursos_actuales[0][0] - initialCostFleet[0][0];
+		resourcesLooses[0][1] = coste_recursos_actuales[0][1] - initialCostFleet[0][1];
+		resourcesLooses[1][0] = coste_recursos_actuales[1][0] - initialCostFleet[1][0];
+		resourcesLooses[1][1] = coste_recursos_actuales[1][1] - initialCostFleet[1][1];
+	}
 	
 	public int[] fleetResourceCost(ArrayList<MilitaryUnit>[] army) {
 	    int[] costs = new int[2];
@@ -781,10 +804,10 @@ class Battle implements Variables {
 	    return costs;
 	}
 	
-	public int[] initialFleetNumber(ArrayList<MilitaryUnit>[] army) {
-		int countfleet[] = new int[7];
+	public int initialFleetNumber(ArrayList<MilitaryUnit>[] army) {
+		int countfleet = 0;
 		for (int i = 0; i < army.length; i++ ) {
-			countfleet[i] = army[i].size();
+			countfleet = army[i].size();
 		}
 		
 		return countfleet;

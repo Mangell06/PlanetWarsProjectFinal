@@ -100,6 +100,7 @@ class Planet {
 			upgradeDefenseTechnologyDeuteriumCost *= 1.1;
 		} catch (ResourceException e) {
 			System.out.println(e.getMessage());
+			return;
 		}
 	}
 	
@@ -114,6 +115,7 @@ class Planet {
 			upgradeAttackTechnologyDeuteriumCost *= 1.1;
 		} catch (ResourceException e) {
 			System.out.println(e.getMessage());
+			return;
 		}
 	}
 	
@@ -123,9 +125,13 @@ class Planet {
 				if (Variables.METAL_COST_LIGTHHUNTER > metal || Variables.DEUTERIUM_COST_LIGTHHUNTER > deuterium) {
 					throw new ResourceException("You don't have enough resource");
 				}
+				deuterium -=Variables.DEUTERIUM_COST_ARMOREDSHIP;
+				metal -= Variables.METAL_COST_ARMOREDSHIP;
 				army[0].add(new LigthHunter(Variables.ARMOR_LIGTHHUNTER + (technologyDefense*Variables.PLUS_ARMOR_LIGTHHUNTER_BY_TECHNOLOGY)%1000,Variables.BASE_DAMAGE_LIGTHHUNTER + (technologyAttack*Variables.PLUS_ATTACK_LIGTHHUNTER_BY_TECHNOLOGY)%1000));
 			} catch (ResourceException e) {
 				System.out.println(e.getMessage());
+				System.out.println("It has been purchased " + i + " ArmoredShip");
+				return;
 			}
 		}
 	}
@@ -136,9 +142,13 @@ class Planet {
 				if (Variables.METAL_COST_HEAVYHUNTER > metal || Variables.DEUTERIUM_COST_HEAVYHUNTER > deuterium) {
 					throw new ResourceException("You don't have enough resource");
 				}
+				deuterium -=Variables.DEUTERIUM_COST_ARMOREDSHIP;
+				metal -= Variables.METAL_COST_ARMOREDSHIP;
 				army[1].add(new HeavyHunter(Variables.ARMOR_HEAVYHUNTER + (technologyDefense*Variables.PLUS_ARMOR_HEAVYHUNTER_BY_TECHNOLOGY)%1000,Variables.BASE_DAMAGE_HEAVYHUNTER + (technologyAttack*Variables.PLUS_ATTACK_HEAVYHUNTER_BY_TECHNOLOGY)%1000));
 			} catch (ResourceException e) {
 				System.out.println(e.getMessage());
+				System.out.println("It has been purchased " + i + " ArmoredShip");
+				return;
 			}
 		}
 	}
@@ -149,9 +159,13 @@ class Planet {
 				if (Variables.METAL_COST_BATTLESHIP > metal || Variables.DEUTERIUM_COST_BATTLESHIP > deuterium) {
 					throw new ResourceException("You don't have enough resource");
 				}
+				deuterium -=Variables.DEUTERIUM_COST_ARMOREDSHIP;
+				metal -= Variables.METAL_COST_ARMOREDSHIP;
 				army[2].add(new BattleShip(Variables.ARMOR_BATTLESHIP + (technologyDefense*Variables.PLUS_ARMOR_BATTLESHIP_BY_TECHNOLOGY)%1000,Variables.BASE_DAMAGE_BATTLESHIP + (technologyAttack*Variables.PLUS_ATTACK_BATTLESHIP_BY_TECHNOLOGY)%1000));
 			} catch (ResourceException e) {
 				System.out.println(e.getMessage());
+				System.out.println("It has been purchased " + i + " ArmoredShip");
+				return;
 			}
 		}
 	}
@@ -162,9 +176,13 @@ class Planet {
 				if (Variables.METAL_COST_ARMOREDSHIP > metal || Variables.DEUTERIUM_COST_ARMOREDSHIP > deuterium) {
 					throw new ResourceException("You don't have enough resource");
 				}
+				deuterium -=Variables.DEUTERIUM_COST_ARMOREDSHIP;
+				metal -= Variables.METAL_COST_ARMOREDSHIP;
 				army[3].add(new BattleShip(Variables.ARMOR_ARMOREDSHIP + (technologyDefense*Variables.PLUS_ARMOR_ARMOREDSHIP_BY_TECHNOLOGY)%1000,Variables.BASE_DAMAGE_ARMOREDSHIP + (technologyAttack*Variables.PLUS_ATTACK_ARMOREDSHIP_BY_TECHNOLOGY)%1000));
 			} catch (ResourceException e) {
 				System.out.println(e.getMessage());
+				System.out.println("It has been purchased " + i + " ArmoredShip");
+				return;
 			}
 		}
 	}
@@ -175,9 +193,13 @@ class Planet {
 				if (Variables.METAL_COST_MISSILELAUNCHER > metal || Variables.DEUTERIUM_COST_MISSILELAUNCHER > deuterium) {
 					throw new ResourceException("You don't have enough resource");
 				}
+				deuterium -=Variables.DEUTERIUM_COST_ARMOREDSHIP;
+				metal -= Variables.METAL_COST_ARMOREDSHIP;
 				army[4].add(new MissileLauncher(Variables.ARMOR_MISSILELAUNCHER + (technologyDefense * Variables.PLUS_ARMOR_MISSILELAUNCHER_BY_TECHNOLOGY) % 1000, Variables.BASE_DAMAGE_MISSILELAUNCHER + (technologyAttack * Variables.PLUS_ATTACK_MISSILELAUNCHER_BY_TECHNOLOGY) % 1000));
 			} catch (ResourceException e) {
 				System.out.println(e.getMessage());
+				System.out.println("It has been purchased " + i + " ArmoredShip");
+				return;
 			}
 		}
 	}
@@ -188,9 +210,13 @@ class Planet {
 				if (Variables.METAL_COST_IONCANNON > metal || Variables.DEUTERIUM_COST_IONCANNON > deuterium) {
 					throw new ResourceException("You don't have enough resource");
 				}
+				deuterium -=Variables.DEUTERIUM_COST_ARMOREDSHIP;
+				metal -= Variables.METAL_COST_ARMOREDSHIP;
 				army[5].add(new IonCannon(Variables.ARMOR_IONCANNON + (technologyDefense * Variables.PLUS_ARMOR_IONCANNON_BY_TECHNOLOGY) % 1000, Variables.BASE_DAMAGE_IONCANNON + (technologyAttack * Variables.PLUS_ATTACK_IONCANNON_BY_TECHNOLOGY) % 1000));
 			} catch (ResourceException e) {
 				System.out.println(e.getMessage());
+				System.out.println("It has been purchased " + i + " ArmoredShip");
+				return;
 			}
 		}
 	}
@@ -201,9 +227,13 @@ class Planet {
 				if (Variables.METAL_COST_PLASMACANNON > metal || Variables.DEUTERIUM_COST_PLASMACANNON > deuterium) {
 					throw new ResourceException("You don't have enough resource");
 				}
+				deuterium -=Variables.DEUTERIUM_COST_ARMOREDSHIP;
+				metal -= Variables.METAL_COST_ARMOREDSHIP;
 				army[6].add(new PlasmaCannon(Variables.ARMOR_IONCANNON + (technologyDefense * Variables.PLUS_ARMOR_PLASMACANNON_BY_TECHNOLOGY) % 1000, Variables.BASE_DAMAGE_PLASMACANNON + (technologyAttack * Variables.PLUS_ATTACK_PLASMACANNON_BY_TECHNOLOGY) % 1000));
 			} catch (ResourceException e) {
 				System.out.println(e.getMessage());
+				System.out.println("It has been purchased " + i + " ArmoredShip");
+				return;
 			}
 		}
 	}

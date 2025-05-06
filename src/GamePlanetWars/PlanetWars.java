@@ -1,6 +1,7 @@
 package GamePlanetWars;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class PlanetWars {
 
@@ -100,7 +101,6 @@ class Planet {
 			upgradeDefenseTechnologyDeuteriumCost *= 1.1;
 		} catch (ResourceException e) {
 			System.out.println(e.getMessage());
-			return;
 		}
 	}
 	
@@ -115,7 +115,6 @@ class Planet {
 			upgradeAttackTechnologyDeuteriumCost *= 1.1;
 		} catch (ResourceException e) {
 			System.out.println(e.getMessage());
-			return;
 		}
 	}
 	
@@ -125,13 +124,9 @@ class Planet {
 				if (Variables.METAL_COST_LIGTHHUNTER > metal || Variables.DEUTERIUM_COST_LIGTHHUNTER > deuterium) {
 					throw new ResourceException("You don't have enough resource");
 				}
-				deuterium -=Variables.DEUTERIUM_COST_ARMOREDSHIP;
-				metal -= Variables.METAL_COST_ARMOREDSHIP;
-				army[0].add(new LigthHunter(Variables.ARMOR_LIGTHHUNTER + (technologyDefense*Variables.PLUS_ARMOR_LIGTHHUNTER_BY_TECHNOLOGY)%1000,Variables.BASE_DAMAGE_LIGTHHUNTER + (technologyAttack*Variables.PLUS_ATTACK_LIGTHHUNTER_BY_TECHNOLOGY)%1000));
+			  army[0].add(new LigthHunter(Variables.ARMOR_LIGTHHUNTER + ((technologyDefense * Variables.PLUS_ARMOR_LIGTHHUNTER_BY_TECHNOLOGY) % 1000) ,Variables.BASE_DAMAGE_LIGTHHUNTER + ((technologyAttack*Variables.PLUS_ATTACK_LIGTHHUNTER_BY_TECHNOLOGY)%1000)));
 			} catch (ResourceException e) {
 				System.out.println(e.getMessage());
-				System.out.println("It has been purchased " + i + " ArmoredShip");
-				return;
 			}
 		}
 	}
@@ -142,13 +137,9 @@ class Planet {
 				if (Variables.METAL_COST_HEAVYHUNTER > metal || Variables.DEUTERIUM_COST_HEAVYHUNTER > deuterium) {
 					throw new ResourceException("You don't have enough resource");
 				}
-				deuterium -=Variables.DEUTERIUM_COST_ARMOREDSHIP;
-				metal -= Variables.METAL_COST_ARMOREDSHIP;
-				army[1].add(new HeavyHunter(Variables.ARMOR_HEAVYHUNTER + (technologyDefense*Variables.PLUS_ARMOR_HEAVYHUNTER_BY_TECHNOLOGY)%1000,Variables.BASE_DAMAGE_HEAVYHUNTER + (technologyAttack*Variables.PLUS_ATTACK_HEAVYHUNTER_BY_TECHNOLOGY)%1000));
+			  army[1].add(new HeavyHunter(Variables.ARMOR_HEAVYHUNTER + ((technologyDefense*Variables.PLUS_ARMOR_HEAVYHUNTER_BY_TECHNOLOGY)%1000),Variables.BASE_DAMAGE_HEAVYHUNTER + ((technologyAttack*Variables.PLUS_ATTACK_HEAVYHUNTER_BY_TECHNOLOGY)%1000)));
 			} catch (ResourceException e) {
 				System.out.println(e.getMessage());
-				System.out.println("It has been purchased " + i + " ArmoredShip");
-				return;
 			}
 		}
 	}
@@ -159,13 +150,9 @@ class Planet {
 				if (Variables.METAL_COST_BATTLESHIP > metal || Variables.DEUTERIUM_COST_BATTLESHIP > deuterium) {
 					throw new ResourceException("You don't have enough resource");
 				}
-				deuterium -=Variables.DEUTERIUM_COST_ARMOREDSHIP;
-				metal -= Variables.METAL_COST_ARMOREDSHIP;
-				army[2].add(new BattleShip(Variables.ARMOR_BATTLESHIP + (technologyDefense*Variables.PLUS_ARMOR_BATTLESHIP_BY_TECHNOLOGY)%1000,Variables.BASE_DAMAGE_BATTLESHIP + (technologyAttack*Variables.PLUS_ATTACK_BATTLESHIP_BY_TECHNOLOGY)%1000));
+			  army[2].add(new BattleShip(Variables.ARMOR_BATTLESHIP + ((technologyDefense*Variables.PLUS_ARMOR_BATTLESHIP_BY_TECHNOLOGY)%1000),Variables.BASE_DAMAGE_BATTLESHIP + ((technologyAttack*Variables.PLUS_ATTACK_BATTLESHIP_BY_TECHNOLOGY)%1000)));
 			} catch (ResourceException e) {
 				System.out.println(e.getMessage());
-				System.out.println("It has been purchased " + i + " ArmoredShip");
-				return;
 			}
 		}
 	}
@@ -176,13 +163,9 @@ class Planet {
 				if (Variables.METAL_COST_ARMOREDSHIP > metal || Variables.DEUTERIUM_COST_ARMOREDSHIP > deuterium) {
 					throw new ResourceException("You don't have enough resource");
 				}
-				deuterium -=Variables.DEUTERIUM_COST_ARMOREDSHIP;
-				metal -= Variables.METAL_COST_ARMOREDSHIP;
-				army[3].add(new BattleShip(Variables.ARMOR_ARMOREDSHIP + (technologyDefense*Variables.PLUS_ARMOR_ARMOREDSHIP_BY_TECHNOLOGY)%1000,Variables.BASE_DAMAGE_ARMOREDSHIP + (technologyAttack*Variables.PLUS_ATTACK_ARMOREDSHIP_BY_TECHNOLOGY)%1000));
+			  army[3].add(new BattleShip(Variables.ARMOR_ARMOREDSHIP + ((technologyDefense*Variables.PLUS_ARMOR_ARMOREDSHIP_BY_TECHNOLOGY)%1000),Variables.BASE_DAMAGE_ARMOREDSHIP + ((technologyAttack*Variables.PLUS_ATTACK_ARMOREDSHIP_BY_TECHNOLOGY)%1000)));
 			} catch (ResourceException e) {
 				System.out.println(e.getMessage());
-				System.out.println("It has been purchased " + i + " ArmoredShip");
-				return;
 			}
 		}
 	}
@@ -193,13 +176,9 @@ class Planet {
 				if (Variables.METAL_COST_MISSILELAUNCHER > metal || Variables.DEUTERIUM_COST_MISSILELAUNCHER > deuterium) {
 					throw new ResourceException("You don't have enough resource");
 				}
-				deuterium -=Variables.DEUTERIUM_COST_ARMOREDSHIP;
-				metal -= Variables.METAL_COST_ARMOREDSHIP;
-				army[4].add(new MissileLauncher(Variables.ARMOR_MISSILELAUNCHER + (technologyDefense * Variables.PLUS_ARMOR_MISSILELAUNCHER_BY_TECHNOLOGY) % 1000, Variables.BASE_DAMAGE_MISSILELAUNCHER + (technologyAttack * Variables.PLUS_ATTACK_MISSILELAUNCHER_BY_TECHNOLOGY) % 1000));
+			  army[4].add(new MissileLauncher(Variables.ARMOR_MISSILELAUNCHER + ((technologyDefense * Variables.PLUS_ARMOR_MISSILELAUNCHER_BY_TECHNOLOGY) % 1000), Variables.BASE_DAMAGE_MISSILELAUNCHER + ((technologyAttack * Variables.PLUS_ATTACK_MISSILELAUNCHER_BY_TECHNOLOGY) % 1000)));
 			} catch (ResourceException e) {
 				System.out.println(e.getMessage());
-				System.out.println("It has been purchased " + i + " ArmoredShip");
-				return;
 			}
 		}
 	}
@@ -210,13 +189,9 @@ class Planet {
 				if (Variables.METAL_COST_IONCANNON > metal || Variables.DEUTERIUM_COST_IONCANNON > deuterium) {
 					throw new ResourceException("You don't have enough resource");
 				}
-				deuterium -=Variables.DEUTERIUM_COST_ARMOREDSHIP;
-				metal -= Variables.METAL_COST_ARMOREDSHIP;
-				army[5].add(new IonCannon(Variables.ARMOR_IONCANNON + (technologyDefense * Variables.PLUS_ARMOR_IONCANNON_BY_TECHNOLOGY) % 1000, Variables.BASE_DAMAGE_IONCANNON + (technologyAttack * Variables.PLUS_ATTACK_IONCANNON_BY_TECHNOLOGY) % 1000));
+			  army[5].add(new IonCannon(Variables.ARMOR_IONCANNON + ((technologyDefense * Variables.PLUS_ARMOR_IONCANNON_BY_TECHNOLOGY) % 1000), Variables.BASE_DAMAGE_IONCANNON + ((technologyAttack * Variables.PLUS_ATTACK_IONCANNON_BY_TECHNOLOGY) % 1000)));
 			} catch (ResourceException e) {
 				System.out.println(e.getMessage());
-				System.out.println("It has been purchased " + i + " ArmoredShip");
-				return;
 			}
 		}
 	}
@@ -227,13 +202,9 @@ class Planet {
 				if (Variables.METAL_COST_PLASMACANNON > metal || Variables.DEUTERIUM_COST_PLASMACANNON > deuterium) {
 					throw new ResourceException("You don't have enough resource");
 				}
-				deuterium -=Variables.DEUTERIUM_COST_ARMOREDSHIP;
-				metal -= Variables.METAL_COST_ARMOREDSHIP;
-				army[6].add(new PlasmaCannon(Variables.ARMOR_IONCANNON + (technologyDefense * Variables.PLUS_ARMOR_PLASMACANNON_BY_TECHNOLOGY) % 1000, Variables.BASE_DAMAGE_PLASMACANNON + (technologyAttack * Variables.PLUS_ATTACK_PLASMACANNON_BY_TECHNOLOGY) % 1000));
+			  army[6].add(new PlasmaCannon(Variables.ARMOR_PLASMACANNON + ((technologyDefense * Variables.PLUS_ARMOR_PLASMACANNON_BY_TECHNOLOGY) % 1000), Variables.BASE_DAMAGE_PLASMACANNON + ((technologyAttack * Variables.PLUS_ATTACK_PLASMACANNON_BY_TECHNOLOGY) % 1000)));
 			} catch (ResourceException e) {
 				System.out.println(e.getMessage());
-				System.out.println("It has been purchased " + i + " ArmoredShip");
-				return;
 			}
 		}
 	}
@@ -425,12 +396,7 @@ class LigthHunter extends ship {
 	}
 
 	public void tekeDamage(int receivedDamage) {
-		int damage = getArmor() - receivedDamage;
-		if (damage <= 0) {
-			damage = 0;
-		}
-		
-		setArmor(damage);
+		setArmor(Math.max(0, getArmor() - receivedDamage));
 	}
 
 	public int getActualArmor() {
@@ -474,12 +440,7 @@ class HeavyHunter extends ship {
 	}
 
 	public void tekeDamage(int receivedDamage) {
-		int damage = getArmor() - receivedDamage;
-		if (damage <= 0) {
-			damage = 0;
-		}
-		
-		setArmor(damage);
+		setArmor(Math.max(0, getArmor() - receivedDamage));
 	}
 
 	public int getActualArmor() {
@@ -523,12 +484,7 @@ class BattleShip extends ship {
 	}
 
 	public void tekeDamage(int receivedDamage) {
-		int damage = getArmor() - receivedDamage;
-		if (damage <= 0) {
-			damage = 0;
-		}
-		
-		setArmor(damage);
+		setArmor(Math.max(0, getArmor() - receivedDamage));
 	}
 
 	public int getActualArmor() {
@@ -572,12 +528,7 @@ class ArmoredShip extends ship {
 	}
 
 	public void tekeDamage(int receivedDamage) {
-		int damage = getArmor() - receivedDamage;
-		if (damage <= 0) {
-			damage = 0;
-		}
-		
-		setArmor(damage);
+		setArmor(Math.max(0, getArmor() - receivedDamage));
 	}
 
 	public int getActualArmor() {
@@ -652,12 +603,7 @@ class MissileLauncher extends Defense {
 	}
 	
 	public void tekeDamage(int receivedDamage) {
-		int damage = getArmor() - receivedDamage;
-		if (damage < 0) {
-			damage = 0;
-		}
-		
-		setArmor(damage);
+		setArmor(Math.max(0, getArmor() - receivedDamage));
 	}
 	
 	public int getActualArmor() {
@@ -696,12 +642,7 @@ class IonCannon extends Defense {
 	}
 
 	public void tekeDamage(int receivedDamage) {
-		int damage = getArmor() - receivedDamage;
-		if (damage < 0) {
-			damage = 0;
-		}
-		
-		setArmor(damage);
+		setArmor(Math.max(0, getArmor() - receivedDamage));
 	}
 
 	public int getActualArmor() {
@@ -735,42 +676,37 @@ class PlasmaCannon extends Defense {
 		super(armor, baseDamage);
 	}
 
-	// === METODOS INTERFAZ ===
-		public int attack() {
-			return getBaseDamage();
-		}
-		
-		public void tekeDamage(int receivedDamage) {
-			int damage = getArmor() - receivedDamage;
-			if (damage < 0) {
-				damage = 0;
-			}
-			setArmor(damage);
-		}
-		
-		public int getActualArmor() {
+	public int attack() {
+		return getBaseDamage();
+	}
+
+	public void tekeDamage(int receivedDamage) {	
+		setArmor(Math.max(0, getArmor() - receivedDamage));
+	}
+  
+  public int getActualArmor() {
 			return getArmor();
-		}
-		
-		public int getMetalCost() {
+	}
+  
+  public int getMetalCost() {
 			return METAL_COST_MISSILELAUNCHER;
-		}
+	}
 
-		public int getDeuteriumCost() {
-			return DEUTERIUM_COST_MISSILELAUNCHER;
-		}
+  public int getDeuteriumCost() {
+    return DEUTERIUM_COST_MISSILELAUNCHER;
+  }
 
-		public int getChanceGeneratinWaste() {
-			return CHANCE_GENERATNG_WASTE_MISSILELAUNCHER;
-		}
+  public int getChanceGeneratinWaste() {
+    return CHANCE_GENERATNG_WASTE_MISSILELAUNCHER;
+  }
 
-		public int getChanceAttackAgain() {
-			return CHANCE_ATTACK_AGAIN_MISSILELAUNCHER;
-		}
+  public int getChanceAttackAgain() {
+    return CHANCE_ATTACK_AGAIN_MISSILELAUNCHER;
+  }
 
-		public void resetArmor() {
-			setArmor(getInitialArmor());
-		}
+  public void resetArmor() {
+    setArmor(getInitialArmor());
+  }
 	
 }
 
@@ -781,6 +717,7 @@ class Battle implements Variables {
 	private int[][] initialCostFleet, resourcesLooses, initialArmies;
 	private int initialNumberUnitsPlanet, initialNumberUnitsEnemy;
 	private int[] wasteMetalDeuterium, enemyDrops, planetDrops, actualNumberUnitsPlanet, actualNumberUnitsEnemy;
+	private Random rand;
 	
 	public Battle(ArrayList<MilitaryUnit>[] planetArmy, ArrayList<MilitaryUnit>[] enemyArmy) {
 	    this.planetArmy = planetArmy;
@@ -843,18 +780,6 @@ class Battle implements Variables {
 		return countfleet;
 	}
 	
-	public int remainderPercentatgeFleet(ArrayList<MilitaryUnit>[] army) {
-		return 0;
-	}
-	
-	public int getGroupDefender(ArrayList<MilitaryUnit>[] army) {
-		return 0;
-	}
-	
-	public int getPlanetGroupAttacker() {
-		return 0;
-	}
-	
 	public void resetArmyArmor() {
 		for (int i = 0; i < planetArmy.length; i++) {
 			for (int j = 0; j < planetArmy[i].size(); j++) {
@@ -863,4 +788,114 @@ class Battle implements Variables {
 		}
 	}
 	
+	public int remainderPercentatgeFleet(ArrayList<MilitaryUnit>[] army) {
+		int total = 0;
+		for (ArrayList<MilitaryUnit> group : army) {
+			total += group.size();
+		}
+		
+		int initialUnits = 0;
+		
+		try {
+			if (army == planetArmy) {
+				initialUnits = initialNumberUnitsPlanet;
+			} else if (army == enemyArmy) {
+				initialUnits = initialNumberUnitsEnemy;
+			}
+			
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		}
+		
+		return (total * 100) / initialUnits;
+	}
+	
+	public int getGroupDefender(ArrayList<MilitaryUnit>[] army) {
+		int total = 0;
+		for (ArrayList<MilitaryUnit> group : army) {
+			total += group.size(); // Calculo de las unidades totales
+		}
+		
+		int initialUnits;
+		// Comprobaciones para saber el tipo de unidades que calculamos
+		if (army == planetArmy) {
+			initialUnits = initialNumberUnitsPlanet;
+		} else if (army == enemyArmy) {
+			initialUnits = initialNumberUnitsEnemy;
+		} else {
+			throw new IllegalArgumentException("Unknown army reference passed.");
+		}
+		
+		int totalUnits = initialUnits;
+		if (totalUnits <= 0) {
+			return -1; // Ya no tiene unidades para defenderse
+		}
+		
+		int random = rand.nextInt(totalUnits);
+		int cumulative = 0;
+		
+		for (int i = 0; i < army.length; i++) {
+			cumulative += army[i].size();
+			if (random < cumulative) {
+				return i;
+			}
+		}
+		
+		return -1;
+	}
+	
+	public int getPlanetGroupAttacker() {
+		int[] probabilities = Variables.CHANCE_ATTACK_PLANET_UNITS;
+		int total = 0;
+		for (int probability : probabilities) {
+			total += probability;
+		}
+		
+		int random = rand.nextInt(total);
+		int cumulative = 0;
+		
+		for (int i = 0; i < probabilities.length; i++) {
+			cumulative += probabilities[i];
+			if (random < cumulative) {
+				return i;
+			}
+		}
+		
+		return -1;
+	}
+	
+	public int getEnemyGroupAttacker() {
+		int[] probabilities = Variables.CHANCE_ATTACK_ENEMY_UNITS;
+		int total = 0;
+		for (int probability : probabilities) {
+			total += probability;
+		}
+		
+		int random = rand.nextInt(total);
+		int cumulative = 0;
+		
+		for (int i = 0; i < probabilities.length; i++) {
+			cumulative += probabilities[i];
+			if (random < cumulative) {
+				return i;
+			}
+		}
+		
+		return -1;
+	}
+	
+	// Cuando una nave ataca a otra nave.
+	public void ataque_nave(MilitaryUnit atacante, MilitaryUnit atacara) {
+		
+	}
+	
+	// Se mira que MilitaryUnit es y de ahí se hace de manera random en base a su % de CHANGE_ATTACK_AGAIN si vuelve a atacar o no.
+	public boolean againattack(MilitaryUnit atacante) {
+		return false;
+	}
+	
+	// Aqui se reune toda la batalla.
+	public void startBattle() {
+		
+	}
 }

@@ -1,6 +1,7 @@
 package GamePlanetWars;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class PlanetWars {
 
@@ -123,7 +124,7 @@ class Planet {
 				if (Variables.METAL_COST_LIGTHHUNTER > metal || Variables.DEUTERIUM_COST_LIGTHHUNTER > deuterium) {
 					throw new ResourceException("You don't have enough resource");
 				}
-			  army[0].add(new LightHunter(Variables.ARMOR_LIGTHHUNTER + ((technologyDefense * Variables.PLUS_ARMOR_LIGTHHUNTER_BY_TECHNOLOGY) % 1000) ,Variables.BASE_DAMAGE_LIGTHHUNTER + ((technologyAttack*Variables.PLUS_ATTACK_LIGTHHUNTER_BY_TECHNOLOGY)%1000)));
+			  army[0].add(new LigthHunter(Variables.ARMOR_LIGTHHUNTER + ((technologyDefense * Variables.PLUS_ARMOR_LIGTHHUNTER_BY_TECHNOLOGY) % 1000) ,Variables.BASE_DAMAGE_LIGTHHUNTER + ((technologyAttack*Variables.PLUS_ATTACK_LIGTHHUNTER_BY_TECHNOLOGY)%1000)));
 			} catch (ResourceException e) {
 				System.out.println(e.getMessage());
 			}
@@ -201,7 +202,7 @@ class Planet {
 				if (Variables.METAL_COST_PLASMACANNON > metal || Variables.DEUTERIUM_COST_PLASMACANNON > deuterium) {
 					throw new ResourceException("You don't have enough resource");
 				}
-			  army[6].add(new Plasma_cannon(Variables.ARMOR_PLASMA_CANNON + ((technologyDefense * Variables.PLUS_ARMOR_PLASMACANNON_BY_TECHNOLOGY) % 1000), Variables.BASE_DAMAGE_PLASMACANNON + ((technologyAttack * Variables.PLUS_ATTACK_PLASMACANNON_BY_TECHNOLOGY) % 1000)));
+			  army[6].add(new PlasmaCannon(Variables.ARMOR_PLASMACANNON + ((technologyDefense * Variables.PLUS_ARMOR_PLASMACANNON_BY_TECHNOLOGY) % 1000), Variables.BASE_DAMAGE_PLASMACANNON + ((technologyAttack * Variables.PLUS_ATTACK_PLASMACANNON_BY_TECHNOLOGY) % 1000)));
 			} catch (ResourceException e) {
 				System.out.println(e.getMessage());
 			}
@@ -716,6 +717,7 @@ class Battle implements Variables {
 	private int[][] initialCostFleet, resourcesLooses, initialArmies;
 	private int initialNumberUnitsPlanet, initialNumberUnitsEnemy;
 	private int[] wasteMetalDeuterium, enemyDrops, planetDrops, actualNumberUnitsPlanet, actualNumberUnitsEnemy;
+	private Random rand;
 	
 	public Battle(ArrayList<MilitaryUnit>[] planetArmy, ArrayList<MilitaryUnit>[] enemyArmy) {
 	    this.planetArmy = planetArmy;
@@ -778,24 +780,108 @@ class Battle implements Variables {
 		return countfleet;
 	}
 	
-	public int remainderPercentatgeFleet(ArrayList<MilitaryUnit>[] army) {
-		return 0;
-	}
-	
-	public int getGroupDefender(ArrayList<MilitaryUnit>[] army) {
-		return 0;
-	}
-	
-	public int getPlanetGroupAttacker() {
-		return 0;
-	}
-	
 	public void resetArmyArmor() {
 		for (int i = 0; i < planetArmy.length; i++) {
 			for (int j = 0; j < planetArmy[i].size(); j++) {
 				planetArmy[i].get(j).resetArmor();
 			}
 		}
+	}
+	
+	public int remainderPercentatgeFleet(ArrayList<MilitaryUnit>[] army) {
+		int total = 0;
+		for (ArrayList<MilitaryUnit> group : army) {
+			total += group.size();
+		}
+		
+		int initialUnits = 0;
+		
+		try {
+			if (army == planetArmy) {
+				initialUnits = initialNumberUnitsPlanet;
+			} else if (army == enemyArmy) {
+				initialUnits = initialNumberUnitsEnemy;
+			}
+			
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		}
+		
+		return (total * 100) / initialUnits;
+	}
+	
+	public int getGroupDefender(ArrayList<MilitaryUnit>[] army) {
+		int total = 0;
+		for (ArrayList<MilitaryUnit> group : army) {
+			total += group.size(); // Calculo de las unidades totales
+		}
+		
+		int initialUnits;
+		// Comprobaciones para saber el tipo de unidades que calculamos
+		if (army == planetArmy) {
+			initialUnits = initialNumberUnitsPlanet;
+		} else if (army == enemyArmy) {
+			initialUnits = initialNumberUnitsEnemy;
+		} else {
+			throw new IllegalArgumentException("Unknown army reference passed.");
+		}
+		
+		int totalUnits = initialUnits;
+		if (totalUnits <= 0) {
+			return -1; // Ya no tiene unidades para defenderse
+		}
+		
+		int random = rand.nextInt(totalUnits);
+		int cumulative = 0;
+		
+		for (int i = 0; i < army.length; i++) {
+			cumulative += army[i].size();
+			if (random < cumulative) {
+				return i;
+			}
+		}
+		
+		return -1;
+	}
+	
+	public int getPlanetGroupAttacker() {
+		int[] probabilities = Variables.CHANCE_ATTACK_PLANET_UNITS;
+		int total = 0;
+		for (int probability : probabilities) {
+			total += probability;
+		}
+		
+		int random = rand.nextInt(total);
+		int cumulative = 0;
+		
+		for (int i = 0; i < probabilities.length; i++) {
+			cumulative += probabilities[i];
+			if (random < cumulative) {
+				return i;
+			}
+		}
+		
+		return -1;
+	}
+	
+	public int getEnemyGroupAttacker() {
+		int[] probabilities = Variables.CHANCE_ATTACK_ENEMY_UNITS;
+		int total = 0;
+		for (int probability : probabilities) {
+			total += probability;
+		}
+		
+		int random = rand.nextInt(total);
+		int cumulative = 0;
+		
+		for (int i = 0; i < probabilities.length; i++) {
+			cumulative += probabilities[i];
+			if (random < cumulative) {
+				return i;
+			}
+		}
+		
+		return -1;
 	}
 	
 }

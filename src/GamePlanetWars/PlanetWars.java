@@ -114,7 +114,7 @@ class Planet {
 			if (Variables.METAL_COST_LIGTHHUNTER > metal || Variables.DEUTERIUM_COST_LIGTHHUNTER > deuterium) {
 				new ResourceException("You don't have enough resource");
 			}
-			army[0].add(new LightHunter(Variables.ARMOR_LIGTHHUNTER + (technologyDefense*Variables.PLUS_ARMOR_LIGTHHUNTER_BY_TECHNOLOGY)%1000,Variables.BASE_DAMAGE_LIGTHHUNTER + (technologyAttack*Variables.PLUS_ATTACK_LIGTHHUNTER_BY_TECHNOLOGY)%1000));
+			army[0].add(new LightHunter(Variables.ARMOR_LIGTHHUNTER + ((technologyDefense * Variables.PLUS_ARMOR_LIGTHHUNTER_BY_TECHNOLOGY) % 1000) ,Variables.BASE_DAMAGE_LIGTHHUNTER + ((technologyAttack*Variables.PLUS_ATTACK_LIGTHHUNTER_BY_TECHNOLOGY)%1000)));
 		}
 	}
 	
@@ -123,7 +123,7 @@ class Planet {
 			if (Variables.METAL_COST_HEAVYHUNTER > metal || Variables.DEUTERIUM_COST_HEAVYHUNTER > deuterium) {
 				new ResourceException("You don't have enough resource");
 			}
-			army[1].add(new HeavyHunter(Variables.ARMOR_HEAVYHUNTER + (technologyDefense*Variables.PLUS_ARMOR_HEAVYHUNTER_BY_TECHNOLOGY)%1000,Variables.BASE_DAMAGE_HEAVYHUNTER + (technologyAttack*Variables.PLUS_ATTACK_HEAVYHUNTER_BY_TECHNOLOGY)%1000));
+			army[1].add(new HeavyHunter(Variables.ARMOR_HEAVYHUNTER + ((technologyDefense*Variables.PLUS_ARMOR_HEAVYHUNTER_BY_TECHNOLOGY)%1000),Variables.BASE_DAMAGE_HEAVYHUNTER + ((technologyAttack*Variables.PLUS_ATTACK_HEAVYHUNTER_BY_TECHNOLOGY)%1000)));
 		}
 	}
 	
@@ -132,7 +132,7 @@ class Planet {
 			if (Variables.METAL_COST_BATTLESHIP > metal || Variables.DEUTERIUM_COST_BATTLESHIP > deuterium) {
 				new ResourceException("You don't have enough resource");
 			}
-			army[2].add(new BattleShip(Variables.ARMOR_BATTLESHIP + (technologyDefense*Variables.PLUS_ARMOR_BATTLESHIP_BY_TECHNOLOGY)%1000,Variables.BASE_DAMAGE_BATTLESHIP + (technologyAttack*Variables.PLUS_ATTACK_BATTLESHIP_BY_TECHNOLOGY)%1000));
+			army[2].add(new BattleShip(Variables.ARMOR_BATTLESHIP + ((technologyDefense*Variables.PLUS_ARMOR_BATTLESHIP_BY_TECHNOLOGY)%1000),Variables.BASE_DAMAGE_BATTLESHIP + ((technologyAttack*Variables.PLUS_ATTACK_BATTLESHIP_BY_TECHNOLOGY)%1000)));
 		}
 	}
 	
@@ -141,7 +141,7 @@ class Planet {
 			if (Variables.METAL_COST_ARMOREDSHIP > metal || Variables.DEUTERIUM_COST_ARMOREDSHIP > deuterium) {
 				new ResourceException("You don't have enough resource");
 			}
-			army[3].add(new BattleShip(Variables.ARMOR_ARMOREDSHIP + (technologyDefense*Variables.PLUS_ARMOR_ARMOREDSHIP_BY_TECHNOLOGY)%1000,Variables.BASE_DAMAGE_ARMOREDSHIP + (technologyAttack*Variables.PLUS_ATTACK_ARMOREDSHIP_BY_TECHNOLOGY)%1000));
+			army[3].add(new BattleShip(Variables.ARMOR_ARMOREDSHIP + ((technologyDefense*Variables.PLUS_ARMOR_ARMOREDSHIP_BY_TECHNOLOGY)%1000),Variables.BASE_DAMAGE_ARMOREDSHIP + ((technologyAttack*Variables.PLUS_ATTACK_ARMOREDSHIP_BY_TECHNOLOGY)%1000)));
 		}
 	}
 	
@@ -150,7 +150,7 @@ class Planet {
 			if (Variables.METAL_COST_MISSILELAUNCHER > metal || Variables.DEUTERIUM_COST_MISSILELAUNCHER > deuterium) {
 				new ResourceException("You don't have enough resource");
 			}
-			army[4].add(new MissileLauncher(Variables.ARMOR_MISSILELAUNCHER + (technologyDefense * Variables.PLUS_ARMOR_MISSILELAUNCHER_BY_TECHNOLOGY) % 1000, Variables.BASE_DAMAGE_MISSILELAUNCHER + (technologyAttack * Variables.PLUS_ATTACK_MISSILELAUNCHER_BY_TECHNOLOGY) % 1000));
+			army[4].add(new MissileLauncher(Variables.ARMOR_MISSILELAUNCHER + ((technologyDefense * Variables.PLUS_ARMOR_MISSILELAUNCHER_BY_TECHNOLOGY) % 1000), Variables.BASE_DAMAGE_MISSILELAUNCHER + ((technologyAttack * Variables.PLUS_ATTACK_MISSILELAUNCHER_BY_TECHNOLOGY) % 1000)));
 		}
 	}
 	
@@ -159,7 +159,7 @@ class Planet {
 			if (Variables.METAL_COST_IONCANNON > metal || Variables.DEUTERIUM_COST_IONCANNON > deuterium) {
 				new ResourceException("You don't have enough resource");
 			}
-			army[5].add(new IonCannon(Variables.ARMOR_IONCANNON + (technologyDefense * Variables.PLUS_ARMOR_IONCANNON_BY_TECHNOLOGY) % 1000, Variables.BASE_DAMAGE_IONCANNON + (technologyAttack * Variables.PLUS_ATTACK_IONCANNON_BY_TECHNOLOGY) % 1000));
+			army[5].add(new IonCannon(Variables.ARMOR_IONCANNON + ((technologyDefense * Variables.PLUS_ARMOR_IONCANNON_BY_TECHNOLOGY) % 1000), Variables.BASE_DAMAGE_IONCANNON + ((technologyAttack * Variables.PLUS_ATTACK_IONCANNON_BY_TECHNOLOGY) % 1000)));
 		}
 	}
 	
@@ -168,7 +168,7 @@ class Planet {
 			if (Variables.METAL_COST_PLASMACANNON > metal || Variables.DEUTERIUM_COST_PLASMACANNON > deuterium) {
 				new ResourceException("You don't have enough resource");
 			}
-			army[6].add(new IonCannon(Variables.ARMOR_IONCANNON + (technologyDefense * Variables.PLUS_ARMOR_PLASMACANNON_BY_TECHNOLOGY) % 1000, Variables.BASE_DAMAGE_PLASMACANNON + (technologyAttack * Variables.PLUS_ATTACK_PLASMACANNON_BY_TECHNOLOGY) % 1000));
+			army[6].add(new IonCannon(Variables.ARMOR_IONCANNON + ((technologyDefense * Variables.PLUS_ARMOR_PLASMACANNON_BY_TECHNOLOGY) % 1000), Variables.BASE_DAMAGE_PLASMACANNON + ((technologyAttack * Variables.PLUS_ATTACK_PLASMACANNON_BY_TECHNOLOGY) % 1000)));
 		}
 	}
 	
@@ -355,12 +355,7 @@ class LightHunter extends ship {
 	}
 
 	public void tekeDamage(int receivedDamage) {
-		int damage = getArmor() - receivedDamage;
-		if (damage <= 0) {
-			damage = 0;
-		}
-		
-		setArmor(damage);
+		setArmor(Math.max(0, getArmor() - receivedDamage));
 	}
 
 	public int getActualArmor() {
@@ -400,12 +395,7 @@ class HeavyHunter extends ship {
 	}
 
 	public void tekeDamage(int receivedDamage) {
-		int damage = getArmor() - receivedDamage;
-		if (damage <= 0) {
-			damage = 0;
-		}
-		
-		setArmor(damage);
+		setArmor(Math.max(0, getArmor() - receivedDamage));
 	}
 
 	public int getActualArmor() {
@@ -445,12 +435,7 @@ class BattleShip extends ship {
 	}
 
 	public void tekeDamage(int receivedDamage) {
-		int damage = getArmor() - receivedDamage;
-		if (damage <= 0) {
-			damage = 0;
-		}
-		
-		setArmor(damage);
+		setArmor(Math.max(0, getArmor() - receivedDamage));
 	}
 
 	public int getActualArmor() {
@@ -490,12 +475,7 @@ class ArmoredShip extends ship {
 	}
 
 	public void tekeDamage(int receivedDamage) {
-		int damage = getArmor() - receivedDamage;
-		if (damage <= 0) {
-			damage = 0;
-		}
-		
-		setArmor(damage);
+		setArmor(Math.max(0, getArmor() - receivedDamage));
 	}
 
 	public int getActualArmor() {
@@ -572,12 +552,7 @@ class MissileLauncher extends Defense {
 	
 	@Override
 	public void tekeDamage(int receivedDamage) {
-		int damage = getArmor() - receivedDamage;
-		if (damage < 0) {
-			damage = 0;
-		}
-		
-		setArmor(damage);
+		setArmor(Math.max(0, getArmor() - receivedDamage));
 	}
 	
 	@Override
@@ -624,12 +599,7 @@ class IonCannon extends Defense {
 
 	@Override
 	public void tekeDamage(int receivedDamage) {
-		int damage = getArmor() - receivedDamage;
-		if (damage < 0) {
-			damage = 0;
-		}
-		
-		setArmor(damage);
+		setArmor(Math.max(0, getArmor() - receivedDamage));
 	}
 
 	@Override
@@ -673,13 +643,8 @@ class PlasmaCannon extends Defense {
 		return getBaseDamage();
 	}
 
-	public void tekeDamage(int receivedDamage) {
-		int damage = getArmor() - receivedDamage;
-		if (damage <= 0) {
-			damage = 0;
-		}
-		
-		setArmor(damage);
+	public void tekeDamage(int receivedDamage) {	
+		setArmor(Math.max(0, getArmor() - receivedDamage));
 	}
 
 	public int getActualArmor() {

@@ -189,7 +189,7 @@ section {
   justify-content: center;
   align-items: center;
   margin: 0 auto;
-  max-width: 0 auto;
+  max-width: 80%;
   padding: 5px;
   text-align: center;
   background-color: black;
@@ -239,6 +239,18 @@ header {
   padding-left: 20px;
 }
 
+.left-dot::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  width: 8px;
+  height: 8px;
+  background-color: white;
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+
 .left-dot::before{
   content: "•";
   position: absolute;
@@ -253,9 +265,25 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 2px solid black;
   width: 300px;
   height: 300px;
-  border-radius: 20px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.container_foto imagen{
+  max-width: 100%;
+  height: auto;
+}
+
+.container_about_us{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 300px;
+  height: 300px;
   overflow: hidden;
   margin: auto;
 }

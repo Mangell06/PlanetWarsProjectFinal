@@ -880,7 +880,6 @@ class Battle implements Variables {
 				return i;
 			}
 		}
-		
 		return -1;
 	}
 	
@@ -912,15 +911,17 @@ class Battle implements Variables {
 				}
 			}
 		}
+	
+	// Cuando una nave ataca a otra nave.
+	public void ataque_nave(MilitaryUnit atacante, MilitaryUnit atacara) {
+		
 	}
 	
 	// Se mira que MilitaryUnit es y de ahí se hace de manera random en base a su % de CHANGE_ATTACK_AGAIN si vuelve a atacar o no.
 	public boolean againattack(MilitaryUnit atacante) {
 		if (atacante.getChanceAttackAgain() > (int) (Math.random()*100+1)) {
 			return true;
-		} 
-		return false;
-	}
+		}
 	
 	// Aqui se reune toda la batalla.
 	public void startBattle() {

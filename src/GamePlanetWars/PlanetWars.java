@@ -90,85 +90,121 @@ class Planet {
 		this.army = army;
 	}
 
-	public void upgradeTechnologyDefense() {
-		if (upgradeDefenseTechnologyDeuteriumCost > deuterium) {
-			new ResourceException("You don't have enough deuterium to upgrade defense technology.");
+	public void upgradeTechnologyDefense() throws ResourceException {
+		try {
+			if (upgradeDefenseTechnologyDeuteriumCost > deuterium) {
+				throw new ResourceException("You don't have enough deuterium to upgrade defense technology.");
+			}
+			deuterium -= upgradeDefenseTechnologyDeuteriumCost;
+			technologyDefense += 1;
+			upgradeDefenseTechnologyDeuteriumCost *= 1.1;
+		} catch (ResourceException e) {
+			System.out.println(e.getMessage());
 		}
-		deuterium -= upgradeDefenseTechnologyDeuteriumCost;
-		technologyDefense += 1;
-		upgradeDefenseTechnologyDeuteriumCost *= 1.1;
 	}
 	
 
 	public void upgradeTechnologyAttack() {
-		if (upgradeAttackTechnologyDeuteriumCost > deuterium) {
-			new ResourceException("You don't have enough deuterium to upgrade attack technology.");
+		try {
+			if (upgradeAttackTechnologyDeuteriumCost > deuterium) {
+				throw new ResourceException("You don't have enough deuterium to upgrade attack technology.");
+			}
+			deuterium -= upgradeAttackTechnologyDeuteriumCost;
+			technologyAttack += 1;
+			upgradeAttackTechnologyDeuteriumCost *= 1.1;
+		} catch (ResourceException e) {
+			System.out.println(e.getMessage());
 		}
-		deuterium -= upgradeAttackTechnologyDeuteriumCost;
-		technologyAttack += 1;
-		upgradeAttackTechnologyDeuteriumCost *= 1.1;
 	}
 	
 	public void newLightHunter(int n) {
 		for (int i = 0; i <= n; i++) {
-			if (Variables.METAL_COST_LIGTHHUNTER > metal || Variables.DEUTERIUM_COST_LIGTHHUNTER > deuterium) {
-				new ResourceException("You don't have enough resource");
+			try {
+				if (Variables.METAL_COST_LIGTHHUNTER > metal || Variables.DEUTERIUM_COST_LIGTHHUNTER > deuterium) {
+					throw new ResourceException("You don't have enough resource");
+				}
+			  army[0].add(new LightHunter(Variables.ARMOR_LIGTHHUNTER + ((technologyDefense * Variables.PLUS_ARMOR_LIGTHHUNTER_BY_TECHNOLOGY) % 1000) ,Variables.BASE_DAMAGE_LIGTHHUNTER + ((technologyAttack*Variables.PLUS_ATTACK_LIGTHHUNTER_BY_TECHNOLOGY)%1000)));
+			} catch (ResourceException e) {
+				System.out.println(e.getMessage());
 			}
-			army[0].add(new LightHunter(Variables.ARMOR_LIGTHHUNTER + ((technologyDefense * Variables.PLUS_ARMOR_LIGTHHUNTER_BY_TECHNOLOGY) % 1000) ,Variables.BASE_DAMAGE_LIGTHHUNTER + ((technologyAttack*Variables.PLUS_ATTACK_LIGTHHUNTER_BY_TECHNOLOGY)%1000)));
 		}
 	}
 	
 	public void newHeavyHunter(int n) {
 		for (int i = 0; i <= n; i++) {
-			if (Variables.METAL_COST_HEAVYHUNTER > metal || Variables.DEUTERIUM_COST_HEAVYHUNTER > deuterium) {
-				new ResourceException("You don't have enough resource");
+			try {
+				if (Variables.METAL_COST_HEAVYHUNTER > metal || Variables.DEUTERIUM_COST_HEAVYHUNTER > deuterium) {
+					throw new ResourceException("You don't have enough resource");
+				}
+			  army[1].add(new HeavyHunter(Variables.ARMOR_HEAVYHUNTER + ((technologyDefense*Variables.PLUS_ARMOR_HEAVYHUNTER_BY_TECHNOLOGY)%1000),Variables.BASE_DAMAGE_HEAVYHUNTER + ((technologyAttack*Variables.PLUS_ATTACK_HEAVYHUNTER_BY_TECHNOLOGY)%1000)));
+			} catch (ResourceException e) {
+				System.out.println(e.getMessage());
 			}
-			army[1].add(new HeavyHunter(Variables.ARMOR_HEAVYHUNTER + ((technologyDefense*Variables.PLUS_ARMOR_HEAVYHUNTER_BY_TECHNOLOGY)%1000),Variables.BASE_DAMAGE_HEAVYHUNTER + ((technologyAttack*Variables.PLUS_ATTACK_HEAVYHUNTER_BY_TECHNOLOGY)%1000)));
 		}
 	}
 	
 	public void newBattleShip(int n) {
 		for (int i = 0; i <= n; i++) {
-			if (Variables.METAL_COST_BATTLESHIP > metal || Variables.DEUTERIUM_COST_BATTLESHIP > deuterium) {
-				new ResourceException("You don't have enough resource");
+			try {
+				if (Variables.METAL_COST_BATTLESHIP > metal || Variables.DEUTERIUM_COST_BATTLESHIP > deuterium) {
+					throw new ResourceException("You don't have enough resource");
+				}
+			  army[2].add(new BattleShip(Variables.ARMOR_BATTLESHIP + ((technologyDefense*Variables.PLUS_ARMOR_BATTLESHIP_BY_TECHNOLOGY)%1000),Variables.BASE_DAMAGE_BATTLESHIP + ((technologyAttack*Variables.PLUS_ATTACK_BATTLESHIP_BY_TECHNOLOGY)%1000)));
+			} catch (ResourceException e) {
+				System.out.println(e.getMessage());
 			}
-			army[2].add(new BattleShip(Variables.ARMOR_BATTLESHIP + ((technologyDefense*Variables.PLUS_ARMOR_BATTLESHIP_BY_TECHNOLOGY)%1000),Variables.BASE_DAMAGE_BATTLESHIP + ((technologyAttack*Variables.PLUS_ATTACK_BATTLESHIP_BY_TECHNOLOGY)%1000)));
 		}
 	}
 	
 	public void newArmoredShip(int n) {
 		for (int i = 0; i <= n; i++) {
-			if (Variables.METAL_COST_ARMOREDSHIP > metal || Variables.DEUTERIUM_COST_ARMOREDSHIP > deuterium) {
-				new ResourceException("You don't have enough resource");
+			try {
+				if (Variables.METAL_COST_ARMOREDSHIP > metal || Variables.DEUTERIUM_COST_ARMOREDSHIP > deuterium) {
+					throw new ResourceException("You don't have enough resource");
+				}
+			  army[3].add(new BattleShip(Variables.ARMOR_ARMOREDSHIP + ((technologyDefense*Variables.PLUS_ARMOR_ARMOREDSHIP_BY_TECHNOLOGY)%1000),Variables.BASE_DAMAGE_ARMOREDSHIP + ((technologyAttack*Variables.PLUS_ATTACK_ARMOREDSHIP_BY_TECHNOLOGY)%1000)));
+			} catch (ResourceException e) {
+				System.out.println(e.getMessage());
 			}
-			army[3].add(new BattleShip(Variables.ARMOR_ARMOREDSHIP + ((technologyDefense*Variables.PLUS_ARMOR_ARMOREDSHIP_BY_TECHNOLOGY)%1000),Variables.BASE_DAMAGE_ARMOREDSHIP + ((technologyAttack*Variables.PLUS_ATTACK_ARMOREDSHIP_BY_TECHNOLOGY)%1000)));
 		}
 	}
 	
 	public void newMissileLauncher(int n) {
 		for (int i = 0; i <= n; i++) {
-			if (Variables.METAL_COST_MISSILELAUNCHER > metal || Variables.DEUTERIUM_COST_MISSILELAUNCHER > deuterium) {
-				new ResourceException("You don't have enough resource");
+			try {
+				if (Variables.METAL_COST_MISSILELAUNCHER > metal || Variables.DEUTERIUM_COST_MISSILELAUNCHER > deuterium) {
+					throw new ResourceException("You don't have enough resource");
+				}
+			  army[4].add(new MissileLauncher(Variables.ARMOR_MISSILELAUNCHER + ((technologyDefense * Variables.PLUS_ARMOR_MISSILELAUNCHER_BY_TECHNOLOGY) % 1000), Variables.BASE_DAMAGE_MISSILELAUNCHER + ((technologyAttack * Variables.PLUS_ATTACK_MISSILELAUNCHER_BY_TECHNOLOGY) % 1000)));
+			} catch (ResourceException e) {
+				System.out.println(e.getMessage());
 			}
-			army[4].add(new MissileLauncher(Variables.ARMOR_MISSILELAUNCHER + ((technologyDefense * Variables.PLUS_ARMOR_MISSILELAUNCHER_BY_TECHNOLOGY) % 1000), Variables.BASE_DAMAGE_MISSILELAUNCHER + ((technologyAttack * Variables.PLUS_ATTACK_MISSILELAUNCHER_BY_TECHNOLOGY) % 1000)));
 		}
 	}
 	
 	public void newIonCannon(int n) {
 		for (int i = 0; i <= n; i++) {
-			if (Variables.METAL_COST_IONCANNON > metal || Variables.DEUTERIUM_COST_IONCANNON > deuterium) {
-				new ResourceException("You don't have enough resource");
+			try {
+				if (Variables.METAL_COST_IONCANNON > metal || Variables.DEUTERIUM_COST_IONCANNON > deuterium) {
+					throw new ResourceException("You don't have enough resource");
+				}
+			  army[5].add(new IonCannon(Variables.ARMOR_IONCANNON + ((technologyDefense * Variables.PLUS_ARMOR_IONCANNON_BY_TECHNOLOGY) % 1000), Variables.BASE_DAMAGE_IONCANNON + ((technologyAttack * Variables.PLUS_ATTACK_IONCANNON_BY_TECHNOLOGY) % 1000)));
+			} catch (ResourceException e) {
+				System.out.println(e.getMessage());
 			}
-			army[5].add(new IonCannon(Variables.ARMOR_IONCANNON + ((technologyDefense * Variables.PLUS_ARMOR_IONCANNON_BY_TECHNOLOGY) % 1000), Variables.BASE_DAMAGE_IONCANNON + ((technologyAttack * Variables.PLUS_ATTACK_IONCANNON_BY_TECHNOLOGY) % 1000)));
 		}
 	}
 	
 	public void newPlasmaCannon(int n) {
 		for (int i = 0; i <= n; i++) {
-			if (Variables.METAL_COST_PLASMACANNON > metal || Variables.DEUTERIUM_COST_PLASMACANNON > deuterium) {
-				new ResourceException("You don't have enough resource");
+			try {
+				if (Variables.METAL_COST_PLASMACANNON > metal || Variables.DEUTERIUM_COST_PLASMACANNON > deuterium) {
+					throw new ResourceException("You don't have enough resource");
+				}
+			  army[6].add(new Plasma_cannon(Variables.ARMOR_PLASMA_CANNON + ((technologyDefense * Variables.PLUS_ARMOR_PLASMACANNON_BY_TECHNOLOGY) % 1000), Variables.BASE_DAMAGE_PLASMACANNON + ((technologyAttack * Variables.PLUS_ATTACK_PLASMACANNON_BY_TECHNOLOGY) % 1000)));
+			} catch (ResourceException e) {
+				System.out.println(e.getMessage());
 			}
-			army[6].add(new IonCannon(Variables.ARMOR_IONCANNON + ((technologyDefense * Variables.PLUS_ARMOR_PLASMACANNON_BY_TECHNOLOGY) % 1000), Variables.BASE_DAMAGE_PLASMACANNON + ((technologyAttack * Variables.PLUS_ATTACK_PLASMACANNON_BY_TECHNOLOGY) % 1000)));
 		}
 	}
 	
@@ -344,10 +380,14 @@ interface Variables {
 	public final int PERCENTATGE_WASTE = 70;
 }
 
-class LightHunter extends ship {
+class LigthHunter extends ship {
 
-	public LightHunter(int armor, int baseDamage) {
+	public LigthHunter(int armor, int baseDamage) {
 		super(armor,baseDamage);
+	}
+	
+	public LigthHunter() {
+		super(ARMOR_LIGTHHUNTER,BASE_DAMAGE_LIGTHHUNTER);
 	}
 
 	public int attack() {
@@ -390,6 +430,10 @@ class HeavyHunter extends ship {
 		super(armor, baseDamage);
 	}
 	
+	public HeavyHunter() {
+		super(ARMOR_HEAVYHUNTER,BASE_DAMAGE_HEAVYHUNTER);
+	}
+	
 	public int attack() {
 		return getBaseDamage();
 	}
@@ -430,6 +474,10 @@ class BattleShip extends ship {
 		super(armor, baseDamage);	
 	}
 	
+	public BattleShip() {
+		super(ARMOR_BATTLESHIP,BASE_DAMAGE_BATTLESHIP);
+	}
+	
 	public int attack() {
 		return getBaseDamage();
 	}
@@ -468,6 +516,10 @@ class ArmoredShip extends ship {
 
 	public ArmoredShip(int armor, int baseDamage) {
 		super(armor, baseDamage);	
+	}
+	
+	public ArmoredShip() {
+		super(ARMOR_ARMOREDSHIP,BASE_DAMAGE_ARMOREDSHIP);
 	}
 	
 	public int attack() {
@@ -545,42 +597,34 @@ class MissileLauncher extends Defense {
 	}
 	
 	// === METODOS INTERFAZ ===
-	@Override
 	public int attack() {
 		return getBaseDamage();
 	}
 	
-	@Override
 	public void tekeDamage(int receivedDamage) {
 		setArmor(Math.max(0, getArmor() - receivedDamage));
 	}
 	
-	@Override
 	public int getActualArmor() {
 		return getArmor();
 	}
 	
-	@Override
 	public int getMetalCost() {
 		return METAL_COST_MISSILELAUNCHER;
 	}
 
-	@Override
 	public int getDeuteriumCost() {
 		return DEUTERIUM_COST_MISSILELAUNCHER;
 	}
 
-	@Override
 	public int getChanceGeneratinWaste() {
 		return CHANCE_GENERATNG_WASTE_MISSILELAUNCHER;
 	}
 
-	@Override
 	public int getChanceAttackAgain() {
 		return CHANCE_ATTACK_AGAIN_MISSILELAUNCHER;
 	}
 
-	@Override
 	public void resetArmor() {
 		setArmor(getInitialArmor());
 	}
@@ -592,42 +636,34 @@ class IonCannon extends Defense {
 	}
 	
 	// === METODOS INTERFAZ ===
-	@Override
 	public int attack() {
 		return getBaseDamage();
 	}
 
-	@Override
 	public void tekeDamage(int receivedDamage) {
 		setArmor(Math.max(0, getArmor() - receivedDamage));
 	}
 
-	@Override
 	public int getActualArmor() {
 		return getArmor();
 	}
 
-	@Override
 	public int getMetalCost() {
 		return METAL_COST_IONCANNON;
 	}
 
-	@Override
 	public int getDeuteriumCost() {
 		return DEUTERIUM_COST_IONCANNON;
 	}
 
-	@Override
 	public int getChanceGeneratinWaste() {
 		return CHANCE_GENERATNG_WASTE_IONCANNON;
 	}
 
-	@Override
 	public int getChanceAttackAgain() {
 		return CHANCE_ATTACK_AGAIN_IONCANNON;
 	}
 
-	@Override
 	public void resetArmor() {
 		setArmor(getInitialArmor());
 	}
@@ -646,29 +682,120 @@ class PlasmaCannon extends Defense {
 	public void tekeDamage(int receivedDamage) {	
 		setArmor(Math.max(0, getArmor() - receivedDamage));
 	}
-
-	public int getActualArmor() {
-		return getArmor();
+  
+  public int getActualArmor() {
+			return getArmor();
+	}
+  
+  public int getMetalCost() {
+			return METAL_COST_MISSILELAUNCHER;
 	}
 
-	public int getMetalCost() {
-		return METAL_COST_PLASMACANNON;
-	}
+  public int getDeuteriumCost() {
+    return DEUTERIUM_COST_MISSILELAUNCHER;
+  }
 
-	public int getDeuteriumCost() {
-		return DEUTERIUM_COST_PLASMACANNON;
-	}
+  public int getChanceGeneratinWaste() {
+    return CHANCE_GENERATNG_WASTE_MISSILELAUNCHER;
+  }
 
-	public int getChanceGeneratinWaste() {
-		return CHANCE_GENERATNG_WASTE_PLASMACANNON;
-	}
+  public int getChanceAttackAgain() {
+    return CHANCE_ATTACK_AGAIN_MISSILELAUNCHER;
+  }
 
-	public int getChanceAttackAgain() {
-		return CHANCE_ATTACK_AGAIN_PLASMACANNON;
-	}
+  public void resetArmor() {
+    setArmor(getInitialArmor());
+  }
+	
+}
 
-	public void resetArmor() {
-		setArmor(getInitialArmor());
+class Battle implements Variables {
+	private ArrayList<MilitaryUnit>[] planetArmy, enemyArmy;
+	private ArrayList[][] armies;
+	private String battleDevelopment;
+	private int[][] initialCostFleet, resourcesLooses, initialArmies;
+	private int initialNumberUnitsPlanet, initialNumberUnitsEnemy;
+	private int[] wasteMetalDeuterium, enemyDrops, planetDrops, actualNumberUnitsPlanet, actualNumberUnitsEnemy;
+	
+	public Battle(ArrayList<MilitaryUnit>[] planetArmy, ArrayList<MilitaryUnit>[] enemyArmy) {
+	    this.planetArmy = planetArmy;
+	    this.enemyArmy = enemyArmy;
+	    this.battleDevelopment = "";
+	    this.initialNumberUnitsPlanet = initialFleetNumber(planetArmy);
+	    this.initialNumberUnitsEnemy = initialFleetNumber(enemyArmy);
+	    this.initialCostFleet = new int[2][2];
+	    this.initialCostFleet[0] = fleetResourceCost(planetArmy);
+	    this.initialCostFleet[1] = fleetResourceCost(enemyArmy);
+	    this.initialNumberUnitsPlanet = initialFleetNumber(planetArmy);
+	    this.initialNumberUnitsEnemy = initialFleetNumber(enemyArmy);
+	}
+	
+	public String getBattleReport(int battles) {
+		return "";
+	}
+	
+	public String getBattleDevelopment() {
+		return battleDevelopment;
+	}
+	
+	public void initInitialArmies() {
+	    this.initialArmies = new int[2][7];
+		for (int i = 0; i < initialArmies[0].length; i++) {
+			initialArmies[0][i] = planetArmy[i].size();
+			initialArmies[1][i] = enemyArmy[i].size();
+		}
+	}
+	
+	public void updateResourcesLoose() {
+		int[][] coste_recursos_actuales = new int[2][2];
+		coste_recursos_actuales[0] = fleetResourceCost(planetArmy);
+		coste_recursos_actuales[1] = fleetResourceCost(enemyArmy);
+		resourcesLooses[0][0] = coste_recursos_actuales[0][0] - initialCostFleet[0][0];
+		resourcesLooses[0][1] = coste_recursos_actuales[0][1] - initialCostFleet[0][1];
+		resourcesLooses[1][0] = coste_recursos_actuales[1][0] - initialCostFleet[1][0];
+		resourcesLooses[1][1] = coste_recursos_actuales[1][1] - initialCostFleet[1][1];
+	}
+	
+	public int[] fleetResourceCost(ArrayList<MilitaryUnit>[] army) {
+	    int[] costs = new int[2];
+	    costs[0] = 0;
+	    costs[1] = 0;
+	    for (int i = 0; i < army.length; i++) {
+	        for (MilitaryUnit unit : army[i]) {
+	            costs[0] += unit.getMetalCost();
+	            costs[1] += unit.getDeuteriumCost();
+	        }
+	    }
+	    return costs;
+	}
+	
+	public int initialFleetNumber(ArrayList<MilitaryUnit>[] army) {
+		int countfleet = 0;
+		for (int i = 0; i < army.length; i++ ) {
+			countfleet = army[i].size();
+		}
+		
+		return countfleet;
+	}
+	
+	public int remainderPercentatgeFleet(ArrayList<MilitaryUnit>[] army) {
+		return 0;
+	}
+	
+	public int getGroupDefender(ArrayList<MilitaryUnit>[] army) {
+		return 0;
+	}
+	
+	public int getPlanetGroupAttacker() {
+		return 0;
+	}
+	
+	public void resetArmyArmor() {
+		for (int i = 0; i < planetArmy.length; i++) {
+			for (int j = 0; j < planetArmy[i].size(); j++) {
+				planetArmy[i].get(j).resetArmor();
+			}
+		}
 	}
 	
 }

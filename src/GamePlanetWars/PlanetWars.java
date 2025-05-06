@@ -947,10 +947,33 @@ class Battle implements Variables {
 		return false;
 	}
 	
+	private boolean validGroup(int groupIndex, ArrayList<MilitaryUnit>[] army) {
+	    return groupIndex >= 0 && groupIndex < army.length && !army[groupIndex].isEmpty();
+	}
+	
 	// Aqui se reune toda la batalla.
 	public void startBattle() {
-		while (remainderPercentatgeFleet(enemyArmy) > Variables.MIN_PERCENTAGE_TO_WIN && remainderPercentatgeFleet(enemyArmy) > Variables.MIN_PERCENTAGE_TO_WIN ) {
-			updateactualunits();
+		battleDevelopment += "START THE FIGHT";
+		
+		boolean turnPlanet = true;
+		
+		while (remainderPercentatgeFleet(planetArmy) >= Variables.MIN_PERCENTAGE_TO_WIN &&
+				remainderPercentatgeFleet(enemyArmy) >= Variables.MIN_PERCENTAGE_TO_WIN) {
+			battleDevelopment += "***************CHANGE ATTACKER***************\n";
+			
+			if (turnPlanet) {
+				int attackerGroup = getPlanetGroupAttacker();
+				int enemyGroup = getGroupDefender(enemyArmy);
+				
+				if (validGroup(attackerGroup, planetArmy) && validGroup(enemyGroup, enemyArmy)) {
+					MilitaryUnit attacker = planetArmy[attackerGroup].get(rand.nextInt(planetArmy[attackerGroup].size()));
+					MilitaryUnit defender = enemyArmy[enemyGroup].get(rand.nextInt(enemyArmy[enemyGroup].size()));
+					
+					battleDevelopment += "Attacks Planet: " + attacker + " attacks " + defender;
+					int damage = attacker.attack();
+					battleDevelopment += attacker + " generates the damage " + damage;
+				}
+			}
 		}
 	}
 }

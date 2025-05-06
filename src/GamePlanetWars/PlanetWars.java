@@ -886,11 +886,39 @@ class Battle implements Variables {
 	
 	// Cuando una nave ataca a otra nave.
 	public void ataque_nave(MilitaryUnit atacante, MilitaryUnit atacara) {
-		
+		atacara.tekeDamage(atacante.attack());
+		if (atacara.getActualArmor() <= 0) {
+			if (atacara.getChanceGeneratinWaste() > (int) (Math.random()*100+1)) {
+				wasteMetalDeuterium[0] += atacara.getMetalCost();
+				wasteMetalDeuterium[1] += atacara.getDeuteriumCost();
+			}
+			removedestroyships();
+		}
+	}
+	
+	// Elimina todas las naves con la armadura por debajo o igual a 0.
+	public void removedestroyships() {
+		for (int i = 0; i < planetArmy.length; i++) {
+			for (int j = 0; j < planetArmy[i].size(); j++) {
+				if (planetArmy[i].get(j).getActualArmor() <= 0) {
+					planetArmy[i].remove(j);
+				}
+			}
+		}
+		for (int i = 0; i < enemyArmy.length; i++) {
+			for (int j = 0; j < enemyArmy[i].size(); j++) {
+				if (enemyArmy[i].get(j).getActualArmor() <= 0) {
+					enemyArmy[i].remove(j);
+				}
+			}
+		}
 	}
 	
 	// Se mira que MilitaryUnit es y de ahí se hace de manera random en base a su % de CHANGE_ATTACK_AGAIN si vuelve a atacar o no.
 	public boolean againattack(MilitaryUnit atacante) {
+		if (atacante.getChanceAttackAgain() > (int) (Math.random()*100+1)) {
+			return true;
+		} 
 		return false;
 	}
 	

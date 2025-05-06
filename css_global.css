@@ -375,6 +375,56 @@ flex: 1 0 100%; /* Cada imagen ocupa el 100% del contenedor */
   text-decoration: underline;
 }
 
+/*Boton de descarga*/
+.down-btn{
+  background-color: #000000;
+    border: none;
+    color: white;
+    padding: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    display: block;
+}
+
+.down-btn {
+  display: flex;
+  list-style-type: none;
+  margin: 10px;
+  padding: 0;
+}
+
+.down-btn ul {
+  padding-left: 0;
+}
+
+.down-btn li {
+  margin: 0 10px;
+}
+
+.down-btn a {
+  color: white;
+  text-decoration: none;
+}
+
+.down-btn a:hover {
+  text-decoration: underline;
+}
+
+.download{
+  display: none;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  border: white;
+  background-color: #1A1C40;
+  color: white;
+  width: 160px;
+  height: 30px;
+}
+.download.show{
+  display: block;
+}
+
 @keyframes slideInUp { 
   from { 
       opacity: 0; 
@@ -583,6 +633,8 @@ flex: 1 0 100%; /* Cada imagen ocupa el 100% del contenedor */
     padding: 20px;       /* Adds some padding for spacing */
     margin: 10px;        /* Adds space around each column */
     text-align: justify;
+    background-color: black;
+    color: black;
   }
   
   

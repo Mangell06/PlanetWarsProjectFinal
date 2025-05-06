@@ -902,7 +902,7 @@ class Battle implements Variables {
 	}
 	
 	// Cuando una nave ataca a otra nave.
-	public void ataque_nave(MilitaryUnit atacante, MilitaryUnit atacara,boolean atacamos) {
+	public void ataque_nave(MilitaryUnit atacante, MilitaryUnit atacara, boolean atacamos) {
 		atacara.tekeDamage(atacante.attack());
 		if (atacara.getActualArmor() <= 0) {
 			if (atacara.getChanceGeneratinWaste() > (int) (Math.random()*100+1)) {
@@ -972,7 +972,15 @@ class Battle implements Variables {
 					battleDevelopment += "Attacks Planet: " + attacker + " attacks " + defender;
 					int damage = attacker.attack();
 					battleDevelopment += attacker + " generates the damage " + damage;
+					ataque_nave(attacker, defender, turnPlanet);
+					
+					if (defender.getActualArmor() >= 0) {
+						battleDevelopment += "We eliminate " + defender;
+					}
 				}
+			} else {
+				int attackerGroup = getEnemyGroupAttacker();
+				int enemyGroup = getGroupDefender(planetArmy);
 			}
 		}
 	}

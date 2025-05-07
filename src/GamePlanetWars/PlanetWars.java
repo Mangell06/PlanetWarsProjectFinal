@@ -3,6 +3,7 @@ package GamePlanetWars;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -28,6 +29,8 @@ class PanelIniciarSesion extends JPanel {
 	private JLabel title;
 	private JTextField name, password;
 	private JButton iniciar_sesion, crear_cuenta;
+	
+	PanelIniciarSesion() {}
 }
 
 class User {

@@ -768,6 +768,7 @@ class Battle implements Variables {
 	    mostrar += "\n\nWINNER: " + winner;
 		return mostrar;
 	}
+	
 	public String getBattleDevelopment() {
 		return battleDevelopment;
 	}
@@ -931,16 +932,23 @@ class Battle implements Variables {
 	}
 	
 	// Cuando una nave ataca a otra nave.
-	public void ataque_nave(MilitaryUnit atacante, MilitaryUnit defensor) {
-		defensor.tekeDamage(atacante.attack());
-		if (defensor.getActualArmor() <= 0) {
-			if (defensor.getChanceGeneratinWaste() > (int) (Math.random()*100+1)) {
-				wasteMetalDeuterium[0] += defensor.getMetalCost();
-				wasteMetalDeuterium[1] += defensor.getDeuteriumCost();
-			}
-			removedestroyships();
-		}
-	}
+	public void ataque_nave(MilitaryUnit atacante, MilitaryUnit atacara,boolean atacamos) {
+        atacara.tekeDamage(atacante.attack());
+        if (atacara.getActualArmor() <= 0) {
+            if (atacara.getChanceGeneratinWaste() > (int) (Math.random()*100+1)) {
+                wasteMetalDeuterium[0] += atacara.getMetalCost();
+                wasteMetalDeuterium[1] += atacara.getDeuteriumCost();
+                if (atacamos) {
+                    enemyDrops[0] += atacara.getMetalCost();
+                    enemyDrops[1] += atacara.getDeuteriumCost();
+                } else {
+                    planetDrops[0] += atacara.getMetalCost();
+                    planetDrops[1] += atacara.getDeuteriumCost();
+                }
+            }
+            removedestroyships();
+        }
+    }
 	
 	// Elimina todas las naves con la armadura por debajo o igual a 0.
 	public void removedestroyships() {

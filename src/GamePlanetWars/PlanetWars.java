@@ -963,6 +963,7 @@ class Battle implements Variables {
 			}
 		}
 	}
+
 	
 	// Se mira que MilitaryUnit es y de ahí se hace de manera random en base a su % de CHANGE_ATTACK_AGAIN si vuelve a atacar o no.
 	public boolean againattack(MilitaryUnit atacante) {
@@ -971,7 +972,7 @@ class Battle implements Variables {
 		}
 		return false;
 	}
-	
+  
 	// Aqui se reune toda la batalla.
 	public void startBattle() {
 	    rand = new Random();

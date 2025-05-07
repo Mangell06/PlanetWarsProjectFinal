@@ -6,37 +6,8 @@ import java.util.Random;
 public class PlanetWars {
 
 	public static void main(String[] args) {
-		  Random rand = new Random();
 
-		    // Inicializar arrays de flotas (por ejemplo, 7 grupos)
-		    ArrayList<MilitaryUnit>[] planetArmy = new ArrayList[7];
-		    ArrayList<MilitaryUnit>[] enemyArmy = new ArrayList[7];
-
-		    for (int i = 0; i < 7; i++) {
-		        planetArmy[i] = new ArrayList<>();
-		        enemyArmy[i] = new ArrayList<>();
-		    }
-
-		    // Crear unidades simples (puedes usar tus clases reales como LightHunter, ArmoredShip, etc.)
-		    MilitaryUnit u1 = new LigthHunter(); // ejemplo, si existe
-		    MilitaryUnit u2 = new ArmoredShip(); // ejemplo, si existe
-
-		    planetArmy[0].add(u1);
-		    planetArmy[0].add(new LigthHunter());
-
-		    enemyArmy[0].add(u2);
-		    enemyArmy[0].add(new ArmoredShip());
-
-		    // Crear batalla
-		    Battle battle = new Battle(planetArmy, enemyArmy);
-
-		    // Simulación
-		    battle.startBattle();
-
-		    // Ver el resultado
-		    System.out.println(battle.getBattleDevelopment());
 	}
-
 }
 
 class Planet {
@@ -451,7 +422,6 @@ class LigthHunter extends ship {
 	public void resetArmor() {
 		setArmor(getInitialArmor());
 	}
-	
 }
 
 class HeavyHunter extends ship {
@@ -501,7 +471,7 @@ class HeavyHunter extends ship {
 class BattleShip extends ship {
 
 	public BattleShip(int armor, int baseDamage) {
-		super(armor, baseDamage);	
+		super(armor, baseDamage);
 	}
 	
 	public BattleShip() {
@@ -545,7 +515,7 @@ class BattleShip extends ship {
 class ArmoredShip extends ship {
 
 	public ArmoredShip(int armor, int baseDamage) {
-		super(armor, baseDamage);	
+		super(armor, baseDamage);
 	}
 	
 	public ArmoredShip() {
@@ -583,7 +553,6 @@ class ArmoredShip extends ship {
 	public void resetArmor() {
 		setArmor(getInitialArmor());
 	}
-	
 }
 
 abstract class Defense implements MilitaryUnit,  Variables{
@@ -623,7 +592,7 @@ abstract class Defense implements MilitaryUnit,  Variables{
 class MissileLauncher extends Defense {
 	
 	public MissileLauncher(int armor, int baseDamage) {
-		super(armor, baseDamage);	
+		super(armor, baseDamage);
 	}
 	
 	// === METODOS INTERFAZ ===
@@ -661,8 +630,9 @@ class MissileLauncher extends Defense {
 }
 
 class IonCannon extends Defense {
+	
 	public IonCannon(int armor, int baseDamage) {
-		super(armor, baseDamage);	
+		super(armor, baseDamage);
 	}
 	
 	// === METODOS INTERFAZ ===
@@ -762,6 +732,10 @@ class Battle implements Variables {
 	    this.initialCostFleet[1] = fleetResourceCost(enemyArmy);
 	    this.initialNumberUnitsPlanet = initialFleetNumber(planetArmy);
 	    this.initialNumberUnitsEnemy = initialFleetNumber(enemyArmy);
+	    this.wasteMetalDeuterium = new int[2];
+	    this.planetDrops = new int[2];
+	    this.resourcesLooses = new int[2][2];
+	    this.rand = new Random();
 	    
 	}
 	
@@ -874,12 +848,13 @@ class Battle implements Variables {
 			} else if (army == enemyArmy) {
 				initialUnits = initialNumberUnitsEnemy;
 			}
+			return (total * 100) / initialUnits;
 			
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		}
 		
-		return (total * 100) / initialUnits;
+		return -1;
 	}
 	
 	public int getGroupDefender(ArrayList<MilitaryUnit>[] army) {
@@ -956,19 +931,12 @@ class Battle implements Variables {
 	}
 	
 	// Cuando una nave ataca a otra nave.
-	public void ataque_nave(MilitaryUnit atacante, MilitaryUnit atacara,boolean atacamos) {
-		atacara.tekeDamage(atacante.attack());
-		if (atacara.getActualArmor() <= 0) {
-			if (atacara.getChanceGeneratinWaste() > (int) (Math.random()*100+1)) {
-				wasteMetalDeuterium[0] += atacara.getMetalCost();
-				wasteMetalDeuterium[1] += atacara.getDeuteriumCost();
-				if (atacamos) {
-					enemyDrops[0] += atacara.getMetalCost();
-					enemyDrops[1] += atacara.getDeuteriumCost();
-				} else {
-					planetDrops[0] += atacara.getMetalCost();
-					planetDrops[1] += atacara.getDeuteriumCost();
-				}
+	public void ataque_nave(MilitaryUnit atacante, MilitaryUnit defensor) {
+		defensor.tekeDamage(atacante.attack());
+		if (defensor.getActualArmor() <= 0) {
+			if (defensor.getChanceGeneratinWaste() > (int) (Math.random()*100+1)) {
+				wasteMetalDeuterium[0] += defensor.getMetalCost();
+				wasteMetalDeuterium[1] += defensor.getDeuteriumCost();
 			}
 			removedestroyships();
 		}

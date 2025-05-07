@@ -6,35 +6,6 @@ import java.util.Random;
 public class PlanetWars {
 
 	public static void main(String[] args) {
-		  Random rand = new Random();
-
-		    // Inicializar arrays de flotas (por ejemplo, 7 grupos)
-		    ArrayList<MilitaryUnit>[] planetArmy = new ArrayList[7];
-		    ArrayList<MilitaryUnit>[] enemyArmy = new ArrayList[7];
-
-		    for (int i = 0; i < 7; i++) {
-		        planetArmy[i] = new ArrayList<>();
-		        enemyArmy[i] = new ArrayList<>();
-		    }
-
-		    // Crear unidades simples (puedes usar tus clases reales como LightHunter, ArmoredShip, etc.)
-		    MilitaryUnit u1 = new LigthHunter(); // ejemplo, si existe
-		    MilitaryUnit u2 = new ArmoredShip(); // ejemplo, si existe
-
-		    planetArmy[0].add(u1);
-		    planetArmy[0].add(new LigthHunter());
-
-		    enemyArmy[0].add(u2);
-		    enemyArmy[0].add(new ArmoredShip());
-
-		    // Crear batalla
-		    Battle battle = new Battle(planetArmy, enemyArmy);
-
-		    // Simulación
-		    battle.startBattle();
-
-		    // Ver el resultado
-		    System.out.println(battle.getBattleDevelopment());
 	}
 
 }
@@ -48,7 +19,6 @@ class Planet {
 	private int upgradeAttackTechnologyDeuteriumCost;
 	private ArrayList<MilitaryUnit>[] army;
 	
-	@SuppressWarnings("unchecked")
 	public Planet(int technologyDefense, int technologyAtack, int metal, int deuterium,
 			int upgradeDefenseTechnologyDeuteriumCost, int upgradeAttackTechnologyDeuteriumCost) {
 		super();
@@ -58,7 +28,7 @@ class Planet {
 		this.deuterium = deuterium;
 		this.upgradeDefenseTechnologyDeuteriumCost = upgradeDefenseTechnologyDeuteriumCost;
 		this.upgradeAttackTechnologyDeuteriumCost = upgradeAttackTechnologyDeuteriumCost;
-		this.army = (ArrayList<MilitaryUnit>[]) new ArrayList[7];
+		this.army = new ArrayList[7];
 		for (int i = 0; i < army.length; i++) {
 		    army[i] = new ArrayList<>();
 		}

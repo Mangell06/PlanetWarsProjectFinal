@@ -6,6 +6,35 @@ import java.util.Random;
 public class PlanetWars {
 
 	public static void main(String[] args) {
+		  Random rand = new Random();
+
+		    // Inicializar arrays de flotas (por ejemplo, 7 grupos)
+		    ArrayList<MilitaryUnit>[] planetArmy = new ArrayList[7];
+		    ArrayList<MilitaryUnit>[] enemyArmy = new ArrayList[7];
+
+		    for (int i = 0; i < 7; i++) {
+		        planetArmy[i] = new ArrayList<>();
+		        enemyArmy[i] = new ArrayList<>();
+		    }
+
+		    // Crear unidades simples (puedes usar tus clases reales como LightHunter, ArmoredShip, etc.)
+		    MilitaryUnit u1 = new LigthHunter(); // ejemplo, si existe
+		    MilitaryUnit u2 = new ArmoredShip(); // ejemplo, si existe
+
+		    planetArmy[0].add(u1);
+		    planetArmy[0].add(new LigthHunter());
+
+		    enemyArmy[0].add(u2);
+		    enemyArmy[0].add(new ArmoredShip());
+
+		    // Crear batalla
+		    Battle battle = new Battle(planetArmy, enemyArmy);
+
+		    // Simulación
+		    battle.startBattle();
+
+		    // Ver el resultado
+		    System.out.println(battle.getBattleDevelopment());
 	}
 
 }
@@ -749,8 +778,7 @@ class Battle implements Variables {
 	        int initialEnemy = initialArmies[1][i];
 	        int actualEnemy = actualNumberUnitsEnemy[i];
 	        int dropsEnemy = initialEnemy - actualEnemy;
-	        mostrar += String.format(
-	            "\n%-25s%-10d%-10d%-25s%-10d%-10d",unitNames[i], initialPlanet, dropsPlanet,unitNames[i], initialEnemy, dropsEnemy);
+	        mostrar += String.format("\n%-25s%-10d%-10d%-25s%-10d%-10d",unitNames[i], initialPlanet, dropsPlanet,unitNames[i], initialEnemy, dropsEnemy);
 	    }
 	    mostrar += "\n\nRESOURCES LOSSES:";
 	    mostrar += String.format("\n%-25s%-10s%-10s", "", "Metal", "Deuterium");
@@ -813,7 +841,7 @@ class Battle implements Variables {
 	public int initialFleetNumber(ArrayList<MilitaryUnit>[] army) {
 		int countfleet = 0;
 		for (int i = 0; i < army.length; i++ ) {
-			countfleet = army[i].size();
+			countfleet += army[i].size();
 		}
 		
 		return countfleet;
@@ -1008,27 +1036,28 @@ class Battle implements Variables {
 	        }
 
 	        int attackingGroup;
-	        if (planetAttacks) {
-	            attackingGroup = getPlanetGroupAttacker();
-	        } else {
-	            attackingGroup = getEnemyGroupAttacker();
-	        }
+	        do {
+		        if (planetAttacks) {
+		            attackingGroup = getPlanetGroupAttacker();
+		        } else {
+		            attackingGroup = getEnemyGroupAttacker();
+		        }
+	        } while (attackingArmy[attackingGroup].size() == 0);
 
 	        if (attackingGroup == -1 || attackingArmy[attackingGroup].isEmpty()) {
 	            planetAttacks = !planetAttacks;
 	            continue;
 	        }
-
-	        MilitaryUnit attacker = attackingArmy[attackingGroup]
-	            .get(rand.nextInt(attackingArmy[attackingGroup].size()));
+	        
+	        
+	        MilitaryUnit attacker = attackingArmy[attackingGroup].get(attackingArmy[attackingGroup].size()-1);
 
 	        boolean repeatAttack;
 	        do {
 	            int defendingGroup = getGroupDefender(defendingArmy);
 	            if (defendingGroup == -1 || defendingArmy[defendingGroup].isEmpty()) break;
 
-	            MilitaryUnit defender = defendingArmy[defendingGroup]
-	                .get(rand.nextInt(defendingArmy[defendingGroup].size()));
+	            MilitaryUnit defender = defendingArmy[defendingGroup].get(defendingArmy[defendingGroup].size()-1);
 
 	            battleDevelopment += String.format("Attacks %s: %s attacks %s\n",
 	                    atacante,
@@ -1050,7 +1079,6 @@ class Battle implements Variables {
 	        removedestroyships();
 	        planetAttacks = !planetAttacks; // cambia el turno
 	    }
-
 	    updateResourcesLoose(); // Calcula pérdidas al finalizar
 	    resetArmyArmor();    // Reinicia armaduras al final
 	}

@@ -3,11 +3,68 @@ package GamePlanetWars;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
 public class PlanetWars {
 
 	public static void main(String[] args) {
+		
 	}
 
+}
+
+class VentanaJuego extends JFrame {
+	public VentanaJuego() {
+		setSize(800,600);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setVisible(true);
+	}
+}
+
+class PanelIniciarSesion extends JPanel {
+	private JLabel title;
+	private JTextField name, password;
+	private JButton iniciar_sesion, crear_cuenta;
+}
+
+class User {
+	private int id;
+	private String Name;
+	private String Password;
+	
+	public User(String name, String Password) {
+		
+	}
+	
+	public void elegirIDAutomaticamente() {}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return Name;
+	}
+
+	public void setName(String name) {
+		Name = name;
+	}
+
+	public String getPassword() {
+		return Password;
+	}
+
+	public void setPassword(String password) {
+		Password = password;
+	}
+	
 }
 
 class Planet {
@@ -170,42 +227,53 @@ class Planet {
 	}
 	
 	public void newMissileLauncher(int n) {
+		int contador = 0;
 		for (int i = 0; i <= n; i++) {
 			try {
 				if (Variables.METAL_COST_MISSILELAUNCHER > metal || Variables.DEUTERIUM_COST_MISSILELAUNCHER > deuterium) {
 					throw new ResourceException("You don't have enough resource");
 				}
 			  army[4].add(new MissileLauncher(Variables.ARMOR_MISSILELAUNCHER + ((technologyDefense * Variables.PLUS_ARMOR_MISSILELAUNCHER_BY_TECHNOLOGY) % 1000), Variables.BASE_DAMAGE_MISSILELAUNCHER + ((technologyAttack * Variables.PLUS_ATTACK_MISSILELAUNCHER_BY_TECHNOLOGY) % 1000)));
+				contador += 1;
 			} catch (ResourceException e) {
 				System.out.println(e.getMessage());
 			}
 		}
+		System.out.println("added " + contador + "Missile Launcher");
 	}
 	
 	public void newIonCannon(int n) {
+		int contador = 0;
 		for (int i = 0; i <= n; i++) {
 			try {
 				if (Variables.METAL_COST_IONCANNON > metal || Variables.DEUTERIUM_COST_IONCANNON > deuterium) {
 					throw new ResourceException("You don't have enough resource");
 				}
 			  army[5].add(new IonCannon(Variables.ARMOR_IONCANNON + ((technologyDefense * Variables.PLUS_ARMOR_IONCANNON_BY_TECHNOLOGY) % 1000), Variables.BASE_DAMAGE_IONCANNON + ((technologyAttack * Variables.PLUS_ATTACK_IONCANNON_BY_TECHNOLOGY) % 1000)));
+			  contador += 1;
 			} catch (ResourceException e) {
 				System.out.println(e.getMessage());
+				break;
 			}
 		}
+		System.out.println("added " + contador + "Ion Cannon");
 	}
 	
 	public void newPlasmaCannon(int n) {
+		int contador = 0;
 		for (int i = 0; i <= n; i++) {
 			try {
 				if (Variables.METAL_COST_PLASMACANNON > metal || Variables.DEUTERIUM_COST_PLASMACANNON > deuterium) {
 					throw new ResourceException("You don't have enough resource");
 				}
 			  army[6].add(new PlasmaCannon(Variables.ARMOR_PLASMACANNON + ((technologyDefense * Variables.PLUS_ARMOR_PLASMACANNON_BY_TECHNOLOGY) % 1000), Variables.BASE_DAMAGE_PLASMACANNON + ((technologyAttack * Variables.PLUS_ATTACK_PLASMACANNON_BY_TECHNOLOGY) % 1000)));
+			  contador += 1;
 			} catch (ResourceException e) {
 				System.out.println(e.getMessage());
+				break;
 			}
 		}
+		System.out.println("added " + contador + "Plasma Cannon");
 	}
 	
 	public void printStats() {

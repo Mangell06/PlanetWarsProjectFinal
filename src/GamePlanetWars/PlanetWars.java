@@ -6,7 +6,7 @@ import java.util.Random;
 public class PlanetWars {
 
 	public static void main(String[] args) {
-		
+
 	}
 }
 
@@ -163,7 +163,7 @@ class Planet {
 				if (Variables.METAL_COST_ARMOREDSHIP > metal || Variables.DEUTERIUM_COST_ARMOREDSHIP > deuterium) {
 					throw new ResourceException("You don't have enough resource");
 				}
-			  army[3].add(new BattleShip(Variables.ARMOR_ARMOREDSHIP + ((technologyDefense*Variables.PLUS_ARMOR_ARMOREDSHIP_BY_TECHNOLOGY)%1000),Variables.BASE_DAMAGE_ARMOREDSHIP + ((technologyAttack*Variables.PLUS_ATTACK_ARMOREDSHIP_BY_TECHNOLOGY)%1000)));
+			  army[3].add(new ArmoredShip(Variables.ARMOR_ARMOREDSHIP + ((technologyDefense*Variables.PLUS_ARMOR_ARMOREDSHIP_BY_TECHNOLOGY)%1000),Variables.BASE_DAMAGE_ARMOREDSHIP + ((technologyAttack*Variables.PLUS_ATTACK_ARMOREDSHIP_BY_TECHNOLOGY)%1000)));
 			} catch (ResourceException e) {
 				System.out.println(e.getMessage());
 			}
@@ -222,7 +222,7 @@ class Planet {
         mostrar += String.format("\n%-30s%d", "Light Hunter", army[0].size());
         mostrar += String.format("\n%-30s%d", "Heavy Hunter", army[1].size());
         mostrar += String.format("\n%-30s%d", "Battle Ship", army[2].size());
-        mostrar += String.format("\n%-30s%d", "Armord Ship", army[0].size());
+        mostrar += String.format("\n%-30s%d", "Armord Ship", army[3].size());
         mostrar += "\nRESOURCES\n";
         mostrar += String.format("\n%-30s%d", "Metal", metal);
         mostrar += String.format("\n%-30s%d", "Deuterium", deuterium);
@@ -237,7 +237,6 @@ class ResourceException extends Exception {
 }
 
 abstract class ship implements MilitaryUnit, Variables{
-	public static final int DEUTERIUM_COST_HEAVYHUNTERU = 0;
 	private int armor;
 	private int initialArmor;
 	private int baseDamage;
@@ -452,7 +451,7 @@ class HeavyHunter extends ship {
 	}
 
 	public int getDeuteriumCost() {
-		return DEUTERIUM_COST_HEAVYHUNTERU;
+		return DEUTERIUM_COST_HEAVYHUNTER;
 	}
 
 	public int getChanceGeneratinWaste() {
@@ -689,19 +688,19 @@ class PlasmaCannon extends Defense {
 	}
   
   public int getMetalCost() {
-			return METAL_COST_MISSILELAUNCHER;
+			return METAL_COST_PLASMACANNON;
 	}
 
   public int getDeuteriumCost() {
-    return DEUTERIUM_COST_MISSILELAUNCHER;
+    return DEUTERIUM_COST_PLASMACANNON;
   }
 
   public int getChanceGeneratinWaste() {
-    return CHANCE_GENERATNG_WASTE_MISSILELAUNCHER;
+    return CHANCE_GENERATNG_WASTE_PLASMACANNON;
   }
 
   public int getChanceAttackAgain() {
-    return CHANCE_ATTACK_AGAIN_MISSILELAUNCHER;
+    return CHANCE_ATTACK_AGAIN_PLASMACANNON;
   }
 
   public void resetArmor() {
@@ -741,13 +740,37 @@ class Battle implements Variables {
 	}
 	
 	public String getBattleReport(int battles) {
-		return "";
+		String mostrar = "";
+		String[] unitNames = {"Light Hunter","Heavy Hunter","Battle Ship","Armored Ship","Missile Launcher","Ion Cannon","Plasma Cannon"};
+		mostrar += "BATTLE NUMBER: " + battles;
+		mostrar += "\nBATTLE STATISTICS\n";
+		mostrar += String.format("\n%15s%-5s%-5s%-5s%-5s%-5s", "Initial Army Planet", "Units", "Drops", "Initial Army Enemy", "Units", "Drops");
+	    for (int i = 0; i < 7; i++) {
+	        int initialPlanet = initialArmies[0][i];
+	        int actualPlanet = actualNumberUnitsPlanet[i];
+	        int dropsPlanet = initialPlanet - actualPlanet;
+	        int initialEnemy = initialArmies[1][i];
+	        int actualEnemy = actualNumberUnitsEnemy[i];
+	        int dropsEnemy = initialEnemy - actualEnemy;
+	        mostrar += String.format("\n%-25s%-10d%-10d%-25s%-10d%-10d",unitNames[i], initialPlanet, dropsPlanet,unitNames[i], initialEnemy, dropsEnemy);
+	    }
+	    mostrar += "\n\nRESOURCES LOSSES:";
+	    mostrar += String.format("\n%-25s%-10s%-10s", "", "Metal", "Deuterium");
+	    mostrar += String.format("\n%-25s%-10d%-10d", "Planet", resourcesLooses[0][0], resourcesLooses[0][1]);
+	    mostrar += String.format("\n%-25s%-10d%-10d", "Enemy", resourcesLooses[1][0], resourcesLooses[1][1]);
+	    mostrar += "\n\nWASTE GENERATED:";
+	    mostrar += String.format("\n%-25s%-10d%-10d", "Total Waste", wasteMetalDeuterium[0], wasteMetalDeuterium[1]);
+	    mostrar += String.format("\n%-25s%-10d%-10d", "Planet Won", planetDrops[0], planetDrops[1]);
+	    mostrar += String.format("\n%-25s%-10d%-10d", "Enemy Won", enemyDrops[0], enemyDrops[1]);
+	    int totalPlanetLoss = resourcesLooses[0][0] + resourcesLooses[0][1];
+	    int totalEnemyLoss = resourcesLooses[1][0] + resourcesLooses[1][1];
+	    String winner = (totalPlanetLoss < totalEnemyLoss) ? "Planet" : "Enemy";
+	    mostrar += "\n\nWINNER: " + winner;
+		return mostrar;
 	}
-	
 	public String getBattleDevelopment() {
 		return battleDevelopment;
 	}
-	
 	public void initInitialArmies() {
 	    this.initialArmies = new int[2][7];
 		for (int i = 0; i < initialArmies[0].length; i++) {
@@ -765,13 +788,15 @@ class Battle implements Variables {
 	}
 	
 	public void updateResourcesLoose() {
-		int[][] coste_recursos_actuales = new int[2][2];
+		int[][] coste_recursos_actuales = new int[2][3];
 		coste_recursos_actuales[0] = fleetResourceCost(planetArmy);
 		coste_recursos_actuales[1] = fleetResourceCost(enemyArmy);
 		resourcesLooses[0][0] = coste_recursos_actuales[0][0] - initialCostFleet[0][0];
 		resourcesLooses[0][1] = coste_recursos_actuales[0][1] - initialCostFleet[0][1];
 		resourcesLooses[1][0] = coste_recursos_actuales[1][0] - initialCostFleet[1][0];
 		resourcesLooses[1][1] = coste_recursos_actuales[1][1] - initialCostFleet[1][1];
+		resourcesLooses[0][2] = resourcesLooses[0][0] + 5 * resourcesLooses[0][1];
+		resourcesLooses[1][2] = resourcesLooses[1][0] + 5 * resourcesLooses[1][1];
 	}
 	
 	public int[] fleetResourceCost(ArrayList<MilitaryUnit>[] army) {
@@ -943,13 +968,86 @@ class Battle implements Variables {
 		}
 		return false;
 	}
-	
-	private boolean validGroup(int groupIndex, ArrayList<MilitaryUnit>[] army) {
-	    return groupIndex >= 0 && groupIndex < army.length && !army[groupIndex].isEmpty();
-	}
-	
+  
 	// Aqui se reune toda la batalla.
 	public void startBattle() {
-		
+	    rand = new Random();
+	    wasteMetalDeuterium = new int[2];
+	    enemyDrops = new int[2];
+	    planetDrops = new int[2];
+	    resourcesLooses = new int[2][3];
+
+	    initInitialArmies(); // Guarda conteo inicial
+	    resetArmyArmor();    // Reinicia armaduras
+
+	    boolean planetAttacks = rand.nextBoolean(); // decide quién empieza
+
+	    while (remainderPercentatgeFleet(planetArmy) > MIN_PERCENTAGE_TO_WIN &&
+	           remainderPercentatgeFleet(enemyArmy) > MIN_PERCENTAGE_TO_WIN) {
+
+	        updateactualunits(); // Actualiza unidades actuales
+
+	        battleDevelopment += "********************CHANGE ATTACKER********************\n";
+
+	        ArrayList<MilitaryUnit>[] attackingArmy;
+	        ArrayList<MilitaryUnit>[] defendingArmy;
+	        String atacante;
+
+	        if (planetAttacks) {
+	            attackingArmy = planetArmy;
+	            defendingArmy = enemyArmy;
+	            atacante = "Planet";
+	        } else {
+	            attackingArmy = enemyArmy;
+	            defendingArmy = planetArmy;
+	            atacante = "Fleet Enemy";
+	        }
+
+	        int attackingGroup;
+	        do {
+		        if (planetAttacks) {
+		            attackingGroup = getPlanetGroupAttacker();
+		        } else {
+		            attackingGroup = getEnemyGroupAttacker();
+		        }
+	        } while (attackingArmy[attackingGroup].size() == 0);
+
+	        if (attackingGroup == -1 || attackingArmy[attackingGroup].isEmpty()) {
+	            planetAttacks = !planetAttacks;
+	            continue;
+	        }
+	        
+	        
+	        MilitaryUnit attacker = attackingArmy[attackingGroup].get(attackingArmy[attackingGroup].size()-1);
+
+	        boolean repeatAttack;
+	        do {
+	            int defendingGroup = getGroupDefender(defendingArmy);
+	            if (defendingGroup == -1 || defendingArmy[defendingGroup].isEmpty()) break;
+
+	            MilitaryUnit defender = defendingArmy[defendingGroup].get(defendingArmy[defendingGroup].size()-1);
+
+	            battleDevelopment += String.format("Attacks %s: %s attacks %s\n",
+	                    atacante,
+	                    attacker.getClass().getSimpleName(),
+	                    defender.getClass().getSimpleName());
+
+	            int damage = attacker.attack();
+	            battleDevelopment += attacker.getClass().getSimpleName() + " generates the damage = " + damage + "\n";
+
+	            int newArmor = Math.max(0, defender.getActualArmor() - damage);
+	            battleDevelopment += defender.getClass().getSimpleName() + " stays with armor = " + newArmor + "\n";
+
+	            ataque_nave(attacker, defender, planetAttacks);
+
+	            repeatAttack = againattack(attacker);
+
+	        } while (repeatAttack);
+
+	        removedestroyships();
+	        planetAttacks = !planetAttacks; // cambia el turno
+	    }
+	    updateResourcesLoose(); // Calcula pérdidas al finalizar
+	    resetArmyArmor();    // Reinicia armaduras al final
 	}
 }

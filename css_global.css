@@ -265,7 +265,7 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid black;
+  border: 2px solid white;
   width: 300px;
   height: 300px;
   border-radius: 50%;
@@ -375,30 +375,71 @@ flex: 1 0 100%; /* Cada imagen ocupa el 100% del contenedor */
   text-decoration: underline;
 }
 
+/*Titulo descarga*/
+
+
+.titulo_des {
+  display: inline-block;
+  padding: 0.2em 2em;
+  font-size: 1em;
+  background: linear-gradient(to bottom, red, white);
+  background-size: 100% 200%;
+  background-position: top;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: degradado 1s infinite alternate;
+}
+
+@keyframes degradado {
+  0% {
+    background-position: top;
+  }
+  100% {
+    background-position: bottom;
+  }
+}
+
+.blanco_boton{
+  background-color: white;
+  border-radius: 5px;
+}
+
+.color{
+  color: blue;
+}
+
 /*Boton de descarga*/
-.down-btn{
-  background-color: #000000;
-    border: none;
-    color: white;
-    padding: 10px;
+/*.down-btn{
+    border: white;
+    color: black;
     font-size: 24px;
     cursor: pointer;
     display: block;
+    width: 300px;
+    height: 30px;
+    border-radius: 5px;
+    text-align: center;
+/*    margin: 10px auto; /* Centra el botón horizontalmente 
+
+}*/
+
+.down-btn{
+  background-color: white;
+  border: white;
+  color: black;
+  font-size: 24px;
+  cursor: pointer;
+  display: block;
+  width: 300px;
+  height: 30px;
+  text-align: center;
 }
+
 
 .down-btn {
   display: flex;
   list-style-type: none;
-  margin: 10px;
-  padding: 0;
-}
-
-.down-btn ul {
-  padding-left: 0;
-}
-
-.down-btn li {
-  margin: 0 10px;
+  justify-content: center;
 }
 
 .down-btn a {
@@ -414,12 +455,13 @@ flex: 1 0 100%; /* Cada imagen ocupa el 100% del contenedor */
   display: none;
   list-style-type: none;
   margin: 0;
-  padding: 0;
   border: white;
-  background-color: #1A1C40;
-  color: white;
-  width: 160px;
+  border-radius: 5px;
+  background-color: white;
+  color: black;
+  width: 300px;
   height: 30px;
+  text-align: center;
 }
 .download.show{
   display: block;
@@ -450,7 +492,7 @@ flex: 1 0 100%; /* Cada imagen ocupa el 100% del contenedor */
 
 /*Para otras pantallas*/
 
-@media screen and (min-width: 769px) {
+@media screen and (min-width: 768px) {
   .menu-btn {
       display: none; /* Oculta el botón hamburguesa en pantallas grandes */
   }
@@ -571,7 +613,7 @@ flex: 1 0 100%; /* Cada imagen ocupa el 100% del contenedor */
   }
   
   .navbar nav ul li a:hover {
-    background-color: #575757; /* Color al pasar el mouse */
+    background-color: #1A1C40; /* Color al pasar el mouse */
     border-radius: 5px; /* Bordes redondeados en hover */
   }
   

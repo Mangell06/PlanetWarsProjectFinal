@@ -1,76 +1,174 @@
 package GamePlanetWars;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.TextArea;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
 public class PlanetWars {
 
 	public static void main(String[] args) {
-		
+		new VentanaJuego();
 	}
 
 }
 
 class VentanaJuego extends JFrame {
+	PanelIniciarSesion iniciarSesion;
 	public VentanaJuego() {
+		setTitle("Planet Wars");
 		setSize(800,600);
+		iniciarSesion = new PanelIniciarSesion(this);
+		add(iniciarSesion);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 	}
+	
+	public void mostrarPanelJuego(User user, Planet planet) {
+		getContentPane().removeAll();
+		add(new Game(user, planet)); 
+		revalidate();
+		repaint();
+	}
 }
+
+class Game extends JPanel {
+    private User usuario;
+    private Planet planeta;
+    private JPanel north, center,east,west;
+    private JLabel labellighthunter, labelheavyhunter, labelbattleship, labelarmoredship, labelmissilelauncher, labelioncannon, labelplasmacannon, labeldeterium, labelmetal;
+    private TextArea info_south;
+
+    public Game(User usuario, Planet planeta) {
+        this.usuario = usuario;
+        this.planeta = planeta;
+        north = new JPanel();
+        center = new JPanel();
+        east = new JPanel();
+        west = new JPanel();
+        setLayout(new BorderLayout());
+        
+    }
+}
+
 
 class PanelIniciarSesion extends JPanel {
+	private JPanel north,center,south;
+	private VentanaJuego ventana;
 	private JLabel title;
-	private JTextField name, password;
-	private JButton iniciar_sesion, crear_cuenta;
+	private JButton startaccount, createaccount;
+	private JTextField name;
+	private JPasswordField pass;
 	
-	PanelIniciarSesion() {}
+	PanelIniciarSesion(VentanaJuego ventanita) {
+		setLayout(new BorderLayout());
+		north = new JPanel();
+		center = new JPanel();
+		south = new JPanel();
+		title = new JLabel("Sesion");
+		name = new JTextField("Nameuser");
+		pass = new JPasswordField("Password");
+		ventana = ventanita;
+		startaccount = new JButton("Start Account");
+		createaccount = new JButton("Create Account");
+		north.setBackground(Color.green);
+		center.setBackground(Color.white);
+		south.setBackground(Color.green);
+		north.add(title);
+		center.setLayout(new BoxLayout(center,BoxLayout.X_AXIS));
+		center.add(Box.createHorizontalStrut(230));
+		center.add(name);
+		center.add(Box.createHorizontalStrut(10));
+		center.add(pass);
+		south.add(startaccount);
+		south.add(createaccount);
+		name.setToolTipText("Nameuser");
+		pass.setToolTipText("Password");
+		name.setMaximumSize(new Dimension(150,40));
+		pass.setMaximumSize(new Dimension(150,40));
+		north.setMaximumSize(new Dimension(800,40));
+		center.setMaximumSize(new Dimension(800,40));
+		south.setMaximumSize(new Dimension(800,40));
+		add(north,BorderLayout.NORTH);
+		add(center,BorderLayout.CENTER);
+		add(south,BorderLayout.SOUTH);
+		startaccount.addActionListener(new EventosJuego());
+		createaccount.addActionListener(new EventosJuego());
+	}
+	
+	class EventosJuego implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			User usuario;
+			switch(e.getActionCommand()) {
+			case "Create Account":
+				try {
+				    BufferedImage imagen = ImageIO.read(new File(".\\src\\Assets\\Asset_EarthBasic.png"));
+				    ventana.mostrarPanelJuego(new User(name.getText(),new String(pass.getPassword())),new Planet(imagen, 1, 1, 20000, 10000, 40000, 20000));
+				} catch (IOException z) {
+				   	System.out.println(z.getMessage());
+				}
+				break;
+			case "Start Account":
+				break;
+			}
+		}
+	}
 }
 
+
+
 class User {
-	private int id;
-	private String Name;
-	private String Password;
+	private String name;
+	private String password;
 	
 	public User(String name, String Password) {
+	    this.name = name;
+	    this.password = Password;
 		
 	}
 	
 	public void elegirIDAutomaticamente() {}
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	public String getName() {
-		return Name;
+		return name;
 	}
 
-	public void setName(String name) {
-		Name = name;
+	public void setName(String name1) {
+		name = name1;
 	}
 
 	public String getPassword() {
-		return Password;
+		return password;
 	}
 
-	public void setPassword(String password) {
-		Password = password;
+	public void setPassword(String password1) {
+		password = password1;
 	}
 	
 }
 
 class Planet {
+	private BufferedImage imagen;
 	private int technologyDefense;
 	private int technologyAttack;
 	private int metal;
@@ -79,9 +177,10 @@ class Planet {
 	private int upgradeAttackTechnologyDeuteriumCost;
 	private ArrayList<MilitaryUnit>[] army;
 	
-	public Planet(int technologyDefense, int technologyAtack, int metal, int deuterium,
+	public Planet(BufferedImage imagen,int technologyDefense, int technologyAtack, int metal, int deuterium,
 			int upgradeDefenseTechnologyDeuteriumCost, int upgradeAttackTechnologyDeuteriumCost) {
 		super();
+		this.imagen = imagen;
 		this.technologyDefense = technologyDefense;
 		this.technologyAttack = technologyAtack;
 		this.metal = metal;
@@ -150,7 +249,7 @@ class Planet {
 		this.army = army;
 	}
 
-	public void upgradeTechnologyDefense() throws ResourceException {
+	public void upgradeTechnologyDefense() {
 		try {
 			if (upgradeDefenseTechnologyDeuteriumCost > deuterium) {
 				throw new ResourceException("You don't have enough deuterium to upgrade defense technology.");
@@ -452,9 +551,15 @@ interface Variables {
 }
 
 class LigthHunter extends ship {
+	private BufferedImage imagen;
 
 	public LigthHunter(int armor, int baseDamage) {
 		super(armor,baseDamage);
+		try {
+		    this.imagen = ImageIO.read(new File(".\\src\\Assets\\Asset_LightHunter.png"));
+		} catch (IOException e) {
+		   	System.out.println(e.getMessage());
+		}
 	}
 	
 	public LigthHunter() {
@@ -496,9 +601,15 @@ class LigthHunter extends ship {
 }
 
 class HeavyHunter extends ship {
+	private BufferedImage imagen;
 
 	public HeavyHunter(int armor, int baseDamage) {
 		super(armor, baseDamage);
+		try {
+		    this.imagen = ImageIO.read(new File(".\\src\\Assets\\Asset_HeavyHunter.png"));
+		} catch (IOException e) {
+		   	System.out.println(e.getMessage());
+		}
 	}
 	
 	public HeavyHunter() {
@@ -540,9 +651,15 @@ class HeavyHunter extends ship {
 }
 
 class BattleShip extends ship {
+	private BufferedImage imagen;
 
 	public BattleShip(int armor, int baseDamage) {
-		super(armor, baseDamage);	
+		super(armor, baseDamage);
+		try {
+		    this.imagen = ImageIO.read(new File(".\\src\\Assets\\Asset_BattleShip.png"));
+		} catch (IOException e) {
+		   	System.out.println(e.getMessage());
+		}
 	}
 	
 	public BattleShip() {
@@ -584,9 +701,15 @@ class BattleShip extends ship {
 }
 
 class ArmoredShip extends ship {
+	private BufferedImage imagen;
 
 	public ArmoredShip(int armor, int baseDamage) {
-		super(armor, baseDamage);	
+		super(armor, baseDamage);
+		try {
+		    this.imagen = ImageIO.read(new File(".\\src\\Assets\\Asset_ArmoredShip.png"));
+		} catch (IOException e) {
+		   	System.out.println(e.getMessage());
+		}
 	}
 	
 	public ArmoredShip() {
@@ -662,9 +785,15 @@ abstract class Defense implements MilitaryUnit,  Variables{
 }
 
 class MissileLauncher extends Defense {
+	private BufferedImage imagen;
 	
 	public MissileLauncher(int armor, int baseDamage) {
 		super(armor, baseDamage);	
+		try {
+		    this.imagen = ImageIO.read(new File(".\\src\\Assets\\Asset_MissileLauncher.png"));
+		} catch (IOException e) {
+		   	System.out.println(e.getMessage());
+		}
 	}
 	
 	// === METODOS INTERFAZ ===
@@ -702,8 +831,15 @@ class MissileLauncher extends Defense {
 }
 
 class IonCannon extends Defense {
+	private BufferedImage imagen;
+	
 	public IonCannon(int armor, int baseDamage) {
-		super(armor, baseDamage);	
+		super(armor, baseDamage);
+		try {
+		    this.imagen = ImageIO.read(new File(".\\src\\Assets\\Asset_IonnCannon.png"));
+		} catch (IOException e) {
+		   	System.out.println(e.getMessage());
+		}
 	}
 	
 	// === METODOS INTERFAZ ===
@@ -741,9 +877,15 @@ class IonCannon extends Defense {
 }
 
 class PlasmaCannon extends Defense {
+	private BufferedImage imagen;
 
 	public PlasmaCannon(int armor, int baseDamage) {
 		super(armor, baseDamage);
+		try {
+		    this.imagen = ImageIO.read(new File(".\\src\\Assets\\Asset_PlasmaCannon.png"));
+		} catch (IOException e) {
+		   	System.out.println(e.getMessage());
+		}
 	}
 
 	public int attack() {

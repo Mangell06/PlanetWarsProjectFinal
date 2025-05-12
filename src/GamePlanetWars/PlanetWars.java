@@ -2,7 +2,11 @@ package GamePlanetWars;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,6 +25,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class PlanetWars {
@@ -51,29 +56,283 @@ class VentanaJuego extends JFrame {
 }
 
 class Game extends JPanel {
-    private User usuario;
     private Planet planeta;
-    private JPanel north, center,east,west;
-    private JLabel labellighthunter, labelheavyhunter, labelbattleship, labelarmoredship, labelmissilelauncher, labelioncannon, labelplasmacannon, labeldeterium, labelmetal;
-    private TextArea info_south;
+    private User usuario;
+    private JPanel north,stats,barraderechastats, barraizquierdastats, barraabajostats, shop,battles,reports;
+    private FondoPanel planetstat;
+    private JLabel name, metal, deuterium, leveltechnologyattack, leveltechnologydefense, nosubirataque, nosubirdefensa, precioataque, preciodefensa;
+    private JTabbedPane menu;
+    private BufferedImage[] imagenesUnidades;
+    private JButton subirataque, subirdefensa;
+    private JTextArea battledevelopment, battlereport;
+    
 
     public Game(User usuario, Planet planeta) {
         this.usuario = usuario;
         this.planeta = planeta;
-        north = new JPanel();
-        center = new JPanel();
-        east = new JPanel();
-        west = new JPanel();
         setLayout(new BorderLayout());
-        
+        try {
+        	imagenesUnidades = new BufferedImage[7];
+            imagenesUnidades[0] = ImageIO.read(new File(".\\src\\Assets\\Asset_LightHunter.png"));
+            imagenesUnidades[1] = ImageIO.read(new File(".\\src\\Assets\\Asset_HeavyHunter.png"));
+            imagenesUnidades[2] = ImageIO.read(new File(".\\src\\Assets\\Asset_BattleShip.png"));
+            imagenesUnidades[3] = ImageIO.read(new File(".\\src\\Assets\\Asset_ArmoredShip.png"));
+            imagenesUnidades[4] = ImageIO.read(new File(".\\src\\Assets\\Asset_MissileLauncher.png"));
+            imagenesUnidades[5] = ImageIO.read(new File(".\\src\\Assets\\Asset_IonnCannon.png"));
+            imagenesUnidades[6] = ImageIO.read(new File(".\\src\\Assets\\Asset_PlasmaCannon.png"));
+        } catch (IOException e) {
+            System.out.println("Error loading unit images: " + e.getMessage());
+        }
+        name = new JLabel(usuario.getName());
+        north = new JPanel();
+        add(north,BorderLayout.NORTH);
+        north.setBackground(Color.GREEN);
+        north.add(name);
+        menu = new JTabbedPane();
+        stats = new JPanel();
+        metal = new JLabel("Metal");
+        deuterium = new JLabel("Deuterium");
+        leveltechnologyattack = new JLabel("Level Technology Attack");
+        leveltechnologydefense = new JLabel("Level Technology Defense");
+        metal.setText("Metal: " + planeta.getMetal());
+        deuterium.setText("Deuterium: " + planeta.getDeuterium());
+        leveltechnologyattack.setText("Tech attack: " + planeta.getTechnologyAtack());
+        leveltechnologydefense.setText("Tech Defense: " + planeta.getTechnologyDefense());
+        stats.setLayout(new BorderLayout());
+        planetstat = new FondoPanel(planeta.getImagen());
+        barraderechastats = new JPanel();
+        barraizquierdastats = new JPanel();
+        barraizquierdastats.add(metal);
+        barraizquierdastats.add(deuterium);
+        barraizquierdastats.add(leveltechnologyattack);
+        barraizquierdastats.add(leveltechnologydefense);
+        shop = new JPanel();
+        JPanel mensajesPanel = new JPanel();
+        mensajesPanel.setLayout(new BoxLayout(mensajesPanel, BoxLayout.Y_AXIS));
+        barraabajostats = new JPanel();
+        JLabel texto = new JLabel("");
+        mensajesPanel.add(texto);
+        JLabel mensajeCompra = new JLabel("");
+        JLabel unidadesCompradas = new JLabel("");
+        texto.setAlignmentX(Component.CENTER_ALIGNMENT);
+        mensajeCompra.setAlignmentX(Component.CENTER_ALIGNMENT);
+        unidadesCompradas.setAlignmentX(Component.CENTER_ALIGNMENT);
+        mensajesPanel.add(mensajeCompra);
+        mensajesPanel.add(unidadesCompradas);
+        shop.add(mensajesPanel);
+        mensajesPanel.setPreferredSize(new Dimension(800,100));
+        mensajesPanel.setMaximumSize(new Dimension(800,100));
+        mensajesPanel.setMinimumSize(new Dimension(800,100));
+        mensajesPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        for (int i = 0; i < planeta.getArmy().length; i++) {
+        	final int index = i;
+        	FondoPanel naveimagen = new FondoPanel(imagenesUnidades[i]); 
+        	naveimagen.setPreferredSize(new Dimension(80,40)); 
+        	naveimagen.setMinimumSize(new Dimension(80,40)); 
+        	naveimagen.setMaximumSize(new Dimension(80,40));
+    		barraderechastats.add(naveimagen);
+    		JPanel compra = new JPanel();
+    		compra.setLayout(new BoxLayout(compra, BoxLayout.Y_AXIS));
+    		FondoPanel naveimagenshop = new FondoPanel(imagenesUnidades[i]);
+        	naveimagenshop.setPreferredSize(new Dimension(60,40)); 
+        	naveimagenshop.setMinimumSize(new Dimension(60,40)); 
+        	naveimagenshop.setMaximumSize(new Dimension(60,40));
+        	compra.setPreferredSize(new Dimension(120,120)); 
+        	compra.setMinimumSize(new Dimension(120,120)); 
+        	compra.setMaximumSize(new Dimension(120,120));
+        	compra.add(Box.createVerticalStrut(10));
+    		compra.add(naveimagenshop);
+        	compra.add(Box.createVerticalStrut(10));
+        	JTextField cantidad = new JTextField("1");
+        	cantidad.setPreferredSize(new Dimension(30,20));
+        	cantidad.setMinimumSize(new Dimension(30,20));
+        	cantidad.setMaximumSize(new Dimension(30,20));
+        	cantidad.setAlignmentX(Component.CENTER_ALIGNMENT);
+        	compra.add(cantidad);
+        	compra.add(Box.createVerticalStrut(5));
+    		JButton botoncito = new JButton("Buy");
+    		botoncito.setPreferredSize(new Dimension(60,20));
+    		botoncito.setMinimumSize(new Dimension(60,20));
+    		botoncito.setMaximumSize(new Dimension(60,20));
+    		botoncito.setAlignmentX(Component.CENTER_ALIGNMENT);
+    		compra.add(botoncito);
+    		compra.setBackground(Color.YELLOW);
+    		shop.add(compra);
+    	    botoncito.addActionListener(new ActionListener() {
+    	        public void actionPerformed(ActionEvent e) {
+    	        	 try {
+    	                 int n = Integer.parseInt(cantidad.getText().trim());
+    	                 if (n <= 0) throw new NumberFormatException();
+    	            	 texto.setText("");
+    	            	 int antes = planeta.getArmy()[index].size();
+    	                 switch(index) {
+    	                     case 0:
+    	                    	 planeta.newLightHunter(n);
+    	                    	 break;
+    	                     case 1 :
+    	                    	 planeta.newHeavyHunter(n);
+    	                    	 break;
+    	                     case 2 :
+    	                    	 planeta.newBattleShip(n);
+    	                    	 break;
+    	                     case 3 :
+    	                    	 planeta.newArmoredShip(n);
+    	                    	 break;
+    	                     case 4 :
+    	                    	 planeta.newMissileLauncher(n);
+    	                    	 break;
+    	                     case 5 :
+    	                    	 planeta.newIonCannon(n);
+    	                    	 break;
+    	                     case 6 :
+    	                    	 planeta.newPlasmaCannon(n);
+    	                    	 break;
+    	                 }
+    	                 int despues = planeta.getArmy()[index].size();
+    	                 int compradas = despues - antes;
+    	                 update_information();
+    	                 if (compradas == 0) {
+    	                	    mensajeCompra.setText("❌ No se pudieron comprar unidades.");
+    	                	    unidadesCompradas.setText("");
+    	                	} else if (compradas != n) {
+    	                		mensajeCompra.setText("❌ No se pudieron comprar todas las unidades.");
+    	                	    unidadesCompradas.setText("✅ Compradas: " + compradas);
+    	                	}else {
+    	                	    mensajeCompra.setText("");
+    	                	    unidadesCompradas.setText("✅ Compradas: " + compradas);
+    	                	}
+    	             } catch (NumberFormatException ex) {
+    	            	 texto.setText("La cantidad debe ser un numero");
+    	            	 unidadesCompradas.setText("");
+	                	 mensajeCompra.setText("");
+    	             }
+    	         }});
+    		barraderechastats.add(new JLabel("" + planeta.getArmy()[i].size() + "\n"));
+        }
+        stats.add(planetstat, BorderLayout.CENTER);
+        stats.add(barraderechastats,BorderLayout.EAST);
+        stats.add(barraizquierdastats,BorderLayout.WEST);
+        stats.add(barraabajostats, BorderLayout.SOUTH);
+        barraizquierdastats.setPreferredSize(new Dimension(125,600));
+        barraizquierdastats.setMinimumSize(new Dimension(125,600));
+        barraizquierdastats.setMaximumSize(new Dimension(125,600));
+        barraderechastats.setPreferredSize(new Dimension(125,600));
+        barraderechastats.setMinimumSize(new Dimension(125,600));
+        barraderechastats.setMaximumSize(new Dimension(125,600));
+        barraabajostats.setPreferredSize(new Dimension(800,150));
+        barraabajostats.setMinimumSize(new Dimension(800,150));
+        barraabajostats.setMaximumSize(new Dimension(800,150));
+        nosubirataque = new JLabel("");
+        subirataque = new JButton("Update Level technology attack");
+        nosubirdefensa = new JLabel("");
+        subirdefensa = new JButton("Update Level technology defense");
+        subirataque.addActionListener(new EventosJuego());
+        subirdefensa.addActionListener(new EventosJuego());
+        barraabajostats.setLayout(new BoxLayout(barraabajostats,BoxLayout.Y_AXIS));
+        barraabajostats.add(nosubirataque);
+        nosubirataque.setAlignmentX(Component.CENTER_ALIGNMENT);
+        barraabajostats.add(Box.createVerticalStrut(10));
+        precioataque = new JLabel("Price Deuterium: " + planeta.getUpgradeAttackTechnologyDeuteriumCost());
+        barraabajostats.add(precioataque);
+        precioataque.setAlignmentX(Component.CENTER_ALIGNMENT);
+        barraabajostats.add(Box.createVerticalStrut(5));
+        barraabajostats.add(subirataque);
+        subirataque.setAlignmentX(Component.CENTER_ALIGNMENT);
+        barraabajostats.add(Box.createVerticalStrut(5));
+        barraabajostats.add(nosubirdefensa);
+        nosubirdefensa.setAlignmentX(Component.CENTER_ALIGNMENT);
+        barraabajostats.add(Box.createVerticalStrut(10));
+        preciodefensa = new JLabel("Price Deuterium: " + planeta.getUpgradeDefenseTechnologyDeuteriumCost());
+        barraabajostats.add(preciodefensa);
+        preciodefensa.setAlignmentX(Component.CENTER_ALIGNMENT);
+        barraabajostats.add(Box.createVerticalStrut(5));
+        barraabajostats.add(subirdefensa);
+        subirdefensa.setAlignmentX(Component.CENTER_ALIGNMENT);
+        barraabajostats.add(Box.createVerticalStrut(10));
+        menu.addTab("Stats", stats);
+        menu.addTab("Shop", shop);
+        battles = new JPanel();
+        menu.addTab("Battle develop", battles);
+        reports = new JPanel();
+        menu.addTab("Battle reports", reports);
+        add(menu,BorderLayout.CENTER);
+    }
+    
+    class EventosJuego implements ActionListener{
+
+		public void actionPerformed(ActionEvent e) {
+			int anterior_nivel;
+			int despues_nivel;
+			if (e.getActionCommand().equals("Update Level technology attack")) {
+				anterior_nivel = planeta.getTechnologyAtack();
+				planeta.upgradeTechnologyAttack();
+				despues_nivel = planeta.getTechnologyAtack();
+				if (anterior_nivel == despues_nivel) {
+					nosubirdefensa.setText("");
+					nosubirataque.setText("No tienes suficientes recursos");
+				} else {
+					nosubirataque.setText("");
+					nosubirdefensa.setText("");
+				}
+			} else if (e.getActionCommand().equals("Update Level technology defense")) {
+				anterior_nivel = planeta.getTechnologyDefense();
+				planeta.upgradeTechnologyDefense();
+				despues_nivel = planeta.getTechnologyDefense();
+				if (anterior_nivel == despues_nivel) {
+					nosubirataque.setText("");
+					nosubirdefensa.setText("No tienes suficientes recursos");
+				} else {
+					nosubirataque.setText("");
+					nosubirdefensa.setText("");
+				}
+			}
+			update_information();
+		}
+    	
+    }
+    
+    public void update_information() {
+        metal.setText("Metal: " + planeta.getMetal());
+        deuterium.setText("Deuterium: " + planeta.getDeuterium());
+        leveltechnologyattack.setText("Tech attack: " + planeta.getTechnologyAtack());
+        leveltechnologydefense.setText("Tech Defense: " + planeta.getTechnologyDefense());
+        precioataque.setText("Price Deuterium: " + planeta.getUpgradeAttackTechnologyDeuteriumCost());
+        preciodefensa.setText("Price Deuterium: " + planeta.getUpgradeDefenseTechnologyDeuteriumCost());
+        barraderechastats.removeAll();
+        for (int i = 0; i < planeta.getArmy().length; i++) {
+            FondoPanel naveimagen = new FondoPanel(imagenesUnidades[i]); 
+            naveimagen.setPreferredSize(new Dimension(80,40)); 
+            barraderechastats.add(naveimagen);
+            barraderechastats.add(new JLabel("" + planeta.getArmy()[i].size()));
+        }
+
+        barraderechastats.revalidate();
+        barraderechastats.repaint();
     }
 }
 
+class FondoPanel extends JPanel {
+
+    private BufferedImage imagen;
+
+    public FondoPanel(BufferedImage imagen) {
+        this.imagen = imagen;
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if (imagen != null) {
+            Image escalada = imagen.getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH);
+            g.drawImage(escalada, 0, 0, this);
+        }
+    }
+}
 
 class PanelIniciarSesion extends JPanel {
-	private JPanel north,center,south;
+	private JPanel north,center,south, paneldeingreso;
 	private VentanaJuego ventana;
-	private JLabel title;
+	private JLabel title, error;
 	private JButton startaccount, createaccount;
 	private JTextField name;
 	private JPasswordField pass;
@@ -82,50 +341,64 @@ class PanelIniciarSesion extends JPanel {
 		setLayout(new BorderLayout());
 		north = new JPanel();
 		center = new JPanel();
+		paneldeingreso = new JPanel();
 		south = new JPanel();
 		title = new JLabel("Sesion");
 		name = new JTextField("Nameuser");
 		pass = new JPasswordField("Password");
 		ventana = ventanita;
+		error = new JLabel("");
+		error.setPreferredSize(new Dimension(250, 40));
+		error.setMaximumSize(new Dimension(250, 40));
+		error.setMinimumSize(new Dimension(250, 40));
 		startaccount = new JButton("Start Account");
 		createaccount = new JButton("Create Account");
 		north.setBackground(Color.green);
 		center.setBackground(Color.white);
+		paneldeingreso.setBackground(Color.white);
 		south.setBackground(Color.green);
 		north.add(title);
 		center.setLayout(new BoxLayout(center,BoxLayout.X_AXIS));
-		center.add(Box.createHorizontalStrut(230));
-		center.add(name);
-		center.add(Box.createHorizontalStrut(10));
-		center.add(pass);
+		paneldeingreso.setLayout(new BoxLayout(paneldeingreso, BoxLayout.Y_AXIS));
+		paneldeingreso.add(Box.createVerticalStrut(20));
+		paneldeingreso.add(name);
+		paneldeingreso.add(Box.createVerticalStrut(10));
+		paneldeingreso.add(pass);
+		paneldeingreso.add(Box.createVerticalStrut(10));
+		paneldeingreso.add(error);
+		center.add(Box.createHorizontalStrut(325));
+		center.add(paneldeingreso);
 		south.add(startaccount);
 		south.add(createaccount);
 		name.setToolTipText("Nameuser");
 		pass.setToolTipText("Password");
-		name.setMaximumSize(new Dimension(150,40));
-		pass.setMaximumSize(new Dimension(150,40));
+		name.setMaximumSize(new Dimension(250,40));
+		pass.setMaximumSize(new Dimension(250,40));
 		north.setMaximumSize(new Dimension(800,40));
 		center.setMaximumSize(new Dimension(800,40));
 		south.setMaximumSize(new Dimension(800,40));
 		add(north,BorderLayout.NORTH);
 		add(center,BorderLayout.CENTER);
 		add(south,BorderLayout.SOUTH);
-		startaccount.addActionListener(new EventosJuego());
-		createaccount.addActionListener(new EventosJuego());
+		startaccount.addActionListener(new EventosSesion());
+		createaccount.addActionListener(new EventosSesion());
 	}
 	
-	class EventosJuego implements ActionListener {
-
-		@Override
+	class EventosSesion implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			User usuario;
 			switch(e.getActionCommand()) {
 			case "Create Account":
-				try {
-				    BufferedImage imagen = ImageIO.read(new File(".\\src\\Assets\\Asset_EarthBasic.png"));
-				    ventana.mostrarPanelJuego(new User(name.getText(),new String(pass.getPassword())),new Planet(imagen, 1, 1, 20000, 10000, 40000, 20000));
-				} catch (IOException z) {
-				   	System.out.println(z.getMessage());
+				String contraseña = new String(pass.getPassword());
+				if (name.getText().length() > 12 || name.getText().length() < 3 || !contraseña.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^a-zA-Z0-9]).{6,}$")) {
+					error.setText("Nombre o contraseña poco seguros");
+				} else {
+					try {
+					    BufferedImage imagen = ImageIO.read(new File(".\\src\\Assets\\Asset_EarthBasic.png"));
+					    ventana.mostrarPanelJuego(new User(name.getText(),contraseña),new Planet(imagen, 1, 1, 100000, 1000000, 40000, 20000));
+					} catch (IOException z) {
+					   	System.out.println(z.getMessage());
+					}
 				}
 				break;
 			case "Start Account":
@@ -193,6 +466,10 @@ class Planet {
 		}
 	}
 	
+	public BufferedImage getImagen() {
+		return imagen;
+	}
+
 	public int getTechnologyDefense() {
 		return technologyDefense;
 	}
@@ -277,11 +554,14 @@ class Planet {
 	}
 	
 	public void newLightHunter(int n) {
-		for (int i = 0; i <= n; i++) {
+		for (int i = 0; i < n; i++) {
 			try {
 				if (Variables.METAL_COST_LIGTHHUNTER > metal || Variables.DEUTERIUM_COST_LIGTHHUNTER > deuterium) {
 					throw new ResourceException("You don't have enough resource");
 				}
+
+				metal -= Variables.METAL_COST_LIGTHHUNTER;
+				deuterium -= Variables.DEUTERIUM_COST_LIGTHHUNTER;
 			  army[0].add(new LigthHunter(Variables.ARMOR_LIGTHHUNTER + ((technologyDefense * Variables.PLUS_ARMOR_LIGTHHUNTER_BY_TECHNOLOGY) % 1000) ,Variables.BASE_DAMAGE_LIGTHHUNTER + ((technologyAttack*Variables.PLUS_ATTACK_LIGTHHUNTER_BY_TECHNOLOGY)%1000)));
 			} catch (ResourceException e) {
 				System.out.println(e.getMessage());
@@ -290,12 +570,14 @@ class Planet {
 	}
 	
 	public void newHeavyHunter(int n) {
-		for (int i = 0; i <= n; i++) {
+		for (int i = 0; i < n; i++) {
 			try {
 				if (Variables.METAL_COST_HEAVYHUNTER > metal || Variables.DEUTERIUM_COST_HEAVYHUNTER > deuterium) {
 					throw new ResourceException("You don't have enough resource");
 				}
-			  army[1].add(new HeavyHunter(Variables.ARMOR_HEAVYHUNTER + ((technologyDefense*Variables.PLUS_ARMOR_HEAVYHUNTER_BY_TECHNOLOGY)%1000),Variables.BASE_DAMAGE_HEAVYHUNTER + ((technologyAttack*Variables.PLUS_ATTACK_HEAVYHUNTER_BY_TECHNOLOGY)%1000)));
+				metal -= Variables.METAL_COST_HEAVYHUNTER;
+				deuterium -= Variables.DEUTERIUM_COST_HEAVYHUNTER;
+				army[1].add(new HeavyHunter(Variables.ARMOR_HEAVYHUNTER + ((technologyDefense*Variables.PLUS_ARMOR_HEAVYHUNTER_BY_TECHNOLOGY)%1000),Variables.BASE_DAMAGE_HEAVYHUNTER + ((technologyAttack*Variables.PLUS_ATTACK_HEAVYHUNTER_BY_TECHNOLOGY)%1000)));
 			} catch (ResourceException e) {
 				System.out.println(e.getMessage());
 			}
@@ -303,11 +585,13 @@ class Planet {
 	}
 	
 	public void newBattleShip(int n) {
-		for (int i = 0; i <= n; i++) {
+		for (int i = 0; i < n; i++) {
 			try {
 				if (Variables.METAL_COST_BATTLESHIP > metal || Variables.DEUTERIUM_COST_BATTLESHIP > deuterium) {
 					throw new ResourceException("You don't have enough resource");
 				}
+				metal -= Variables.METAL_COST_BATTLESHIP;
+				deuterium -= Variables.DEUTERIUM_COST_BATTLESHIP;
 			  army[2].add(new BattleShip(Variables.ARMOR_BATTLESHIP + ((technologyDefense*Variables.PLUS_ARMOR_BATTLESHIP_BY_TECHNOLOGY)%1000),Variables.BASE_DAMAGE_BATTLESHIP + ((technologyAttack*Variables.PLUS_ATTACK_BATTLESHIP_BY_TECHNOLOGY)%1000)));
 			} catch (ResourceException e) {
 				System.out.println(e.getMessage());
@@ -316,11 +600,13 @@ class Planet {
 	}
 	
 	public void newArmoredShip(int n) {
-		for (int i = 0; i <= n; i++) {
+		for (int i = 0; i < n; i++) {
 			try {
 				if (Variables.METAL_COST_ARMOREDSHIP > metal || Variables.DEUTERIUM_COST_ARMOREDSHIP > deuterium) {
 					throw new ResourceException("You don't have enough resource");
 				}
+				metal -= Variables.METAL_COST_ARMOREDSHIP;
+				deuterium -= Variables.DEUTERIUM_COST_ARMOREDSHIP;
 			  army[3].add(new ArmoredShip(Variables.ARMOR_ARMOREDSHIP + ((technologyDefense*Variables.PLUS_ARMOR_ARMOREDSHIP_BY_TECHNOLOGY)%1000),Variables.BASE_DAMAGE_ARMOREDSHIP + ((technologyAttack*Variables.PLUS_ATTACK_ARMOREDSHIP_BY_TECHNOLOGY)%1000)));
 			} catch (ResourceException e) {
 				System.out.println(e.getMessage());
@@ -330,11 +616,13 @@ class Planet {
 	
 	public void newMissileLauncher(int n) {
 		int contador = 0;
-		for (int i = 0; i <= n; i++) {
+		for (int i = 0; i < n; i++) {
 			try {
 				if (Variables.METAL_COST_MISSILELAUNCHER > metal || Variables.DEUTERIUM_COST_MISSILELAUNCHER > deuterium) {
 					throw new ResourceException("You don't have enough resource");
 				}
+			  metal -= Variables.METAL_COST_MISSILELAUNCHER;
+			  deuterium -= Variables.DEUTERIUM_COST_MISSILELAUNCHER;
 			  army[4].add(new MissileLauncher(Variables.ARMOR_MISSILELAUNCHER + ((technologyDefense * Variables.PLUS_ARMOR_MISSILELAUNCHER_BY_TECHNOLOGY) % 1000), Variables.BASE_DAMAGE_MISSILELAUNCHER + ((technologyAttack * Variables.PLUS_ATTACK_MISSILELAUNCHER_BY_TECHNOLOGY) % 1000)));
 				contador += 1;
 			} catch (ResourceException e) {
@@ -346,11 +634,13 @@ class Planet {
 	
 	public void newIonCannon(int n) {
 		int contador = 0;
-		for (int i = 0; i <= n; i++) {
+		for (int i = 0; i < n; i++) {
 			try {
 				if (Variables.METAL_COST_IONCANNON > metal || Variables.DEUTERIUM_COST_IONCANNON > deuterium) {
 					throw new ResourceException("You don't have enough resource");
 				}
+				  metal -= Variables.METAL_COST_IONCANNON;
+				  deuterium -= Variables.DEUTERIUM_COST_IONCANNON;
 			  army[5].add(new IonCannon(Variables.ARMOR_IONCANNON + ((technologyDefense * Variables.PLUS_ARMOR_IONCANNON_BY_TECHNOLOGY) % 1000), Variables.BASE_DAMAGE_IONCANNON + ((technologyAttack * Variables.PLUS_ATTACK_IONCANNON_BY_TECHNOLOGY) % 1000)));
 			  contador += 1;
 			} catch (ResourceException e) {
@@ -363,11 +653,13 @@ class Planet {
 	
 	public void newPlasmaCannon(int n) {
 		int contador = 0;
-		for (int i = 0; i <= n; i++) {
+		for (int i = 0; i < n; i++) {
 			try {
 				if (Variables.METAL_COST_PLASMACANNON > metal || Variables.DEUTERIUM_COST_PLASMACANNON > deuterium) {
 					throw new ResourceException("You don't have enough resource");
 				}
+				metal -= Variables.METAL_COST_PLASMACANNON;
+				deuterium -= Variables.DEUTERIUM_COST_PLASMACANNON;
 			  army[6].add(new PlasmaCannon(Variables.ARMOR_PLASMACANNON + ((technologyDefense * Variables.PLUS_ARMOR_PLASMACANNON_BY_TECHNOLOGY) % 1000), Variables.BASE_DAMAGE_PLASMACANNON + ((technologyAttack * Variables.PLUS_ATTACK_PLASMACANNON_BY_TECHNOLOGY) % 1000)));
 			  contador += 1;
 			} catch (ResourceException e) {
@@ -441,6 +733,7 @@ abstract class ship implements MilitaryUnit, Variables{
 
 interface MilitaryUnit {
 	abstract int attack();
+	abstract BufferedImage getImagen();
 	abstract void tekeDamage(int receivedDamage);
 	abstract int getActualArmor();
 	abstract int getMetalCost();
@@ -566,6 +859,10 @@ class LigthHunter extends ship {
 		super(ARMOR_LIGTHHUNTER,BASE_DAMAGE_LIGTHHUNTER);
 	}
 
+	public BufferedImage getImagen() {
+		return imagen;
+	}
+
 	public int attack() {
 		return getBaseDamage();
 	}
@@ -614,6 +911,10 @@ class HeavyHunter extends ship {
 	
 	public HeavyHunter() {
 		super(ARMOR_HEAVYHUNTER,BASE_DAMAGE_HEAVYHUNTER);
+	}
+	
+	public BufferedImage getImagen() {
+		return imagen;
 	}
 	
 	public int attack() {
@@ -665,6 +966,10 @@ class BattleShip extends ship {
 	public BattleShip() {
 		super(ARMOR_BATTLESHIP,BASE_DAMAGE_BATTLESHIP);
 	}
+
+	public BufferedImage getImagen() {
+		return imagen;
+	}
 	
 	public int attack() {
 		return getBaseDamage();
@@ -714,6 +1019,11 @@ class ArmoredShip extends ship {
 	
 	public ArmoredShip() {
 		super(ARMOR_ARMOREDSHIP,BASE_DAMAGE_ARMOREDSHIP);
+	}
+	
+
+	public BufferedImage getImagen() {
+		return imagen;
 	}
 	
 	public int attack() {
@@ -795,6 +1105,10 @@ class MissileLauncher extends Defense {
 		   	System.out.println(e.getMessage());
 		}
 	}
+
+	public BufferedImage getImagen() {
+		return imagen;
+	}
 	
 	// === METODOS INTERFAZ ===
 	public int attack() {
@@ -842,6 +1156,11 @@ class IonCannon extends Defense {
 		}
 	}
 	
+
+	public BufferedImage getImagen() {
+		return imagen;
+	}
+	
 	// === METODOS INTERFAZ ===
 	public int attack() {
 		return getBaseDamage();
@@ -886,6 +1205,10 @@ class PlasmaCannon extends Defense {
 		} catch (IOException e) {
 		   	System.out.println(e.getMessage());
 		}
+	}
+
+	public BufferedImage getImagen() {
+		return imagen;
 	}
 
 	public int attack() {

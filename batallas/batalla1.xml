@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BattleReport>
+  <BattleStatistics>
+    <ArmyPlanet>
+      <Unit name="Light Hunter" units="11" drops="8" />
+      <Unit name="Heavy Hunter" units="3" drops="1" />
+      <Unit name="Battle Ship" units="1" drops="0" />
+      <Unit name="Armored Ship" units="1" drops="0" />
+      <Unit name="Missile Launcher" units="11" drops="9" />
+      <Unit name="Ion Cannon" units="1" drops="1" />
+      <Unit name="Plasma Cannon" units="1" drops="0" />
+    </ArmyPlanet>
+    <InitialArmyEnemy>
+      <Unit name="Light Hunter" units="19" drops="17" />
+      <Unit name="Heavy Hunter" units="7" drops="5" />
+      <Unit name="Battle Ship" units="1" drops="1" />
+      <Unit name="Armored Ship" units="1" drops="0" />
+    </InitialArmyEnemy>
+  </BattleStatistics>
+
+  <ArmyCost>
+    <Planet>
+      <Metal>203500</Metal>
+      <Deuterium>28200</Deuterium>
+    </Planet>
+    <Enemy>
+      <Metal>177500</Metal>
+      <Deuterium>23300</Deuterium>
+    </Enemy>
+  </ArmyCost>
+
+  <ArmyLosses>
+    <Planet>
+      <Metal>52500</Metal>
+      <Deuterium>950</Deuterium>
+      <Weighted>57250</Weighted>
+    </Planet>
+    <Enemy>
+      <Metal>128500</Metal>
+      <Deuterium>8100</Deuterium>
+      <Weighted>169000</Weighted>
+    </Enemy>
+  </ArmyLosses>
+
+  <WasteGenerated>
+    <Metal>52150</Metal>
+    <Deuterium>910</Deuterium>
+  </WasteGenerated>
+
+  <Result>
+    <Victory>Planet</Victory>
+    <RubbleCollected>true</RubbleCollected>
+  </Result>
+</BattleReport>

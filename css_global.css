@@ -288,6 +288,21 @@ header {
   margin: auto;
 }
 
+.container_foto_especial{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 300px;
+  height: 300px;
+  overflow: hidden;
+}
+
+.container_foto_especial img {
+  max-width: 100%;
+  max-height: 100%;
+  height: auto;
+}
+
  /* Estilo del contenedor del carrusel */
  .carousel-container {
   position: relative;
@@ -466,6 +481,27 @@ flex: 1 0 100%; /* Cada imagen ocupa el 100% del contenedor */
 .download.show{
   display: block;
 }
+
+.inf-btn{
+  background-color: white;
+    border: #1A1C40 solid 1px;
+    border-radius: 10px;
+    color: #1A1C40;
+    padding: 5px;
+    font-size: 26px;
+    align-items: center;
+    margin: auto;
+    cursor: pointer;
+    display: block;
+}
+
+.input_num {
+    width: 200px;
+    height: 40px;
+    font-size: 18px;
+    padding: 5px;
+}
+
 
 @keyframes slideInUp { 
   from { 
@@ -710,6 +746,21 @@ flex: 1 0 100%; /* Cada imagen ocupa el 100% del contenedor */
     max-width: 100%;
     height: auto;
   }
+
+  .container_foto_especial{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+  .container_foto_especial img {
+  width: 100%;
+  height: 100%;
+}
   .carousel-container {
     position: relative;
     max-width: 100px;

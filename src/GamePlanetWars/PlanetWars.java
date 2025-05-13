@@ -4,7 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.TextArea;
@@ -15,6 +20,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
 import javax.swing.Box;
@@ -22,6 +29,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTabbedPane;
@@ -31,13 +39,61 @@ import javax.swing.JTextField;
 public class PlanetWars {
 
 	public static void main(String[] args) {
-		new VentanaJuego();
-	}
-
+		VentanaJuego game = new VentanaJuego();
+		Timer enemySpawnTimer = new Timer();
+		Timer battleTimer = new Timer();
+		Timer resourceTimer = new Timer();
+		
+		enemySpawnTimer.schedule(new TimerTask() {
+		    public void run() {
+		    	if (game.getJuego() != null && game.getJuego().getPlaneta() != null) {
+		    		int metal = Variables.METAL_BASE_ENEMY_ARMY + game.getJuego().getPlaneta().getTechnologyDefense() * 10000;
+		    		int deuterium = Variables.DEUTERIUM_BASE_ENEMY_ARMY + game.getJuego().getPlaneta().getTechnologyDefense() * 500;
+		    		game.createEnemyArmy(metal, deuterium);
+		    		game.getJuego().updateEnemyInformation();
+		    		game.getJuego().setMessageBattleComming("Se han encontrado enemigos");
+		    	}}}, 30000, 60000);
+		
+		battleTimer.schedule(new TimerTask() {
+		    public void run() {
+		    	if (game.getJuego() != null && game.getJuego().getPlaneta() != null) {
+			    	boolean hay_ejercito_aliado = false;
+			    	for (int i = 0; i < game.getJuego().getPlaneta().getArmy().length; i++) {
+			    		if (game.getJuego().getPlaneta().getArmy()[i].size() > 0) {
+			    			hay_ejercito_aliado = true;
+			    		}
+			    	}
+			    	if (hay_ejercito_aliado && game.getJuego().getEnemyArmy() != null) {
+				        Battle batalla = new Battle(game.getJuego().getPlaneta().getArmy(), game.getJuego().getEnemyArmy());
+				        game.getJuego().setMessageBattleComming("Luchando!!!");
+    		    		game.getJuego().repaint();
+				        batalla.startBattle(game.getJuego().getPlaneta());
+				        try {
+							Thread.sleep(5000);
+						} catch (InterruptedException e) {
+							System.out.println(e.getMessage());
+						}
+		    	} else {
+			    	game.getJuego().getPlaneta().roboResources();
+		    	}
+		    	game.getJuego().update_information();
+		        game.getJuego().restaurar_enemigo();
+		        game.getJuego().updateEnemyInformation();
+		        game.getJuego().setMessageBattleComming("Por ahora no hay enemigos");
+	    		game.getJuego().repaint();
+		    	}}}, 40000, 70000);
+		resourceTimer.schedule(new TimerTask() {
+		    public void run() {
+		    	if (game.getJuego() != null) {
+			        game.getJuego().getPlaneta().setMetal(game.getJuego().getPlaneta().getMetal() + (Variables.PLANET_METAL_GENERATED + game.getJuego().getPlaneta().getTechnologyDefense() * 250));
+			        game.getJuego().getPlaneta().setDeuterium(game.getJuego().getPlaneta().getDeuterium() + (Variables.PLANET_DEUTERIUM_GENERATED + game.getJuego().getPlaneta().getTechnologyDefense() * 100));
+			        game.getJuego().update_information();
+		    	}}}, 5000, 20000);}
 }
 
 class VentanaJuego extends JFrame {
 	PanelIniciarSesion iniciarSesion;
+	Game juego;
 	public VentanaJuego() {
 		setTitle("Planet Wars");
 		setSize(800,600);
@@ -47,29 +103,111 @@ class VentanaJuego extends JFrame {
 		setVisible(true);
 	}
 	
+	public PanelIniciarSesion getIniciarSesion() {
+		return iniciarSesion;
+	}
+	public void createEnemyArmy(int metal, int deuterium) {
+	    ArrayList<MilitaryUnit>[] army = new ArrayList[7];
+	    for (int i = 0; i < army.length; i++) {
+	        army[i] = new ArrayList<>();
+	    }
+
+	    Random rand = new Random();
+
+	    int lightCostMetal = Variables.METAL_COST_LIGTHHUNTER;
+	    int lightCostDeterium = Variables.DEUTERIUM_COST_LIGTHHUNTER;
+
+	    int heavyCostMetal = Variables.METAL_COST_HEAVYHUNTER;
+	    int heavyCostDeterium = Variables.DEUTERIUM_COST_HEAVYHUNTER;
+
+	    int battleCostMetal = Variables.METAL_COST_BATTLESHIP;
+	    int battleCostDeterium = Variables.DEUTERIUM_COST_BATTLESHIP;
+
+	    int armoredCostMetal = Variables.METAL_COST_ARMOREDSHIP;
+	    int armoredCostDeterium = Variables.DEUTERIUM_COST_ARMOREDSHIP;
+
+	    while (metal >= lightCostMetal && deuterium >= lightCostDeterium) {
+	        double r = rand.nextDouble() * 100;
+
+	        if (r < 35 && metal >= lightCostMetal && deuterium >= lightCostDeterium) {
+	            army[0].add(new LigthHunter());
+	            metal -= lightCostMetal;
+	            deuterium -= lightCostDeterium;
+
+	        } else if (r < 60 && metal >= heavyCostMetal && deuterium >= heavyCostDeterium) {
+	            army[1].add(new HeavyHunter());
+	            metal -= heavyCostMetal;
+	            deuterium -= heavyCostDeterium;
+
+	        } else if (r < 80 && metal >= battleCostMetal && deuterium >= battleCostDeterium) {
+	            army[2].add(new BattleShip());
+	            metal -= battleCostMetal;
+	            deuterium -= battleCostDeterium;
+
+	        } else if (r < 100 && metal >= armoredCostMetal && deuterium >= armoredCostDeterium) {
+	            army[3].add(new ArmoredShip());
+	            metal -= armoredCostMetal;
+	            deuterium -= armoredCostDeterium;
+	        }
+	    }
+
+	    juego.setEnemyArmy(army);
+	}
+
+
 	public void mostrarPanelJuego(User user, Planet planet) {
 		getContentPane().removeAll();
-		add(new Game(user, planet)); 
+		juego = new Game(user, planet);
+		add(juego); 
 		revalidate();
 		repaint();
 	}
+
+	public Game getJuego() {
+		return juego;
+	}
+	
 }
 
 class Game extends JPanel {
     private Planet planeta;
     private User usuario;
-    private JPanel north,stats,barraderechastats, barraizquierdastats, barraabajostats, shop,battles,reports;
+    private JPanel north,stats,barraderechastats, barraizquierdastats, barraabajostats, shop,battlescomming,reports;
     private FondoPanel planetstat;
-    private JLabel name, metal, deuterium, leveltechnologyattack, leveltechnologydefense, nosubirataque, nosubirdefensa, precioataque, preciodefensa;
+    private JLabel name, metal, deuterium, leveltechnologyattack, leveltechnologydefense, nosubirataque, nosubirdefensa, precioataque, preciodefensa, messagebattlecomming;
     private JTabbedPane menu;
     private BufferedImage[] imagenesUnidades;
     private JButton subirataque, subirdefensa;
     private JTextArea battledevelopment, battlereport;
+    private ArrayList<MilitaryUnit>[] enemyArmy;
     
+    public ArrayList<MilitaryUnit>[] getEnemyArmy() {
+		return enemyArmy;
+	}
 
-    public Game(User usuario, Planet planeta) {
+	public void setEnemyArmy(ArrayList<MilitaryUnit>[] enemyArmy) {
+		this.enemyArmy = enemyArmy;
+	}
+	
+	public void restaurar_enemigo() {
+        this.enemyArmy = new ArrayList[7];
+        for (int i = 0; i < enemyArmy.length; i++) {
+		    enemyArmy[i] = new ArrayList<>();
+		}
+	}
+	
+	public void setMessageBattleComming(String mensaje) {
+		messagebattlecomming.setText(mensaje);;
+		repaint();
+	}
+
+	public Game(User usuario, Planet planeta) {
         this.usuario = usuario;
         this.planeta = planeta;
+        this.enemyArmy = new ArrayList[7];
+        for (int i = 0; i < enemyArmy.length; i++) {
+		    enemyArmy[i] = new ArrayList<>();
+		}
         setLayout(new BorderLayout());
         try {
         	imagenesUnidades = new BufferedImage[7];
@@ -85,6 +223,7 @@ class Game extends JPanel {
         }
         name = new JLabel(usuario.getName());
         north = new JPanel();
+        messagebattlecomming = new JLabel("Por ahora no hay enemigos");
         add(north,BorderLayout.NORTH);
         north.setBackground(Color.GREEN);
         north.add(name);
@@ -99,7 +238,7 @@ class Game extends JPanel {
         leveltechnologyattack.setText("Tech attack: " + planeta.getTechnologyAtack());
         leveltechnologydefense.setText("Tech Defense: " + planeta.getTechnologyDefense());
         stats.setLayout(new BorderLayout());
-        planetstat = new FondoPanel(planeta.getImagen());
+        planetstat = new FondoPanel(planeta.getImagen(), planeta, true);
         barraderechastats = new JPanel();
         barraizquierdastats = new JPanel();
         barraizquierdastats.add(metal);
@@ -126,14 +265,14 @@ class Game extends JPanel {
         mensajesPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         for (int i = 0; i < planeta.getArmy().length; i++) {
         	final int index = i;
-        	FondoPanel naveimagen = new FondoPanel(imagenesUnidades[i]); 
+        	FondoPanel naveimagen = new FondoPanel(imagenesUnidades[i], planeta, false); 
         	naveimagen.setPreferredSize(new Dimension(80,40)); 
         	naveimagen.setMinimumSize(new Dimension(80,40)); 
         	naveimagen.setMaximumSize(new Dimension(80,40));
     		barraderechastats.add(naveimagen);
     		JPanel compra = new JPanel();
     		compra.setLayout(new BoxLayout(compra, BoxLayout.Y_AXIS));
-    		FondoPanel naveimagenshop = new FondoPanel(imagenesUnidades[i]);
+    		FondoPanel naveimagenshop = new FondoPanel(imagenesUnidades[i], planeta, false);
         	naveimagenshop.setPreferredSize(new Dimension(60,40)); 
         	naveimagenshop.setMinimumSize(new Dimension(60,40)); 
         	naveimagenshop.setMaximumSize(new Dimension(60,40));
@@ -209,6 +348,16 @@ class Game extends JPanel {
     	         }});
     		barraderechastats.add(new JLabel("" + planeta.getArmy()[i].size() + "\n"));
         }
+        battlescomming = new JPanel();
+        battlescomming.add(messagebattlecomming);
+        for (int i = 0; i < 4; i++) {
+        	FondoPanel naveimagencomming = new FondoPanel(imagenesUnidades[i], planeta, false);
+        	naveimagencomming.setPreferredSize(new Dimension(60,40)); 
+        	naveimagencomming.setMinimumSize(new Dimension(60,40)); 
+        	naveimagencomming.setMaximumSize(new Dimension(60,40));
+        	battlescomming.add(naveimagencomming);
+        	battlescomming.add(new JLabel("" + 0 + "\n"));
+        }
         stats.add(planetstat, BorderLayout.CENTER);
         stats.add(barraderechastats,BorderLayout.EAST);
         stats.add(barraizquierdastats,BorderLayout.WEST);
@@ -251,14 +400,39 @@ class Game extends JPanel {
         barraabajostats.add(Box.createVerticalStrut(10));
         menu.addTab("Stats", stats);
         menu.addTab("Shop", shop);
-        battles = new JPanel();
-        menu.addTab("Battle develop", battles);
+        menu.addTab("Battle Comming", battlescomming);
         reports = new JPanel();
         menu.addTab("Battle reports", reports);
         add(menu,BorderLayout.CENTER);
     }
+	
+	public void updateEnemyInformation() {
+		battlescomming.removeAll();
+		battlescomming.add(messagebattlecomming);
+		for (int i = 0; i < 4; i++) {
+			if (enemyArmy[i] != null) {
+	        	FondoPanel naveimagencomming = new FondoPanel(imagenesUnidades[i], planeta, false);
+	        	naveimagencomming.setPreferredSize(new Dimension(60,40)); 
+	        	naveimagencomming.setMinimumSize(new Dimension(60,40)); 
+	        	naveimagencomming.setMaximumSize(new Dimension(60,40));
+	        	battlescomming.add(naveimagencomming);
+	        	battlescomming.add(new JLabel("" + enemyArmy[i].size() + "\n"));
+			} else {
+	        	FondoPanel naveimagencomming = new FondoPanel(imagenesUnidades[i], planeta, false);
+	        	naveimagencomming.setPreferredSize(new Dimension(60,40)); 
+	        	naveimagencomming.setMinimumSize(new Dimension(60,40)); 
+	        	naveimagencomming.setMaximumSize(new Dimension(60,40));
+	        	battlescomming.add(naveimagencomming);
+	        	battlescomming.add(new JLabel("" + 0 + "\n"));
+			}
+        }
+	}
     
-    class EventosJuego implements ActionListener{
+    public Planet getPlaneta() {
+		return planeta;
+	}
+
+	class EventosJuego implements ActionListener{
 
 		public void actionPerformed(ActionEvent e) {
 			int anterior_nivel;
@@ -290,8 +464,131 @@ class Game extends JPanel {
 		}
     	
     }
-    
+	
+	private void reconstruirShop() {
+	    shop.removeAll();
+	    JPanel mensajesPanel = new JPanel();
+	    mensajesPanel.setLayout(new BoxLayout(mensajesPanel, BoxLayout.Y_AXIS));
+	    JLabel texto = new JLabel("");
+	    JLabel mensajeCompra = new JLabel("");
+	    JLabel unidadesCompradas = new JLabel("");
+
+	    mensajesPanel.add(texto);
+	    mensajesPanel.add(mensajeCompra);
+	    mensajesPanel.add(unidadesCompradas);
+	    mensajesPanel.setPreferredSize(new Dimension(800, 100));
+	    mensajesPanel.setMaximumSize(new Dimension(800, 100));
+	    shop.add(mensajesPanel);
+
+	    for (int i = 0; i < planeta.getArmy().length; i++) {
+	        final int index = i;
+	        FondoPanel naveimagenshop = new FondoPanel(imagenesUnidades[i], planeta, false);
+
+	        JPanel compra = new JPanel();
+	        compra.setLayout(new BoxLayout(compra, BoxLayout.Y_AXIS));
+	        compra.setPreferredSize(new Dimension(120, 120));
+	        compra.setBackground(Color.YELLOW);
+
+	        JTextField cantidad = new JTextField("1");
+	        cantidad.setMaximumSize(new Dimension(60, 20));
+	        JButton botoncito = new JButton("Buy");
+	        botoncito.setMaximumSize(new Dimension(60, 20));
+
+	        compra.add(Box.createVerticalStrut(10));
+	        compra.add(naveimagenshop);
+	        compra.add(Box.createVerticalStrut(10));
+	        compra.add(cantidad);
+	        compra.add(Box.createVerticalStrut(5));
+	        compra.add(botoncito);
+
+	        shop.add(compra);
+
+	        botoncito.addActionListener(new ActionListener() {
+	            public void actionPerformed(ActionEvent e) {
+	                try {
+	                    int n = Integer.parseInt(cantidad.getText().trim());
+	                    if (n <= 0) throw new NumberFormatException();
+	                    texto.setText("");
+	                    int antes = planeta.getArmy()[index].size();
+	                    switch (index) {
+	                        case 0: planeta.newLightHunter(n); break;
+	                        case 1: planeta.newHeavyHunter(n); break;
+	                        case 2: planeta.newBattleShip(n); break;
+	                        case 3: planeta.newArmoredShip(n); break;
+	                        case 4: planeta.newMissileLauncher(n); break;
+	                        case 5: planeta.newIonCannon(n); break;
+	                        case 6: planeta.newPlasmaCannon(n); break;
+	                    }
+	                    int despues = planeta.getArmy()[index].size();
+	                    int compradas = despues - antes;
+	                    update_information();
+	                    if (compradas == 0) {
+	                        mensajeCompra.setText("❌ No se pudieron comprar unidades.");
+	                        unidadesCompradas.setText("");
+	                    } else if (compradas != n) {
+	                        mensajeCompra.setText("❌ No se pudieron comprar todas las unidades.");
+	                        unidadesCompradas.setText("✅ Compradas: " + compradas);
+	                    } else {
+	                        mensajeCompra.setText("");
+	                        unidadesCompradas.setText("✅ Compradas: " + compradas);
+	                    }
+	                } catch (NumberFormatException ex) {
+	                    texto.setText("La cantidad debe ser un número");
+	                    unidadesCompradas.setText("");
+	                    mensajeCompra.setText("");
+	                }
+	            }
+	        });
+	    }
+
+	    shop.revalidate();
+	    shop.repaint();
+	}
+	
+	public void reiniciarPlaneta(Planet nuevo) {
+	    this.planeta = nuevo;
+	    planetstat.setImagen(nuevo.getImagen());
+	    planetstat.setPlaneta(nuevo);
+	    metal.setText("Metal: " + nuevo.getMetal());
+	    deuterium.setText("Deuterium: " + nuevo.getDeuterium());
+	    leveltechnologyattack.setText("Tech attack: " + nuevo.getTechnologyAtack());
+	    leveltechnologydefense.setText("Tech Defense: " + nuevo.getTechnologyDefense());
+	    precioataque.setText("Price Deuterium: " + nuevo.getUpgradeAttackTechnologyDeuteriumCost());
+	    preciodefensa.setText("Price Deuterium: " + nuevo.getUpgradeDefenseTechnologyDeuteriumCost());
+	    planetstat.setPlaneta(nuevo);
+	    barraderechastats.removeAll();
+	    for (int i = 0; i < nuevo.getArmy().length; i++) {
+	        FondoPanel naveimagen = new FondoPanel(imagenesUnidades[i], nuevo, false);
+	        naveimagen.setPreferredSize(new Dimension(80,40));
+	        barraderechastats.add(naveimagen);
+	        barraderechastats.add(new JLabel("" + nuevo.getArmy()[i].size()));
+	    }
+	    barraderechastats.revalidate();
+	    barraderechastats.repaint();
+	    updateEnemyInformation();
+	    reconstruirShop();
+	    repaint();
+	}
+
+	
     public void update_information() {
+    	if (planeta.getMetal() <= 0 || planeta.getDeuterium() <= 0) {
+    		try {
+				BufferedImage tierradestruida = ImageIO.read(new File(".\\src\\Assets\\Asset_EarthDestroyed.png"));
+				planetstat.setImagen(tierradestruida);
+				repaint();
+				String material;
+				if (planeta.getMetal() <= 0) {
+					material = "Metal";
+				} else {
+					material = "Deuterium";
+				}
+				JOptionPane.showMessageDialog(null, "Game Over","Tu planeta no le queda " + material, JOptionPane.INFORMATION_MESSAGE);
+				reiniciarPlaneta(new Planet(planeta.getImagen(), 1, 1, 100000, 1000000, 40000, 20000));
+			} catch (IOException e) {
+				System.out.println(e.getMessage());
+			}
+    	}
         metal.setText("Metal: " + planeta.getMetal());
         deuterium.setText("Deuterium: " + planeta.getDeuterium());
         leveltechnologyattack.setText("Tech attack: " + planeta.getTechnologyAtack());
@@ -300,7 +597,7 @@ class Game extends JPanel {
         preciodefensa.setText("Price Deuterium: " + planeta.getUpgradeDefenseTechnologyDeuteriumCost());
         barraderechastats.removeAll();
         for (int i = 0; i < planeta.getArmy().length; i++) {
-            FondoPanel naveimagen = new FondoPanel(imagenesUnidades[i]); 
+            FondoPanel naveimagen = new FondoPanel(imagenesUnidades[i],planeta, false); 
             naveimagen.setPreferredSize(new Dimension(80,40)); 
             barraderechastats.add(naveimagen);
             barraderechastats.add(new JLabel("" + planeta.getArmy()[i].size()));
@@ -314,98 +611,143 @@ class Game extends JPanel {
 class FondoPanel extends JPanel {
 
     private BufferedImage imagen;
+    private Planet planeta;
+    private Boolean warning;
 
-    public FondoPanel(BufferedImage imagen) {
+    public FondoPanel(BufferedImage imagen, Planet planeta, boolean warning) {
         this.imagen = imagen;
+        this.planeta = planeta;
+        this.warning = warning;
     }
 
-    @Override
+    public void setImagen(BufferedImage imagen) {
+		this.imagen = imagen;
+	}
+
+	@Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g;
         if (imagen != null) {
             Image escalada = imagen.getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH);
             g.drawImage(escalada, 0, 0, this);
         }
+        if (warning && (planeta != null && (planeta.getMetal() <= 5000 || planeta.getDeuterium() <= 5000))) {
+        	String mensaje = "⚠ ¡PELIGRO! Recursos críticos";
+            Font font = new Font("Arial", Font.BOLD, 15);
+            FontMetrics metrics = g2.getFontMetrics(font);
+            int textWidth = metrics.stringWidth(mensaje);
+            int textHeight = metrics.getHeight()*2;
+            int x = 10;
+            int y = 20;
+            g2.setColor(Color.BLACK);
+            g2.fillRect(x - 5, y - textHeight + metrics.getAscent(), textWidth + 10, textHeight);
+
+        	g2.setColor(new Color(255, 76, 76));
+            g2.drawString(mensaje, 10, 20);
+        }
     }
+
+	public void setPlaneta(Planet planeta) {
+		this.planeta = planeta;
+	}
 }
 
 class PanelIniciarSesion extends JPanel {
-	private JPanel north,center,south, paneldeingreso;
-	private VentanaJuego ventana;
-	private JLabel title, error;
-	private JButton startaccount, createaccount;
-	private JTextField name;
-	private JPasswordField pass;
-	
-	PanelIniciarSesion(VentanaJuego ventanita) {
-		setLayout(new BorderLayout());
-		north = new JPanel();
-		center = new JPanel();
-		paneldeingreso = new JPanel();
-		south = new JPanel();
-		title = new JLabel("Sesion");
-		name = new JTextField("Nameuser");
-		pass = new JPasswordField("Password");
-		ventana = ventanita;
-		error = new JLabel("");
-		error.setPreferredSize(new Dimension(250, 40));
-		error.setMaximumSize(new Dimension(250, 40));
-		error.setMinimumSize(new Dimension(250, 40));
-		startaccount = new JButton("Start Account");
-		createaccount = new JButton("Create Account");
-		north.setBackground(Color.green);
-		center.setBackground(Color.white);
-		paneldeingreso.setBackground(Color.white);
-		south.setBackground(Color.green);
-		north.add(title);
-		center.setLayout(new BoxLayout(center,BoxLayout.X_AXIS));
-		paneldeingreso.setLayout(new BoxLayout(paneldeingreso, BoxLayout.Y_AXIS));
-		paneldeingreso.add(Box.createVerticalStrut(20));
-		paneldeingreso.add(name);
-		paneldeingreso.add(Box.createVerticalStrut(10));
-		paneldeingreso.add(pass);
-		paneldeingreso.add(Box.createVerticalStrut(10));
-		paneldeingreso.add(error);
-		center.add(Box.createHorizontalStrut(325));
-		center.add(paneldeingreso);
-		south.add(startaccount);
-		south.add(createaccount);
-		name.setToolTipText("Nameuser");
-		pass.setToolTipText("Password");
-		name.setMaximumSize(new Dimension(250,40));
-		pass.setMaximumSize(new Dimension(250,40));
-		north.setMaximumSize(new Dimension(800,40));
-		center.setMaximumSize(new Dimension(800,40));
-		south.setMaximumSize(new Dimension(800,40));
-		add(north,BorderLayout.NORTH);
-		add(center,BorderLayout.CENTER);
-		add(south,BorderLayout.SOUTH);
-		startaccount.addActionListener(new EventosSesion());
-		createaccount.addActionListener(new EventosSesion());
-	}
-	
-	class EventosSesion implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			User usuario;
-			switch(e.getActionCommand()) {
-			case "Create Account":
-				String contraseña = new String(pass.getPassword());
-				if (name.getText().length() > 12 || name.getText().length() < 3 || !contraseña.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^a-zA-Z0-9]).{6,}$")) {
-					error.setText("Nombre o contraseña poco seguros");
-				} else {
-					try {
-					    BufferedImage imagen = ImageIO.read(new File(".\\src\\Assets\\Asset_EarthBasic.png"));
-					    ventana.mostrarPanelJuego(new User(name.getText(),contraseña),new Planet(imagen, 1, 1, 100000, 1000000, 40000, 20000));
-					} catch (IOException z) {
-					   	System.out.println(z.getMessage());
-					}
-				}
-				break;
-			case "Start Account":
-				break;
-			}
-		}
-	}
+    private VentanaJuego ventana;
+    private JTextField name;
+    private JPasswordField pass;
+    private JLabel error;
+
+    public PanelIniciarSesion(VentanaJuego ventana) {
+        this.ventana = ventana;
+        setLayout(new BorderLayout());
+        setPreferredSize(new Dimension(1280, 720));
+
+        // Norte - Título
+        JPanel north = new JPanel();
+        JLabel title = new JLabel("Planet Wars - Iniciar Sesión");
+        title.setFont(new Font("Arial", Font.BOLD, 28));
+        north.setBackground(new Color(30, 30, 30));
+        title.setForeground(Color.WHITE);
+        north.add(title);
+        add(north, BorderLayout.NORTH);
+
+        // Centro - Formulario
+        JPanel center = new JPanel();
+        center.setLayout(new GridBagLayout());
+        center.setBackground(Color.DARK_GRAY);
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        JPanel form = new JPanel();
+        form.setLayout(new BoxLayout(form, BoxLayout.Y_AXIS));
+        form.setBackground(Color.DARK_GRAY);
+
+        name = new JTextField("Nombre de usuario", 20);
+        pass = new JPasswordField("Contraseña", 20);
+        error = new JLabel(" ");
+        error.setForeground(Color.RED);
+
+        form.add(Box.createVerticalStrut(20));
+        form.add(name);
+        form.add(Box.createVerticalStrut(10));
+        form.add(pass);
+        form.add(Box.createVerticalStrut(10));
+        form.add(error);
+        form.add(Box.createVerticalStrut(20));
+
+        center.add(form, gbc);
+        add(center, BorderLayout.CENTER);
+
+        // Sur - Botones
+        JPanel south = new JPanel();
+        south.setBackground(new Color(30, 30, 30));
+        JButton startaccount = new JButton("Iniciar Partida");
+        JButton createaccount = new JButton("Crear Cuenta");
+        south.add(startaccount);
+        south.add(createaccount);
+        add(south, BorderLayout.SOUTH);
+
+        // Acciones
+        startaccount.addActionListener(new EventosSesion());
+        createaccount.addActionListener(new EventosSesion());
+    }
+
+    public class EventosSesion implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            String command = e.getActionCommand();
+            String username = name.getText();
+            String password = new String(pass.getPassword());
+
+            if (command.equals("Crear Cuenta")) {
+                if (!validarPassword(password)) {
+                    error.setText("Contraseña débil. Usa mayúsculas, minúsculas, números y símbolos.");
+                } else if (username.length() < 3 || username.length() > 12) {
+                    error.setText("El nombre debe tener entre 3 y 12 caracteres.");
+                } else {
+                    try {
+                        BufferedImage img = ImageIO.read(new File(".\\src\\Assets\\Asset_EarthBasic.png"));
+                        Planet planeta = new Planet(img, 1, 1, 100000, 1000000, 40000, 20000);
+                        User user = new User(username, password);
+                        ventana.mostrarPanelJuego(user, planeta);
+                    } catch (IOException ex) {
+                        error.setText("Error cargando la imagen del planeta");
+                    }
+                }
+            } else if (command.equals("Iniciar Partida")) {
+                // Aquí se puede implementar carga de datos desde archivo
+                error.setText("Funcionalidad aún no implementada.");
+            }
+        }
+
+        public boolean validarPassword(String password) {
+            return password.length() >= 6 &&
+                   password.matches(".*[a-z].*") &&
+                   password.matches(".*[A-Z].*") &&
+                   password.matches(".*\\d.*") &&
+                   password.matches(".*[^a-zA-Z0-9].*");
+        }
+    }
 }
 
 
@@ -419,8 +761,6 @@ class User {
 	    this.password = Password;
 		
 	}
-	
-	public void elegirIDAutomaticamente() {}
 
 	public String getName() {
 		return name;
@@ -463,6 +803,23 @@ class Planet {
 		this.army = new ArrayList[7];
 		for (int i = 0; i < army.length; i++) {
 		    army[i] = new ArrayList<>();
+		}
+	}
+	
+	public void roboResources() {
+		if (metal > 10000) {
+			metal *= 0.9;
+		} else if(metal > 5000) {
+			metal *= 0.8;
+		} else {
+			metal = 0;
+		}
+		if (deuterium > 10000) {
+			deuterium *= 0.9;
+		} else if(deuterium > 5000) {
+			deuterium *= 0.8;
+		} else {
+			deuterium = 0;
 		}
 	}
 	
@@ -697,12 +1054,12 @@ class ResourceException extends Exception {
 	}
 }
 
-abstract class ship implements MilitaryUnit, Variables{
+abstract class Ship implements MilitaryUnit, Variables{
 	private int armor;
 	private int initialArmor;
 	private int baseDamage;
 	
-	public ship(int armor, int baseDamage) {
+	public Ship(int armor, int baseDamage) {
 		super();
 		this.armor = armor;
 		this.initialArmor = armor;
@@ -843,7 +1200,7 @@ interface Variables {
 	public final int MIN_PERCENTAGE_TO_WIN = 20;
 }
 
-class LigthHunter extends ship {
+class LigthHunter extends Ship {
 	private BufferedImage imagen;
 
 	public LigthHunter(int armor, int baseDamage) {
@@ -897,7 +1254,7 @@ class LigthHunter extends ship {
 	
 }
 
-class HeavyHunter extends ship {
+class HeavyHunter extends Ship {
 	private BufferedImage imagen;
 
 	public HeavyHunter(int armor, int baseDamage) {
@@ -951,7 +1308,7 @@ class HeavyHunter extends ship {
 	
 }
 
-class BattleShip extends ship {
+class BattleShip extends Ship {
 	private BufferedImage imagen;
 
 	public BattleShip(int armor, int baseDamage) {
@@ -1005,7 +1362,7 @@ class BattleShip extends ship {
 	
 }
 
-class ArmoredShip extends ship {
+class ArmoredShip extends Ship {
 	private BufferedImage imagen;
 
 	public ArmoredShip(int armor, int baseDamage) {
@@ -1296,8 +1653,16 @@ class Battle implements Variables {
 	    mostrar += String.format("\n%-25s%-10d%-10d", "Enemy Won", enemyDrops[0], enemyDrops[1]);
 	    int totalPlanetLoss = resourcesLooses[0][0] + resourcesLooses[0][1];
 	    int totalEnemyLoss = resourcesLooses[1][0] + resourcesLooses[1][1];
-	    String winner = (totalPlanetLoss < totalEnemyLoss) ? "Planet" : "Enemy";
+	    String winner;
+	    if (totalPlanetLoss < totalEnemyLoss) {
+	    	winner = "Planet";
+	    } else if (totalPlanetLoss > totalEnemyLoss) {
+	    	winner = "Enemy";
+	    } else {
+	    	winner = "Draw";
+	    }
 	    mostrar += "\n\nWINNER: " + winner;
+	    
 		return mostrar;
 	}
 	public String getBattleDevelopment() {
@@ -1508,25 +1873,18 @@ class Battle implements Variables {
 	}
   
 	// Aqui se reune toda la batalla.
-	public void startBattle() {
+	public void startBattle(Planet planeta) {
 	    rand = new Random();
 	    wasteMetalDeuterium = new int[2];
 	    enemyDrops = new int[2];
 	    planetDrops = new int[2];
 	    resourcesLooses = new int[2][3];
-
 	    initInitialArmies(); // Guarda conteo inicial
 	    resetArmyArmor();    // Reinicia armaduras
-
 	    boolean planetAttacks = rand.nextBoolean(); // decide quién empieza
-
 	    while (remainderPercentatgeFleet(planetArmy) > MIN_PERCENTAGE_TO_WIN &&
 	           remainderPercentatgeFleet(enemyArmy) > MIN_PERCENTAGE_TO_WIN) {
-
 	        updateactualunits(); // Actualiza unidades actuales
-
-	        battleDevelopment += "********************CHANGE ATTACKER********************\n";
-
 	        ArrayList<MilitaryUnit>[] attackingArmy;
 	        ArrayList<MilitaryUnit>[] defendingArmy;
 	        String atacante;
@@ -1554,8 +1912,6 @@ class Battle implements Variables {
 	            planetAttacks = !planetAttacks;
 	            continue;
 	        }
-	        
-	        
 	        MilitaryUnit attacker = attackingArmy[attackingGroup].get(attackingArmy[attackingGroup].size()-1);
 
 	        boolean repeatAttack;
@@ -1586,6 +1942,15 @@ class Battle implements Variables {
 	        planetAttacks = !planetAttacks; // cambia el turno
 	    }
 	    updateResourcesLoose(); // Calcula pérdidas al finalizar
+	    int totalPlanetLoss = resourcesLooses[0][2];
+	    int totalEnemyLoss = resourcesLooses[1][2];
+	    if (totalPlanetLoss < totalEnemyLoss) {
+	    	int bonificacion = planeta.getTechnologyAtack();
+	    	planeta.setMetal(planeta.getMetal() + (resourcesLooses[1][1] * (1 + bonificacion / 10)));
+	    	planeta.setDeuterium(planeta.getDeuterium() + (resourcesLooses[1][0] * (1 + bonificacion / 10)));
+	    } else if (totalPlanetLoss > totalEnemyLoss) {
+	    	planeta.roboResources();
+	    }
 	    resetArmyArmor();    // Reinicia armaduras al final
 	}
 }

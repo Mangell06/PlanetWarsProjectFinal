@@ -320,8 +320,11 @@ class Game extends JPanel {
     	    botoncito.addActionListener(new ActionListener() {
     	        public void actionPerformed(ActionEvent e) {
     	        	 try {
-    	                 int n = Integer.parseInt(cantidad.getText().trim());
-    	                 if (n <= 0) throw new NumberFormatException();
+    	                 int n = Integer.parseInt(cantidad.getText());
+    	                 if (n <= 0) {
+    	                	 texto.setText("La cantidad debe ser superior a 0");;
+    	                	 return;
+    	                 }
     	            	 texto.setText("");
     	            	 int antes = planeta.getArmy()[index].size();
     	                 switch(index) {
@@ -982,6 +985,7 @@ class Planet {
 			  army[0].add(new LigthHunter(Variables.ARMOR_LIGTHHUNTER + ((technologyDefense * Variables.PLUS_ARMOR_LIGTHHUNTER_BY_TECHNOLOGY) % 1000) ,Variables.BASE_DAMAGE_LIGTHHUNTER + ((technologyAttack*Variables.PLUS_ATTACK_LIGTHHUNTER_BY_TECHNOLOGY)%1000)));
 			} catch (ResourceException e) {
 				System.out.println(e.getMessage());
+				return;
 			}
 		}
 	}
@@ -997,6 +1001,7 @@ class Planet {
 				army[1].add(new HeavyHunter(Variables.ARMOR_HEAVYHUNTER + ((technologyDefense*Variables.PLUS_ARMOR_HEAVYHUNTER_BY_TECHNOLOGY)%1000),Variables.BASE_DAMAGE_HEAVYHUNTER + ((technologyAttack*Variables.PLUS_ATTACK_HEAVYHUNTER_BY_TECHNOLOGY)%1000)));
 			} catch (ResourceException e) {
 				System.out.println(e.getMessage());
+				return;
 			}
 		}
 	}
@@ -1012,6 +1017,7 @@ class Planet {
 			  army[2].add(new BattleShip(Variables.ARMOR_BATTLESHIP + ((technologyDefense*Variables.PLUS_ARMOR_BATTLESHIP_BY_TECHNOLOGY)%1000),Variables.BASE_DAMAGE_BATTLESHIP + ((technologyAttack*Variables.PLUS_ATTACK_BATTLESHIP_BY_TECHNOLOGY)%1000)));
 			} catch (ResourceException e) {
 				System.out.println(e.getMessage());
+				return;
 			}
 		}
 	}
@@ -1027,6 +1033,7 @@ class Planet {
 			  army[3].add(new ArmoredShip(Variables.ARMOR_ARMOREDSHIP + ((technologyDefense*Variables.PLUS_ARMOR_ARMOREDSHIP_BY_TECHNOLOGY)%1000),Variables.BASE_DAMAGE_ARMOREDSHIP + ((technologyAttack*Variables.PLUS_ATTACK_ARMOREDSHIP_BY_TECHNOLOGY)%1000)));
 			} catch (ResourceException e) {
 				System.out.println(e.getMessage());
+				return;
 			}
 		}
 	}
@@ -1044,6 +1051,7 @@ class Planet {
 				contador += 1;
 			} catch (ResourceException e) {
 				System.out.println(e.getMessage());
+				return;
 			}
 		}
 		System.out.println("added " + contador + "Missile Launcher");
@@ -1065,7 +1073,6 @@ class Planet {
 				break;
 			}
 		}
-		System.out.println("added " + contador + "Ion Cannon");
 	}
 	
 	public void newPlasmaCannon(int n) {
@@ -1084,7 +1091,6 @@ class Planet {
 				break;
 			}
 		}
-		System.out.println("added " + contador + "Plasma Cannon");
 	}
 	
 	public void printStats() {
@@ -1904,8 +1910,7 @@ class Battle implements Variables {
 			removedestroyships();
 		}
 	}
-	
-	// Elimina todas las naves con la armadura por debajo o igual a 0.
+
 	public void removedestroyships() {
 		for (int i = 0; i < planetArmy.length; i++) {
 			for (int j = 0; j < planetArmy[i].size(); j++) {
@@ -1985,19 +1990,13 @@ class Battle implements Variables {
 	                    atacante,
 	                    attacker.getClass().getSimpleName(),
 	                    defender.getClass().getSimpleName());
-
 	            int damage = attacker.attack();
 	            battleDevelopment += attacker.getClass().getSimpleName() + " generates the damage = " + damage + "\n";
-
 	            int newArmor = Math.max(0, defender.getActualArmor() - damage);
 	            battleDevelopment += defender.getClass().getSimpleName() + " stays with armor = " + newArmor + "\n";
-
 	            ataque_nave(attacker, defender, planetAttacks);
-
 	            repeatAttack = againattack(attacker);
-
 	        } while (repeatAttack);
-
 	        removedestroyships();
 	        planetAttacks = !planetAttacks; // cambia el turno
 	    }

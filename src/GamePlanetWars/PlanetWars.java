@@ -52,6 +52,7 @@ public class PlanetWars {
 		    		game.createEnemyArmy(metal, deuterium);
 		    		game.getJuego().updateEnemyInformation();
 		    		game.getJuego().setMessageBattleComming("Se han encontrado enemigos");
+			        game.getJuego().repaint();
 		    	}}}, 30000, 60000);
 		
 		battleTimer.schedule(new TimerTask() {
@@ -84,10 +85,11 @@ public class PlanetWars {
 		    	}}}, 40000, 70000);
 		resourceTimer.schedule(new TimerTask() {
 		    public void run() {
-		    	if (game.getJuego() != null) {
+		    	if (game.getJuego() != null && game.getJuego().getPlaneta() != null) {
 			        game.getJuego().getPlaneta().setMetal(game.getJuego().getPlaneta().getMetal() + (Variables.PLANET_METAL_GENERATED + game.getJuego().getPlaneta().getTechnologyDefense() * 250));
 			        game.getJuego().getPlaneta().setDeuterium(game.getJuego().getPlaneta().getDeuterium() + (Variables.PLANET_DEUTERIUM_GENERATED + game.getJuego().getPlaneta().getTechnologyDefense() * 100));
 			        game.getJuego().update_information();
+			        game.getJuego().repaint();
 		    	}}}, 5000, 20000);}
 }
 
@@ -96,7 +98,7 @@ class VentanaJuego extends JFrame {
 	Game juego;
 	public VentanaJuego() {
 		setTitle("Planet Wars");
-		setSize(800,600);
+		setSize(1280,720);
 		iniciarSesion = new PanelIniciarSesion(this);
 		add(iniciarSesion);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -202,6 +204,7 @@ class Game extends JPanel {
 	}
 
 	public Game(User usuario, Planet planeta) {
+		setPreferredSize(new Dimension(1280, 720));
         this.usuario = usuario;
         this.planeta = planeta;
         this.enemyArmy = new ArrayList[7];
@@ -222,17 +225,26 @@ class Game extends JPanel {
             System.out.println("Error loading unit images: " + e.getMessage());
         }
         name = new JLabel(usuario.getName());
+        name.setForeground(Color.WHITE);
         north = new JPanel();
+        north.setBackground(Color.BLACK);
         messagebattlecomming = new JLabel("Por ahora no hay enemigos");
+        messagebattlecomming.setForeground(Color.WHITE);
         add(north,BorderLayout.NORTH);
-        north.setBackground(Color.GREEN);
         north.add(name);
         menu = new JTabbedPane();
+        menu.setForeground(Color.WHITE);
+        menu.setBackground(Color.BLACK);
         stats = new JPanel();
+        stats.setBackground(Color.BLACK);
         metal = new JLabel("Metal");
+        metal.setForeground(Color.WHITE);
         deuterium = new JLabel("Deuterium");
+        deuterium.setForeground(Color.WHITE);
         leveltechnologyattack = new JLabel("Level Technology Attack");
+        leveltechnologyattack.setForeground(Color.WHITE);
         leveltechnologydefense = new JLabel("Level Technology Defense");
+        leveltechnologydefense.setForeground(Color.WHITE);
         metal.setText("Metal: " + planeta.getMetal());
         deuterium.setText("Deuterium: " + planeta.getDeuterium());
         leveltechnologyattack.setText("Tech attack: " + planeta.getTechnologyAtack());
@@ -240,45 +252,53 @@ class Game extends JPanel {
         stats.setLayout(new BorderLayout());
         planetstat = new FondoPanel(planeta.getImagen(), planeta, true);
         barraderechastats = new JPanel();
+        barraderechastats.setBackground(Color.BLACK);
         barraizquierdastats = new JPanel();
+        barraizquierdastats.setBackground(Color.BLACK);
         barraizquierdastats.add(metal);
         barraizquierdastats.add(deuterium);
         barraizquierdastats.add(leveltechnologyattack);
         barraizquierdastats.add(leveltechnologydefense);
         shop = new JPanel();
+        shop.setBackground(Color.BLACK);
         JPanel mensajesPanel = new JPanel();
+        mensajesPanel.setBackground(Color.BLACK);
         mensajesPanel.setLayout(new BoxLayout(mensajesPanel, BoxLayout.Y_AXIS));
         barraabajostats = new JPanel();
         JLabel texto = new JLabel("");
+        texto.setForeground(Color.WHITE);
         mensajesPanel.add(texto);
         JLabel mensajeCompra = new JLabel("");
+        mensajeCompra.setForeground(Color.WHITE);
         JLabel unidadesCompradas = new JLabel("");
+        unidadesCompradas.setForeground(Color.WHITE);
         texto.setAlignmentX(Component.CENTER_ALIGNMENT);
         mensajeCompra.setAlignmentX(Component.CENTER_ALIGNMENT);
         unidadesCompradas.setAlignmentX(Component.CENTER_ALIGNMENT);
         mensajesPanel.add(mensajeCompra);
         mensajesPanel.add(unidadesCompradas);
         shop.add(mensajesPanel);
-        mensajesPanel.setPreferredSize(new Dimension(800,100));
-        mensajesPanel.setMaximumSize(new Dimension(800,100));
-        mensajesPanel.setMinimumSize(new Dimension(800,100));
+        mensajesPanel.setPreferredSize(new Dimension(1280,150));
+        mensajesPanel.setMaximumSize(new Dimension(1280,150));
+        mensajesPanel.setMinimumSize(new Dimension(1280,150));
         mensajesPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         for (int i = 0; i < planeta.getArmy().length; i++) {
         	final int index = i;
         	FondoPanel naveimagen = new FondoPanel(imagenesUnidades[i], planeta, false); 
-        	naveimagen.setPreferredSize(new Dimension(80,40)); 
-        	naveimagen.setMinimumSize(new Dimension(80,40)); 
-        	naveimagen.setMaximumSize(new Dimension(80,40));
+        	naveimagen.setPreferredSize(new Dimension(120,60)); 
+        	naveimagen.setMinimumSize(new Dimension(120,60)); 
+        	naveimagen.setMaximumSize(new Dimension(120,60));
     		barraderechastats.add(naveimagen);
     		JPanel compra = new JPanel();
+    		compra.setBackground(Color.BLACK);
     		compra.setLayout(new BoxLayout(compra, BoxLayout.Y_AXIS));
     		FondoPanel naveimagenshop = new FondoPanel(imagenesUnidades[i], planeta, false);
-        	naveimagenshop.setPreferredSize(new Dimension(60,40)); 
-        	naveimagenshop.setMinimumSize(new Dimension(60,40)); 
-        	naveimagenshop.setMaximumSize(new Dimension(60,40));
-        	compra.setPreferredSize(new Dimension(120,120)); 
-        	compra.setMinimumSize(new Dimension(120,120)); 
-        	compra.setMaximumSize(new Dimension(120,120));
+        	naveimagenshop.setPreferredSize(new Dimension(120,80)); 
+        	naveimagenshop.setMinimumSize(new Dimension(120,80)); 
+        	naveimagenshop.setMaximumSize(new Dimension(120,80));
+        	compra.setPreferredSize(new Dimension(170,170)); 
+        	compra.setMinimumSize(new Dimension(170,170)); 
+        	compra.setMaximumSize(new Dimension(170,170));
         	compra.add(Box.createVerticalStrut(10));
     		compra.add(naveimagenshop);
         	compra.add(Box.createVerticalStrut(10));
@@ -295,7 +315,7 @@ class Game extends JPanel {
     		botoncito.setMaximumSize(new Dimension(60,20));
     		botoncito.setAlignmentX(Component.CENTER_ALIGNMENT);
     		compra.add(botoncito);
-    		compra.setBackground(Color.YELLOW);
+    		compra.setBackground(Color.GRAY);
     		shop.add(compra);
     	    botoncito.addActionListener(new ActionListener() {
     	        public void actionPerformed(ActionEvent e) {
@@ -346,42 +366,51 @@ class Game extends JPanel {
 	                	 mensajeCompra.setText("");
     	             }
     	         }});
-    		barraderechastats.add(new JLabel("" + planeta.getArmy()[i].size() + "\n"));
+    	    JLabel textoayudita = new JLabel("" + planeta.getArmy()[i].size());
+    	    textoayudita.setForeground(Color.WHITE);
+    		barraderechastats.add(textoayudita);
         }
         battlescomming = new JPanel();
+        battlescomming.setBackground(Color.BLACK);
         battlescomming.add(messagebattlecomming);
         for (int i = 0; i < 4; i++) {
         	FondoPanel naveimagencomming = new FondoPanel(imagenesUnidades[i], planeta, false);
-        	naveimagencomming.setPreferredSize(new Dimension(60,40)); 
-        	naveimagencomming.setMinimumSize(new Dimension(60,40)); 
-        	naveimagencomming.setMaximumSize(new Dimension(60,40));
+        	naveimagencomming.setPreferredSize(new Dimension(120,80)); 
+        	naveimagencomming.setMinimumSize(new Dimension(120,80)); 
+        	naveimagencomming.setMaximumSize(new Dimension(120,80));
         	battlescomming.add(naveimagencomming);
-        	battlescomming.add(new JLabel("" + 0 + "\n"));
+        	JLabel textoayuda = new JLabel("" + 0);
+        	textoayuda.setForeground(Color.WHITE);
+        	battlescomming.add(textoayuda);
         }
         stats.add(planetstat, BorderLayout.CENTER);
         stats.add(barraderechastats,BorderLayout.EAST);
         stats.add(barraizquierdastats,BorderLayout.WEST);
         stats.add(barraabajostats, BorderLayout.SOUTH);
-        barraizquierdastats.setPreferredSize(new Dimension(125,600));
-        barraizquierdastats.setMinimumSize(new Dimension(125,600));
-        barraizquierdastats.setMaximumSize(new Dimension(125,600));
-        barraderechastats.setPreferredSize(new Dimension(125,600));
-        barraderechastats.setMinimumSize(new Dimension(125,600));
-        barraderechastats.setMaximumSize(new Dimension(125,600));
-        barraabajostats.setPreferredSize(new Dimension(800,150));
-        barraabajostats.setMinimumSize(new Dimension(800,150));
-        barraabajostats.setMaximumSize(new Dimension(800,150));
+        barraizquierdastats.setPreferredSize(new Dimension(250,600));
+        barraizquierdastats.setMinimumSize(new Dimension(250,600));
+        barraizquierdastats.setMaximumSize(new Dimension(250,600));
+        barraderechastats.setPreferredSize(new Dimension(250,600));
+        barraderechastats.setMinimumSize(new Dimension(250,600));
+        barraderechastats.setMaximumSize(new Dimension(250,600));
+        barraabajostats.setPreferredSize(new Dimension(1280,150));
+        barraabajostats.setMinimumSize(new Dimension(1280,150));
+        barraabajostats.setMaximumSize(new Dimension(1280,150));
         nosubirataque = new JLabel("");
+        nosubirataque.setForeground(Color.WHITE);
         subirataque = new JButton("Update Level technology attack");
         nosubirdefensa = new JLabel("");
+        nosubirdefensa.setForeground(Color.WHITE);
         subirdefensa = new JButton("Update Level technology defense");
         subirataque.addActionListener(new EventosJuego());
         subirdefensa.addActionListener(new EventosJuego());
         barraabajostats.setLayout(new BoxLayout(barraabajostats,BoxLayout.Y_AXIS));
         barraabajostats.add(nosubirataque);
+        barraabajostats.setBackground(Color.BLACK);
         nosubirataque.setAlignmentX(Component.CENTER_ALIGNMENT);
         barraabajostats.add(Box.createVerticalStrut(10));
         precioataque = new JLabel("Price Deuterium: " + planeta.getUpgradeAttackTechnologyDeuteriumCost());
+        precioataque.setForeground(Color.WHITE);
         barraabajostats.add(precioataque);
         precioataque.setAlignmentX(Component.CENTER_ALIGNMENT);
         barraabajostats.add(Box.createVerticalStrut(5));
@@ -392,6 +421,7 @@ class Game extends JPanel {
         nosubirdefensa.setAlignmentX(Component.CENTER_ALIGNMENT);
         barraabajostats.add(Box.createVerticalStrut(10));
         preciodefensa = new JLabel("Price Deuterium: " + planeta.getUpgradeDefenseTechnologyDeuteriumCost());
+        preciodefensa.setForeground(Color.WHITE);
         barraabajostats.add(preciodefensa);
         preciodefensa.setAlignmentX(Component.CENTER_ALIGNMENT);
         barraabajostats.add(Box.createVerticalStrut(5));
@@ -402,6 +432,7 @@ class Game extends JPanel {
         menu.addTab("Shop", shop);
         menu.addTab("Battle Comming", battlescomming);
         reports = new JPanel();
+        reports.setBackground(Color.BLACK);
         menu.addTab("Battle reports", reports);
         add(menu,BorderLayout.CENTER);
     }
@@ -412,18 +443,22 @@ class Game extends JPanel {
 		for (int i = 0; i < 4; i++) {
 			if (enemyArmy[i] != null) {
 	        	FondoPanel naveimagencomming = new FondoPanel(imagenesUnidades[i], planeta, false);
-	        	naveimagencomming.setPreferredSize(new Dimension(60,40)); 
-	        	naveimagencomming.setMinimumSize(new Dimension(60,40)); 
-	        	naveimagencomming.setMaximumSize(new Dimension(60,40));
+	        	naveimagencomming.setPreferredSize(new Dimension(120,80)); 
+	        	naveimagencomming.setMinimumSize(new Dimension(120,80)); 
+	        	naveimagencomming.setMaximumSize(new Dimension(120,80));
 	        	battlescomming.add(naveimagencomming);
-	        	battlescomming.add(new JLabel("" + enemyArmy[i].size() + "\n"));
+	        	JLabel textoayudita = new JLabel("" + enemyArmy[i].size());
+	        	textoayudita.setForeground(Color.WHITE);
+	        	battlescomming.add(textoayudita);
 			} else {
 	        	FondoPanel naveimagencomming = new FondoPanel(imagenesUnidades[i], planeta, false);
-	        	naveimagencomming.setPreferredSize(new Dimension(60,40)); 
-	        	naveimagencomming.setMinimumSize(new Dimension(60,40)); 
-	        	naveimagencomming.setMaximumSize(new Dimension(60,40));
+	        	naveimagencomming.setPreferredSize(new Dimension(120,80)); 
+	        	naveimagencomming.setMinimumSize(new Dimension(120,80)); 
+	        	naveimagencomming.setMaximumSize(new Dimension(120,80));
 	        	battlescomming.add(naveimagencomming);
-	        	battlescomming.add(new JLabel("" + 0 + "\n"));
+	        	JLabel textoayudita = new JLabel("" + 0);
+	        	textoayudita.setForeground(Color.WHITE);
+	        	battlescomming.add(textoayudita);
 			}
         }
 	}
@@ -468,78 +503,101 @@ class Game extends JPanel {
 	private void reconstruirShop() {
 	    shop.removeAll();
 	    JPanel mensajesPanel = new JPanel();
-	    mensajesPanel.setLayout(new BoxLayout(mensajesPanel, BoxLayout.Y_AXIS));
-	    JLabel texto = new JLabel("");
-	    JLabel mensajeCompra = new JLabel("");
-	    JLabel unidadesCompradas = new JLabel("");
-
-	    mensajesPanel.add(texto);
-	    mensajesPanel.add(mensajeCompra);
-	    mensajesPanel.add(unidadesCompradas);
-	    mensajesPanel.setPreferredSize(new Dimension(800, 100));
-	    mensajesPanel.setMaximumSize(new Dimension(800, 100));
-	    shop.add(mensajesPanel);
-
-	    for (int i = 0; i < planeta.getArmy().length; i++) {
-	        final int index = i;
-	        FondoPanel naveimagenshop = new FondoPanel(imagenesUnidades[i], planeta, false);
-
-	        JPanel compra = new JPanel();
-	        compra.setLayout(new BoxLayout(compra, BoxLayout.Y_AXIS));
-	        compra.setPreferredSize(new Dimension(120, 120));
-	        compra.setBackground(Color.YELLOW);
-
-	        JTextField cantidad = new JTextField("1");
-	        cantidad.setMaximumSize(new Dimension(60, 20));
-	        JButton botoncito = new JButton("Buy");
-	        botoncito.setMaximumSize(new Dimension(60, 20));
-
-	        compra.add(Box.createVerticalStrut(10));
-	        compra.add(naveimagenshop);
-	        compra.add(Box.createVerticalStrut(10));
-	        compra.add(cantidad);
-	        compra.add(Box.createVerticalStrut(5));
-	        compra.add(botoncito);
-
-	        shop.add(compra);
-
-	        botoncito.addActionListener(new ActionListener() {
-	            public void actionPerformed(ActionEvent e) {
-	                try {
-	                    int n = Integer.parseInt(cantidad.getText().trim());
-	                    if (n <= 0) throw new NumberFormatException();
-	                    texto.setText("");
-	                    int antes = planeta.getArmy()[index].size();
-	                    switch (index) {
-	                        case 0: planeta.newLightHunter(n); break;
-	                        case 1: planeta.newHeavyHunter(n); break;
-	                        case 2: planeta.newBattleShip(n); break;
-	                        case 3: planeta.newArmoredShip(n); break;
-	                        case 4: planeta.newMissileLauncher(n); break;
-	                        case 5: planeta.newIonCannon(n); break;
-	                        case 6: planeta.newPlasmaCannon(n); break;
-	                    }
-	                    int despues = planeta.getArmy()[index].size();
-	                    int compradas = despues - antes;
-	                    update_information();
-	                    if (compradas == 0) {
-	                        mensajeCompra.setText("❌ No se pudieron comprar unidades.");
-	                        unidadesCompradas.setText("");
-	                    } else if (compradas != n) {
-	                        mensajeCompra.setText("❌ No se pudieron comprar todas las unidades.");
-	                        unidadesCompradas.setText("✅ Compradas: " + compradas);
-	                    } else {
-	                        mensajeCompra.setText("");
-	                        unidadesCompradas.setText("✅ Compradas: " + compradas);
-	                    }
-	                } catch (NumberFormatException ex) {
-	                    texto.setText("La cantidad debe ser un número");
-	                    unidadesCompradas.setText("");
-	                    mensajeCompra.setText("");
-	                }
-	            }
-	        });
-	    }
+        mensajesPanel.setLayout(new BoxLayout(mensajesPanel, BoxLayout.Y_AXIS));
+        barraabajostats = new JPanel();
+        JLabel texto = new JLabel("");
+        mensajesPanel.add(texto);
+        JLabel mensajeCompra = new JLabel("");
+        JLabel unidadesCompradas = new JLabel("");
+        texto.setAlignmentX(Component.CENTER_ALIGNMENT);
+        mensajeCompra.setAlignmentX(Component.CENTER_ALIGNMENT);
+        unidadesCompradas.setAlignmentX(Component.CENTER_ALIGNMENT);
+        mensajesPanel.add(mensajeCompra);
+        mensajesPanel.add(unidadesCompradas);
+        shop.add(mensajesPanel);
+        mensajesPanel.setPreferredSize(new Dimension(1280,150));
+        mensajesPanel.setMaximumSize(new Dimension(1280,150));
+        mensajesPanel.setMinimumSize(new Dimension(1280,150));
+        mensajesPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+	  for (int i = 0; i < planeta.getArmy().length; i++) {
+        	final int index = i;
+    		JPanel compra = new JPanel();
+    		compra.setLayout(new BoxLayout(compra, BoxLayout.Y_AXIS));
+    		FondoPanel naveimagenshop = new FondoPanel(imagenesUnidades[i], planeta, false);
+        	naveimagenshop.setPreferredSize(new Dimension(120,80)); 
+        	naveimagenshop.setMinimumSize(new Dimension(120,80)); 
+        	naveimagenshop.setMaximumSize(new Dimension(120,80));
+        	compra.setPreferredSize(new Dimension(120,120)); 
+        	compra.setMinimumSize(new Dimension(120,120)); 
+        	compra.setMaximumSize(new Dimension(120,120));
+        	compra.add(Box.createVerticalStrut(10));
+    		compra.add(naveimagenshop);
+        	compra.add(Box.createVerticalStrut(10));
+        	JTextField cantidad = new JTextField("1");
+        	cantidad.setPreferredSize(new Dimension(30,20));
+        	cantidad.setMinimumSize(new Dimension(30,20));
+        	cantidad.setMaximumSize(new Dimension(30,20));
+        	cantidad.setAlignmentX(Component.CENTER_ALIGNMENT);
+        	compra.add(cantidad);
+        	compra.add(Box.createVerticalStrut(5));
+    		JButton botoncito = new JButton("Buy");
+    		botoncito.setPreferredSize(new Dimension(60,20));
+    		botoncito.setMinimumSize(new Dimension(60,20));
+    		botoncito.setMaximumSize(new Dimension(60,20));
+    		botoncito.setAlignmentX(Component.CENTER_ALIGNMENT);
+    		compra.add(botoncito);
+    		compra.setBackground(Color.GRAY);
+    		shop.add(compra);
+    	    botoncito.addActionListener(new ActionListener() {
+    	        public void actionPerformed(ActionEvent e) {
+    	        	 try {
+    	                 int n = Integer.parseInt(cantidad.getText().trim());
+    	                 if (n <= 0) throw new NumberFormatException();
+    	            	 texto.setText("");
+    	            	 int antes = planeta.getArmy()[index].size();
+    	                 switch(index) {
+    	                     case 0:
+    	                    	 planeta.newLightHunter(n);
+    	                    	 break;
+    	                     case 1 :
+    	                    	 planeta.newHeavyHunter(n);
+    	                    	 break;
+    	                     case 2 :
+    	                    	 planeta.newBattleShip(n);
+    	                    	 break;
+    	                     case 3 :
+    	                    	 planeta.newArmoredShip(n);
+    	                    	 break;
+    	                     case 4 :
+    	                    	 planeta.newMissileLauncher(n);
+    	                    	 break;
+    	                     case 5 :
+    	                    	 planeta.newIonCannon(n);
+    	                    	 break;
+    	                     case 6 :
+    	                    	 planeta.newPlasmaCannon(n);
+    	                    	 break;
+    	                 }
+    	                 int despues = planeta.getArmy()[index].size();
+    	                 int compradas = despues - antes;
+    	                 update_information();
+    	                 if (compradas == 0) {
+    	                	    mensajeCompra.setText("❌ No se pudieron comprar unidades.");
+    	                	    unidadesCompradas.setText("");
+    	                	} else if (compradas != n) {
+    	                		mensajeCompra.setText("❌ No se pudieron comprar todas las unidades.");
+    	                	    unidadesCompradas.setText("✅ Compradas: " + compradas);
+    	                	}else {
+    	                	    mensajeCompra.setText("");
+    	                	    unidadesCompradas.setText("✅ Compradas: " + compradas);
+    	                	}
+    	             } catch (NumberFormatException ex) {
+    	            	 texto.setText("La cantidad debe ser un numero");
+    	            	 unidadesCompradas.setText("");
+	                	 mensajeCompra.setText("");
+    	             }
+    	         }});
+        }
 
 	    shop.revalidate();
 	    shop.repaint();
@@ -559,7 +617,7 @@ class Game extends JPanel {
 	    barraderechastats.removeAll();
 	    for (int i = 0; i < nuevo.getArmy().length; i++) {
 	        FondoPanel naveimagen = new FondoPanel(imagenesUnidades[i], nuevo, false);
-	        naveimagen.setPreferredSize(new Dimension(80,40));
+	        naveimagen.setPreferredSize(new Dimension(120,80));
 	        barraderechastats.add(naveimagen);
 	        barraderechastats.add(new JLabel("" + nuevo.getArmy()[i].size()));
 	    }
@@ -598,9 +656,11 @@ class Game extends JPanel {
         barraderechastats.removeAll();
         for (int i = 0; i < planeta.getArmy().length; i++) {
             FondoPanel naveimagen = new FondoPanel(imagenesUnidades[i],planeta, false); 
-            naveimagen.setPreferredSize(new Dimension(80,40)); 
+            naveimagen.setPreferredSize(new Dimension(120,60)); 
             barraderechastats.add(naveimagen);
-            barraderechastats.add(new JLabel("" + planeta.getArmy()[i].size()));
+            JLabel textoayudita = new JLabel("" + planeta.getArmy()[i].size());
+            textoayudita.setForeground(Color.WHITE);
+            barraderechastats.add(textoayudita);
         }
 
         barraderechastats.revalidate();

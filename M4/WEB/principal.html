@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planet Wars</title>
+    <link rel="stylesheet" href="css_global.css">
+    <script src="js_button_menu.js"></script>
+    <script src="js_carga.js"></script>
+</head>
+<body>
+    <header> 
+        <img src="imagenes/logo.webp" alt="float-image-left" class="float-image-left"> 
+        <div class="navbar">
+            <button class="menu-btn" onclick="toggleMenu()">☰</button>
+            <nav id="menu" class="menu">
+                <ul>
+                    <!--<li><a href="principal.html">Inicio</a></li>-->
+                    <li><a href="tutorial.html">Tutorial</a></li>
+                    <li><a href="batallas.html">Informes</a></li>
+                    <li><a href="sobre_nosotros.html">Nosotros</a></li>
+                    <li><a href="tutorial_instalacion.html">Instalacion</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="portada">
+        <h1>Planet Wars</h1>
+        <h1>¡Construye, investiga y protege al planeta! </h1>
+    </div>
+
+    <div class="contenido">
+        <div class="texto_informativo">
+            <h1><i>¡El futuro de tu planeta ha comenzado!</i></h1>
+            <p>
+                Preparate para sumergirte en un universo devastado por la guerra, donde diferentes facciones rebeldes, tecnologías alienígenas y flotas estelares se enfrentanen una lucha épica por la supremacia de tu planeta. 
+            </p>
+        </div>
+    </div>
+    <div class="contenido">
+        <div class = "column">
+            <p>
+                🧠 Crea tu flota y tus defensas para los ataques enemigos.
+            </p>
+            <p>
+                ⚔️ Mira los resultados de las batallas y consigue recursos para mejorar tu flota, defensas y tecnologías.
+            </p>
+            <p>
+                🌌 Protege el planeta <i>llenos de misterios y amenazas</i>
+            </p>
+            <p>
+                ⛔ Tienes que tener la version de <b>java superior a 11.0.12</b> para poder jugar.
+            </p>
+        </div>
+    </div>
+    <div class="contenido">
+        <div class="column">
+            <p class="flex-container">
+                Imagenes promocionales del juego.
+            </p>
+            <div class="carousel-container">
+                <input type="radio" name="slide" id="slide1" checked>
+                <input type="radio" name="slide" id="slide2" checked>
+                
+                <div class="carousel-images">
+                    <img src="imagenes/sin_foto.webp" alt="imagen1">
+                    <img src="imagenes/sin_foto.webp" alt="imagen2">
+                </div>
+            </div>
+            <div class="column_espacio"></div>
+        </div>
+    </div>
+    <div class="contenido">
+        <div class="column">
+            <h1><p class = "titulo_des"><b><i>Descarga-lo aqui</i></b></p></h1>
+            <ul class="blanco_boton">
+                <button class="down-btn" onclick="toggleDown()"><p><u>Descargar juego</u></p></button>
+                <nav id="download" class="download">
+                    <ul>
+                        <li><a href="Planet_Wars.zip" download>ZIP</a></li>
+                    </ul>
+                </nav>
+            </ul>
+            <br></br>
+            <p><a href="tutorial_instalacion.html" class="color">Tutorial</a> instalacion y como empezar a jugar</p>
+            <div class="column_espacio"></div>
+            <div class="column_espacio"></div>
+        </div>
+    </div>
+    <footer class = "footer"><center>&copy;Copyright</center></footer>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Planet Wars</title>
+    <link rel="stylesheet" href="css_global.css">
+    <script src="js_button_menu.js"></script>
+    <script src="js_carga.js"></script>
+    <script src="informes.js"></script>
+</head>
+<body>
+    <header> 
+        <img src="imagenes/logo.webp" alt="float-image-left" class="float-image-left"> 
+        <div class="navbar">
+            <button class="menu-btn" onclick="toggleMenu()">☰</button>
+            <nav id="menu" class="menu">
+                <ul>
+                    <li><a href="principal.html">Inicio</a></li>
+                    <li><a href="tutorial.html">Tutorial</a></li>
+                    <!--<li><a href="batallas.html">Informes</a></li>-->
+                    <li><a href="sobre_nosotros.html">Nosotros</a></li>
+                    <li><a href="tutorial_instalacion.html">Instalacion</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="portada">
+        <h1>Planet Wars</h1>
+        <h1>¡Construye, Investiga y protege al planeta! </h1>
+    </div>
+    <div class="contenido">
+        <div class="texto_informativo">
+            <h1><i>Informes de tu batalla</i></h1>
+            <div>
+                <input id="num_inf" type="number" min="0" class="input_num">
+                <button class="inf-btn" id="btn_generar_informe" type="button" onclick="generarInforme()">Generar Informe</button>
+            </div>
+            <h5><b><p id="resultado" class="color"></p></b></h5>
+            <br></br>
+            <p id="Informe"></p>
+            <div class="column_espacio"></div>
+            <div class="column_espacio"></div>
+        </div>
+    </div>
+
+    <footer class = "footer"><center>&copy;Copyright</center></footer>
+</body>
+</html>

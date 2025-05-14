@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Planet Wars</title>
+    <link rel="stylesheet" href="css_global.css">
+    <script src="js_button_menu.js"></script>
+    <script src="js_carga.js"></script>
+</head>
+<body>
+    <header> 
+        <img src="imagenes/logo.webp" alt="float-image-left" class="float-image-left"> 
+        <div class="navbar">
+            <button class="menu-btn" onclick="toggleMenu()">☰</button>
+            <nav id="menu" class="menu">
+                <ul>
+                    <li><a href="principal.html">Inicio</a></li>
+                    <li><a href="tutorial.html">Tutorial</a></li>
+                    <li><a href="batallas.html">Informes</a></li>
+                    <li><a href="sobre_nosotros.html">Nosotros</a></li>
+                    <!--<li><a href="tutorial_instalacion.html">instalacion</a></li>-->
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="portada">
+        <h1>Planet Wars</h1>
+        <h1>¡Construye, Investiga y protege al planeta! </h1>
+    </div>
+    <div class="contenido">
+        <div class="texto_informativo">
+            <h1><b>Descarga del juego y más</b></h1>
+            <p>
+                Al descargar el archivo comprimido del juego tendrás que descomprimirlo en un sitio que sí o sí te acuerdes.
+            </p>
+            <br></br>
+            <p>
+                1. Descarga el juego:
+            </p>
+            <img src="imagenes/paso_1.png" alt="container_foto">
+            <br></br>
+            <p>
+                2. Descomprime el archivo en una carpeta que te acuerdes (por ejemplo: escritorio o documentos, en mi caso escritorio):
+            </p>
+            <img src="imagenes/paso_2.png" alt="container_foto">
+            <br></br>
+            <p>
+                Apartir de aqui necesitas tener instalado java (<u><b>si ya lo tienes saltate este paso y con la version superior a 11.0.12</b></u>):
+            </p>
+            <br></br>
+            <p>
+                Para saber que lo tienes instalado, pulsa <b>Windows + R</b> y escribe <b>cmd</b> luego pulsa <b>Enter</b> o pulsando la tecla de <b>"Windows"</b> y escribe <b>"cmd"</b> luego pulsa <b>Enter</b>. Se te abrira una ventana negra, en la cual tienes que escribir <b>"java -version"</b> o <b>"javac -version"</b> y si te sale algo como esto es que lo tienes instalado (<i><u>la version tiene que ser superior a <b>11.0.12</b></u></i>):
+            </p>
+            <br></br>
+            <p>Ejemplo de <i>java -version</i>:</p>
+            <img src="imagenes/java-version.png" alt="container_foto">
+            <br></br>
+            <p>Ejemplo de <i>javac -version</i>:</p>
+            <img src="imagenes/javac-version.png" alt="container_foto">
+            <br></br>
+        </div>
+    </div>
+    <div class="contenido">
+        <div class="texto_informativo">
+            <h1><b>Tutorial de Instalación Java (Windows)</b></h1>
+            <p>
+                1.Vete a esta web para <a href="https://adoptium.net/" class="color">descarga java</a>:
+            </p>
+            <p>
+                2. Dale al boton de <b>Download</b> y selecciona la version que quieras (recomendamos superior a <b>11.0.12</b>):
+            </p>
+            <img src="imagenes/boton_descarga_java.png" alt="container_foto">
+            <p>
+                3. Ahora ejecutamos el instalador: cambiar foto
+            </p>
+            <img src="imagenes/ejecutar_instalador.png" alt="Instalador de Java">
+            <p>
+                4. Aceptamos todo y le damos a next hasta que se instale:
+            </p>
+            <p>
+                5.Ahora comprobamos que esta instalado con lo que hemos hecho antes:
+            </p>
+            <img src="imagenes/tut_comprobar_win.png" alt="container_foto">
+            <br></br>
+            <h1><b>Tutorial de Instalación Java (Ubuntu)</b></h1>
+            <p>
+                1.Abre la terminal y escribe <b>sudo apt update</b> y <b>sudo apt upgrade</b> para actualizar el sistema:
+            </p>
+            <div>
+                <img src="imagenes/sudo_apt_update.png" alt="container_foto">
+                <p></p>
+                <img src="imagenes/sudo_apt_upgrade.png" alt="container_foto">
+            </div>
+            <p>
+                2. <b>sudo apt install openjdk-<i>version que quieres en este caso <u>17</u></i>-jdk</b>:
+            </p>
+            <img src="imagenes/ubuntu_instalacion.png" alt="container_foto">
+            <p>
+                3. Ahora comprobamos que esta instalado con lo que hemos hecho antes:
+            </p>
+            <img src="imagenes/tut_comprobar_ubu.png" alt="container_foto">
+            <p>
+                4. Si lo teneis instalado, haremos lo siguiente para poder actualizar en este caso la version 21:
+            </p>
+            <img src="imagenes/version_21_instalacion.png" alt="container_foto">
+            <p>
+                5. Ahora haremos lo siguiente y nos mostrara esto:
+            </p>
+            <div>
+                <img src="imagenes/actu_java_ubu.png" alt="container_foto">
+                <p></p>
+                <img src="imagenes/opciones_ubu.png" alt="container_foto">
+            </div>
+            <p>
+                Yo lo he puesto manual pero normalmente se te pone el automatico(<u><i>0</i></u>) pero es por si no se te pone, aqui como he dicho si en automatico no se te pone, pon el numero de la version de la opcion que se te muestra en este caso queremos la <b>version 21</b> asi que pulsamos en este case <b>"2"</b> y deberia de quedar asi:
+            </p>
+            <img src="imagenes/select_ver.png" alt="container_foto">
+            <br></br>
+            <h1><b>Tutorial de como empezar a jugar</b></h1>
+            <p>
+                Vale ahora que tenemos la version correcta de java y el juego descargado ahora tocara jugarlo.
+                <p></p>
+                <h1><b>Desde Windows</b></h1>
+                1. Abre el terminal:              
+            </p>
+            <img src="imagenes/cmd.png" alt="container_foto">
+            <p>
+                2. Ahora tendremos que ir a la carpeta donde esta el juego en mi caso <b><i>Desktop/Planet Wars</i></b>
+            </p>
+            <img src="imagenes/desk_dir.png" alt="container_foto">
+            <p>
+                3. Ahora tocaria abrirlo con el siguiente comando:
+            </p>
+            <img src="imagenes/abrir_juego.png" alt="container_foto">
+            <p>
+                Ahora como podeis ver se nos ha abierto el juego y ya podemos jugar:
+            </p>
+            <div class="container_foto_especial">
+                <img src="imagenes/juego.png" alt="container_foto_especial">
+            </div>
+            <p>
+                <h1><b>Desde Ubuntu</b></h1>
+                1. Abre el terminal:
+            </p>
+            <img src="imagenes/terminal.png" alt="container_foto">
+            <p>
+                2. Ahora vamos al directorio donde esta el juego:
+            </p>
+            <img src="imagenes/canviar_dir.png" alt="container_foto">
+            <p>
+                3. Ponemos la misma comanda que anteriormente en Windows:
+            </p>
+            <img src="imagenes/abrir_juego2.png" alt="container_foto">
+            <p>
+                4. Y ya podemos juagarlo:
+            </p>
+            <div class="container_foto_especial">
+                <img src="imagenes/juego2.png" alt="container_foto_especial">
+            </div>
+            <div class="column_espacio"></div>
+        </div>
+    </div>
+
+    <footer class = "footer"><center>&copy;Copyright</center></footer>
+</body>
+</html>

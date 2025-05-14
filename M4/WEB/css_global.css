@@ -1,0 +1,793 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* General */
+.portada {
+    position: relative;
+    height: 100vh; /* Cubre toda la ventana */
+    background-image: url('imagenes/portada.webp'); /* Cambia la ruta por la imagen que desees */
+    background-size: cover; /* Hace que la imagen cubra todo el área */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    background-position: center; /* Centra la imagen */
+    display: flex; /* Usa flexbox para centrar el contenido */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    text-align: center;
+    color: white; /* Texto blanco para contraste */
+    padding: 20px;
+    flex-direction: column;
+  }
+  
+  .portada::after { 
+    content: ""; 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 1) 100%); 
+    z-index: 1; 
+}
+
+.portada h1, 
+.portada p { 
+    position: relative; 
+    z-index: 2; 
+}
+
+.imagen_de_fondo{
+  width: 400px;
+  height: 300px;
+  background-size: cover; /* Hace que la imagen cubra todo el área */
+  background-repeat: no-repeat; /* Evita que la imagen se repita */
+  background-position: center; /* Centra la imagen */
+  display: flex; /* Usa flexbox para centrar el contenido */
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+  flex-direction: column;
+  opacity: 5;
+}
+
+.imagen_de_fondo p { 
+    display: block; 
+    margin: 0; padding: 0; 
+    border-radius: 5px;
+    margin: 10px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.6);
+    opacity: 100; 
+    color: white;
+} 
+
+.imagen_de_fondo p { 
+  position: relative; 
+  z-index: 2; 
+}
+
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+  box-sizing: border-box;
+  overflow-x: hidden; /* Evita desplazamiento horizontal */
+}
+
+main {
+  padding: 20px;
+}
+
+section {
+  padding: 50px 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Estilo para la barra de navegación */
+.navbar {
+  position: sticky; /* Hace que la barra sea sticky */
+  top: 0; /* Define el punto de adherencia en la parte superior */
+  background-color: #000000; /* Color de fondo */
+  color: white;
+  z-index: 1000; /* Mantiene la barra sobre otros elementos */
+  padding: 10px 20px;
+  align-items: center;
+  justify-content: center; /* Centra horizontalmente el contenido */
+  align-items: center; /* Centra verticalmente el contenido */
+  width: 100%; /* Asegura que ocupe todo el ancho */
+  height: 60px;
+  display: flex;
+  gap: 20px; 
+  list-style: none; 
+  padding: 0;
+  gap: 20px;
+}
+
+.navbar ul {
+  display: flex;
+  gap: 20PX;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.navbar nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-around; /* Espacio uniforme entre los elementos */
+}
+
+.navbar nav ul li {
+  display: inline;
+}
+
+.navbar nav ul li a {
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+  transition: background 0.3s;
+}
+
+.navbar nav ul li a:hover {
+  background-color: #1A1C40; /* Color al pasar el mouse */
+  border-radius: 5px; /* Bordes redondeados en hover */
+}
+
+.portada h1, 
+.portada p { 
+    display: block; 
+    margin: 0; padding: 0; 
+    border-radius: 5px;
+    margin: 10px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.6);
+    opacity: 0; 
+    animation: slideInUp 1s forwards; 
+    animation-delay: 0.5s;
+} 
+.portada p { 
+    margin-top: 10px; /* Ajusta según la cantidad de espacio que quieras entre h1 y p */ 
+    animation-delay: 1s;
+}
+
+.contenido {
+  display: flex;
+  justify-content: center;
+  align-items: top;
+  background-color: black;
+  color: white;
+}
+
+.column_espacio {
+  flex: 1;             /* Makes all columns flexible and equal in width */
+  padding: 20px;       /* Adds some padding for spacing */
+  margin: 10px;        /* Adds space around each column */
+  text-align: justify;
+} 
+
+.column{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  max-width: 600px;
+  padding: 10px;
+  text-align: center;
+  background-color: black;
+  color: white;
+}
+
+.texto_informativo{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  max-width: 80%;
+  padding: 5px;
+  text-align: center;
+  background-color: black;
+  color: white;
+}
+
+.flex-container {
+  display: flex;       /* Makes the container a flexbox */
+  justify-content: space-between; /* Ensures equal spacing between columns */
+  align-items: center;
+}
+
+.footer{
+  background-color: #000000; /* Color de fondo */
+  color: white;
+  height: 5vh;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+  text-align: center;
+  display: flex;
+}
+
+.float-image-left {
+	float: left; /* Aligns the image to the left side */
+	width: 15%; /* Sets the image to take up 40% of the container width */
+	margin: 5px; /* Adds space around the image */
+	max-width: 5%;  /*Ensures the image doesn't overflow its container */
+  height: auto;
+}
+
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #000000;
+  padding: 10px 10px;
+  color: white;
+  position: sticky; /* Hace que el encabezado sea sticky */
+  top: 0; /* Fija el encabezado en la parte superior */
+  z-index: 1000; /* Asegura que el encabezado quede al frente de otros elementos */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sombra para destacar */
+}
+
+.left-dot{
+  position: relative;
+  padding-left: 20px;
+}
+
+.left-dot::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  width: 8px;
+  height: 8px;
+  background-color: white;
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+
+.left-dot::before{
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  color: black;
+  font-size: 16px;
+}
+
+.container_foto{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid white;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.container_foto imagen{
+  max-width: 100%;
+  height: auto;
+}
+
+.container_about_us{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 300px;
+  height: 300px;
+  overflow: hidden;
+  margin: auto;
+}
+
+.container_foto_especial{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 300px;
+  height: 300px;
+  overflow: hidden;
+}
+
+.container_foto_especial img {
+  max-width: 100%;
+  max-height: 100%;
+  height: auto;
+}
+
+ /* Estilo del contenedor del carrusel */
+ .carousel-container {
+  position: relative;
+  max-width: 180px;
+  max-height: 400px;
+  margin: auto;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+/* Contenedor de las imágenes */
+.carousel-slide {
+  display:flex;
+  width: 100%; /* Total del ancho de todas las imágenes juntas */
+  transition: transform 0.5s ease;
+}
+
+/* Ajuste de ancho para cada imagen */
+.carousel-slide img {
+  width: 1vw; /* Para ocupar el 100% del ancho de la ventana de visualización */
+  flex: 1 0 100%; /* Cada imagen ocupa el 100% del contenedor del carrusel */
+  border-radius: 8px;
+}
+
+/* Ocultar los inputs de radio */
+input[type="radio"] {
+  display: none;
+}
+
+
+/* estilos.css */
+
+.carousel {
+width: 180%;
+max-width: 400px;
+overflow: hidden;
+border-radius: 8px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.carousel-images {
+display: flex;
+width: 100%; /* 100% por imagen si hay 4 imágenes */
+animation: slide 15s infinite;
+}
+
+.carousel-images img {
+width: 100%;
+height: auto;
+flex: 1 0 100%; /* Cada imagen ocupa el 100% del contenedor */
+}
+
+/*Boton del menu*/
+.menu-btn{
+  background-color: #000000;
+    border: none;
+    color: white;
+    padding: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    display: block;
+}
+
+.menu {
+  display: flex;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menu ul {
+  padding-left: 0;
+}
+
+.menu li {
+  margin: 0 10px;
+}
+
+.menu a {
+  color: white;
+  text-decoration: none;
+}
+
+.menu a:hover {
+  text-decoration: underline;
+}
+
+/*Titulo descarga*/
+
+
+.titulo_des {
+  display: inline-block;
+  padding: 0.2em 2em;
+  font-size: 1em;
+  background: linear-gradient(to bottom, red, white);
+  background-size: 100% 200%;
+  background-position: top;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: degradado 1s infinite alternate;
+}
+
+@keyframes degradado {
+  0% {
+    background-position: top;
+  }
+  100% {
+    background-position: bottom;
+  }
+}
+
+.blanco_boton{
+  background-color: white;
+  border-radius: 5px;
+}
+
+.color{
+  color: blue;
+}
+
+/*Boton de descarga*/
+/*.down-btn{
+    border: white;
+    color: black;
+    font-size: 24px;
+    cursor: pointer;
+    display: block;
+    width: 300px;
+    height: 30px;
+    border-radius: 5px;
+    text-align: center;
+/*    margin: 10px auto; /* Centra el botón horizontalmente 
+
+}*/
+
+.down-btn{
+  background-color: white;
+  border: white;
+  color: black;
+  font-size: 24px;
+  cursor: pointer;
+  display: block;
+  width: 300px;
+  height: 30px;
+  text-align: center;
+}
+
+
+.down-btn {
+  display: flex;
+  list-style-type: none;
+  justify-content: center;
+}
+
+.down-btn a {
+  color: white;
+  text-decoration: none;
+}
+
+.down-btn a:hover {
+  text-decoration: underline;
+}
+
+.download{
+  display: none;
+  list-style-type: none;
+  margin: 0;
+  border: white;
+  border-radius: 5px;
+  background-color: white;
+  color: black;
+  width: 300px;
+  height: 30px;
+  text-align: center;
+}
+.download.show{
+  display: block;
+}
+
+.inf-btn{
+  background-color: white;
+    border: #1A1C40 solid 1px;
+    border-radius: 10px;
+    color: #1A1C40;
+    padding: 5px;
+    font-size: 26px;
+    align-items: center;
+    margin: auto;
+    cursor: pointer;
+    display: block;
+}
+
+.input_num {
+    width: 200px;
+    height: 40px;
+    font-size: 18px;
+    padding: 5px;
+}
+
+
+@keyframes slideInUp { 
+  from { 
+      opacity: 0; 
+      transform: translateY(100%); 
+  } to { 
+      opacity: 1; 
+      transform: translateY(0); 
+  } 
+}
+
+/* Animación del carrusel */
+@keyframes slide {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+  }
+
+/*Para otras pantallas*/
+
+@media screen and (min-width: 768px) {
+  .menu-btn {
+      display: none; /* Oculta el botón hamburguesa en pantallas grandes */
+  }
+
+  .menu {
+      display: flex; /* El menú es visible de manera horizontal */
+  }
+
+  .float-image-left {
+    float: left; /* Aligns the image to the left side */
+    width: 15%; /* Sets the image to take up 40% of the container width */
+    margin: 5px; /* Adds space around the image */
+    max-width: 5%;  /*Ensures the image doesn't overflow its container */
+    height: auto;
+  }
+  
+}
+
+
+/*Para moviles*/
+@media screen and (max-width: 600px) {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  
+  .flex-container {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+    }
+
+    .portada {
+      position: relative;
+      height: 100vh; /* Cubre toda la ventana */
+      background-image: url('imagenes/portada.webp'); /* Cambia la ruta por la imagen que desees */
+      background-size: cover; /* Hace que la imagen cubra todo el área */
+      background-repeat: no-repeat; /* Evita que la imagen se repita */
+      background-position: center; /* Centra la imagen */
+      display: flex; /* Usa flexbox para centrar el contenido */
+      justify-content: center; /* Centra horizontalmente */
+      align-items: center; /* Centra verticalmente */
+      text-align: center;
+      color: white; /* Texto blanco para contraste */
+      padding: 20px;
+      flex-direction: column;
+    }
+    
+    .portada::after { 
+      content: ""; 
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      width: 100%; 
+      height: 100%; 
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 1) 100%);  
+      z-index: 1; 
+  }
+  
+  .portada h1, 
+  .portada p { 
+      position: relative; 
+      z-index: 2; 
+  }
+  
+  body {
+    overflow-x: hidden;
+    
+  }
+
+  html, body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .main-content {
+    margin: 0;
+    padding: 0;
+  }
+  
+  section {
+    padding: 50px 20px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  /* Estilo para la barra de navegación */
+  .navbar {
+    display: flex;
+    background-color: #000000; /* Color de fondo */
+    color: white;
+    z-index: 1000; /* Mantiene la barra sobre otros elementos */
+    left: 0;
+    justify-content: right;
+  }
+  
+  .navbar nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-around; /* Espacio uniforme entre los elementos */
+  }
+  
+  .navbar nav ul li {
+    display: inline;
+  }
+  
+  .navbar nav ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 5px 10px;
+    transition: background 0.3s;
+  }
+  
+  .navbar nav ul li a:hover {
+    background-color: #1A1C40; /* Color al pasar el mouse */
+    border-radius: 5px; /* Bordes redondeados en hover */
+  }
+  
+  .portada h1, 
+  .portada p { 
+      display: block; 
+      margin: 0; padding: 0; 
+      border-radius: 5px;
+      margin: 10px;
+      padding: 10px;
+      background-color: rgba(0, 0, 0, 0.6);
+      opacity: 0; 
+      animation: slideInUp 1s forwards; 
+      animation-delay: 0.5s;
+  } 
+  .portada p { 
+      margin-top: 10px; /* Ajusta según la cantidad de espacio que quieras entre h1 y p */ 
+      animation-delay: 1s;
+  }
+
+  .footer{
+    background-color: #000000; /* Color de fondo */
+    color: white;
+    height: 5vh;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    text-align: center;
+    display: flex;
+  }
+  
+  .float-image-left {
+    float: left; /* Aligns the image to the left side */
+    width: 15%; /* Sets the image to take up 40% of the container width */
+    margin: 5px; /* Adds space around the image */
+    max-width: 100%;  /*Ensures the image doesn't overflow its container */
+    height: auto; /* Keeps the image aspect ratio intact */
+  }
+  
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #000000;
+    padding: 10px;
+    color: white;
+    position: fixed; /* Hace que el encabezado sea sticky */
+    top: 0; /* Fija el encabezado en la parte superior */
+    z-index: 1000; /* Asegura que el encabezado quede al frente de otros elementos */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sombra para destacar */
+  }
+
+
+  .sidebar {
+    display: none; /* Ajusta el nombre de la clase de la barra lateral si es diferente */
+  }
+  
+  .column_espacio {
+    flex: 1;             /* Makes all columns flexible and equal in width */
+    padding: 20px;       /* Adds some padding for spacing */
+    margin: 10px;        /* Adds space around each column */
+    text-align: justify;
+    background-color: black;
+    color: black;
+  }
+  
+  
+  
+  .column{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    max-width: 600px;
+    padding: 10px;
+    text-align: center;
+    background-color: black;
+    color: white;
+  }
+
+  .container_foto{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid black;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto;
+  }
+  
+  .container_foto imagen{
+    max-width: 100%;
+    height: auto;
+  }
+
+  .container_foto_especial{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+  .container_foto_especial img {
+  width: 100%;
+  height: 100%;
+}
+  .carousel-container {
+    position: relative;
+    max-width: 100px;
+    max-height: 300px;
+    margin: auto;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+
+  .menu {
+    display: none; /* Oculta el menú por defecto */
+    position: absolute;
+    top: 60px;
+    align-items: center;
+    background-color: #000000;
+    width: auto;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+    padding: auto;
+    flex-direction: column;
+}
+
+.menu.show {
+    display: block; /* Muestra el menú cuando se hace clic en el botón */
+}
+
+.menu li {
+    margin: 10px 0;
+}
+
+}

@@ -4,16 +4,13 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -63,14 +60,14 @@ public class PlanetWars {
 		    	for (int i = 0; i < game.getJuego().getPlaneta().getArmy().length; i++) {
 		    		if (game.getJuego().getPlaneta().getArmy()[i].size() > 0) {
 		    			hay_ejercito_aliado = true;
-		    			break;
 		    		}
 		    	}
-		    	if (hay_ejercito_aliado && game.getJuego().getEnemyArmy() != null) {
+		    	if (hay_ejercito_aliado) {
 		    	    Battle batalla = new Battle(game.getJuego().getPlaneta().getArmy(), game.getJuego().getEnemyArmy());
 		    	    game.getJuego().setMessageBattleComming("Luchando!!!");
 		    	    game.getJuego().repaint();
 		    	    batalla.startBattle(game.getJuego().getPlaneta());
+		    	    game.getJuego().addbattles(batalla);
 		    	    game.getJuego().update_information();
 		    	    try {
 		    	        Thread.sleep(5000);
@@ -79,9 +76,8 @@ public class PlanetWars {
 		    	    }
 		    	} else {
 		    	    game.getJuego().getPlaneta().roboResources();
-		    	    game.getJuego().update_information(); // <-- También es importante aquí
+		    	    game.getJuego().update_information();
 			    	}
-		    	game.getJuego().update_information();
 		        game.getJuego().restaurar_enemigo();
 		        game.getJuego().updateEnemyInformation();
 		        game.getJuego().setMessageBattleComming("Por ahora no hay enemigos");
@@ -184,10 +180,16 @@ class Game extends JPanel {
     private JLabel name, metal, deuterium, leveltechnologyattack, leveltechnologydefense, nosubirataque, nosubirdefensa, precioataque, preciodefensa, messagebattlecomming;
     private JTabbedPane menu;
     private BufferedImage[] imagenesUnidades;
-    private JButton subirataque, subirdefensa;
-    private JTextArea battledevelopment, battlereport;
+    private JButton subirataque, subirdefensa, buscarreport;
+    private JTextArea battlereport;
+    private JTextField elegirreport;
     private ArrayList<MilitaryUnit>[] enemyArmy;
     private boolean detener = false;
+    private ArrayList<Battle> batallas = new ArrayList<Battle>();
+    
+    public void addbattles(Battle batalla) {
+    	batallas.add(batalla);
+    }
     
     public ArrayList<MilitaryUnit>[] getEnemyArmy() {
 		return enemyArmy;
@@ -313,6 +315,7 @@ class Game extends JPanel {
     		compra.add(naveimagenshop);
         	compra.add(Box.createVerticalStrut(10));
         	JTextField cantidad = new JTextField("1");
+        	cantidad.setHorizontalAlignment(JTextField.CENTER);
         	cantidad.setPreferredSize(new Dimension(30,20));
         	cantidad.setMinimumSize(new Dimension(30,20));
         	cantidad.setMaximumSize(new Dimension(30,20));
@@ -442,7 +445,45 @@ class Game extends JPanel {
         menu.addTab("Shop", shop);
         menu.addTab("Battle Comming", battlescomming);
         reports = new JPanel();
+        reports.setLayout(new BoxLayout(reports, BoxLayout.Y_AXIS));
         reports.setBackground(Color.BLACK);
+        battlereport = new JTextArea("Busca aqui los reportes de tus batallas");
+        battlereport.setPreferredSize(new Dimension(1000,400));
+        battlereport.setMinimumSize(new Dimension(1000,400));
+        battlereport.setMaximumSize(new Dimension(1000,400));
+        reports.add(battlereport);
+        elegirreport = new JTextField("1");
+        elegirreport.setPreferredSize(new Dimension(100,50));
+        elegirreport.setMinimumSize(new Dimension(100,50));
+        elegirreport.setMaximumSize(new Dimension(100,50));
+        elegirreport.setHorizontalAlignment(JTextField.CENTER);
+        reports.add(Box.createVerticalStrut(10));
+        reports.add(elegirreport);
+        reports.add(Box.createVerticalStrut(10));
+        buscarreport = new JButton("Buscar");
+        buscarreport.setPreferredSize(new Dimension(100,50));
+        buscarreport.setMinimumSize(new Dimension(100,50));
+        buscarreport.setMaximumSize(new Dimension(100,50));
+        buscarreport.setAlignmentX(Component.CENTER_ALIGNMENT);
+        reports.add(buscarreport);
+        buscarreport.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e) {
+	        	try {
+	        		int n = Integer.parseInt(elegirreport.getText());
+	        		if (batallas.size() == 0) {
+	        			battlereport.setText("Aun no a habido batallas");
+	        		}
+	        		if(batallas.size() > 0) {
+		        		if (n > 0 && n <= batallas.size()) {
+		        			battlereport.setText(batallas.get(n-1).getBattleReport(n));
+		        		} else {
+		        			battlereport.setText("Las batallas solo estan entre 1 (La primera) hasta " + batallas.size() + " (La ultima hasta la fecha)");
+		        		}
+	        		}
+	        	}catch (NumberFormatException ex) {
+	        		battlereport.setText("Tiene que ser un numero");
+	        	}
+	        }});
         menu.addTab("Battle reports", reports);
         add(menu,BorderLayout.CENTER);
     }
@@ -548,6 +589,7 @@ class Game extends JPanel {
 	        naveimagenshop.setMaximumSize(new Dimension(120, 80));
 
 	        JTextField cantidad = new JTextField("1");
+	        cantidad.setHorizontalAlignment(JTextField.CENTER);
 	        cantidad.setPreferredSize(new Dimension(30, 20));
 	        cantidad.setMinimumSize(new Dimension(30, 20));
 	        cantidad.setMaximumSize(new Dimension(30, 20));
@@ -599,8 +641,7 @@ class Game extends JPanel {
 	                texto.setText("La cantidad debe ser un numero");
 	                mensajeCompra.setText("");
 	                unidadesCompradas.setText("");
-	            }
-	        });
+	            }});
 	    }
 
 	    shop.revalidate();
@@ -610,6 +651,7 @@ class Game extends JPanel {
 	
 	public void reiniciarPlaneta(Planet nuevo) {
 	    this.planeta = nuevo;
+	    batallas.clear();
 	    planetstat.setImagen(nuevo.getImagen());
 	    planetstat.setPlaneta(nuevo);
 	    metal.setText("Metal: " + nuevo.getMetal());
@@ -636,6 +678,8 @@ class Game extends JPanel {
 
 	    updateEnemyInformation();
 	    reconstruirShop();
+	    battlereport.setText("Busca aqui los reportes de tus batallas");
+	    elegirreport.setText("1");
 	    repaint();
 	    detener = false;
 	}
@@ -884,10 +928,10 @@ class Planet {
 	}
 	
 	public void roboResources() {
-		int metalLoss = 50000;
-	    int deuteriumLoss = 25000;
-	    metal = Math.max(0, metal - metalLoss);
-	    deuterium = Math.max(0, deuterium - deuteriumLoss);
+		int metalLoss = 5000;
+	    int deuteriumLoss = 2500;
+	    metal -= metalLoss;
+	    deuterium -= deuteriumLoss;
 	    if (metal < 0) {
 	    	metal = 0;
 	    }
@@ -1727,15 +1771,14 @@ class Battle implements Variables {
 	    int totalPlanetLoss = resourcesLooses[0][0] + resourcesLooses[0][1];
 	    int totalEnemyLoss = resourcesLooses[1][0] + resourcesLooses[1][1];
 	    String winner;
-	    if (totalPlanetLoss < totalEnemyLoss) {
-	    	winner = "Planet";
-	    } else if (totalPlanetLoss > totalEnemyLoss) {
-	    	winner = "Enemy";
+	    if (totalEnemyLoss > totalPlanetLoss) {
+	        winner = "Planet";
+	    } else if (totalEnemyLoss < totalPlanetLoss) {
+	        winner = "Enemy";
 	    } else {
-	    	winner = "Draw";
+	        winner = "Draw";
 	    }
 	    mostrar += "\n\nWINNER: " + winner;
-	    
 		return mostrar;
 	}
 	public String getBattleDevelopment() {
@@ -1761,10 +1804,10 @@ class Battle implements Variables {
 		int[][] coste_recursos_actuales = new int[2][3];
 		coste_recursos_actuales[0] = fleetResourceCost(planetArmy);
 		coste_recursos_actuales[1] = fleetResourceCost(enemyArmy);
-		resourcesLooses[0][0] = coste_recursos_actuales[0][0] - initialCostFleet[0][0];
-		resourcesLooses[0][1] = coste_recursos_actuales[0][1] - initialCostFleet[0][1];
-		resourcesLooses[1][0] = coste_recursos_actuales[1][0] - initialCostFleet[1][0];
-		resourcesLooses[1][1] = coste_recursos_actuales[1][1] - initialCostFleet[1][1];
+		resourcesLooses[0][0] = initialCostFleet[0][0] - coste_recursos_actuales[0][0];
+		resourcesLooses[0][1] = initialCostFleet[0][1] - coste_recursos_actuales[0][1];
+		resourcesLooses[1][0] = initialCostFleet[1][0] - coste_recursos_actuales[1][0];
+		resourcesLooses[1][1] = initialCostFleet[1][1] - coste_recursos_actuales[1][1];
 		resourcesLooses[0][2] = resourcesLooses[0][0] + 5 * resourcesLooses[0][1];
 		resourcesLooses[1][2] = resourcesLooses[1][0] + 5 * resourcesLooses[1][1];
 	}
@@ -1920,20 +1963,21 @@ class Battle implements Variables {
 	
 	// Elimina todas las naves con la armadura por debajo o igual a 0.
 	public void removedestroyships() {
-		for (int i = 0; i < planetArmy.length; i++) {
-			for (int j = 0; j < planetArmy[i].size(); j++) {
-				if (planetArmy[i].get(j).getActualArmor() <= 0) {
-					planetArmy[i].remove(j);
-				}
-			}
-		}
-		for (int i = 0; i < enemyArmy.length; i++) {
-			for (int j = 0; j < enemyArmy[i].size(); j++) {
-				if (enemyArmy[i].get(j).getActualArmor() <= 0) {
-					enemyArmy[i].remove(j);
-				}
-			}
-		}
+	    for (int i = 0; i < planetArmy.length; i++) {
+	        for (int j = planetArmy[i].size() - 1; j >= 0; j--) {
+	            if (planetArmy[i].get(j).getActualArmor() <= 0) {
+	                planetArmy[i].remove(j);
+	            }
+	        }
+	    }
+
+	    for (int i = 0; i < enemyArmy.length; i++) {
+	        for (int j = enemyArmy[i].size() - 1; j >= 0; j--) {
+	            if (enemyArmy[i].get(j).getActualArmor() <= 0) {
+	                enemyArmy[i].remove(j);
+	            }
+	        }
+	    }
 	}
 
 	
@@ -1952,12 +1996,20 @@ class Battle implements Variables {
 	    enemyDrops = new int[2];
 	    planetDrops = new int[2];
 	    resourcesLooses = new int[2][3];
-	    initInitialArmies(); // Guarda conteo inicial
-	    resetArmyArmor();    // Reinicia armaduras
+
+	    initInitialArmies();     // Guarda conteo inicial
+	    resetArmyArmor();        // Reinicia armaduras
+
 	    boolean planetAttacks = rand.nextBoolean(); // decide quién empieza
+
+	    int turnosSinAtaque = 0;
+
 	    while (remainderPercentatgeFleet(planetArmy) > MIN_PERCENTAGE_TO_WIN &&
-	           remainderPercentatgeFleet(enemyArmy) > MIN_PERCENTAGE_TO_WIN) {
-	        updateactualunits(); // Actualiza unidades actuales
+	           remainderPercentatgeFleet(enemyArmy) > MIN_PERCENTAGE_TO_WIN &&
+	           turnosSinAtaque < 20) {
+
+	        updateactualunits();
+
 	        ArrayList<MilitaryUnit>[] attackingArmy;
 	        ArrayList<MilitaryUnit>[] defendingArmy;
 	        String atacante;
@@ -1972,38 +2024,51 @@ class Battle implements Variables {
 	            atacante = "Fleet Enemy";
 	        }
 
-	        int attackingGroup;
-	        do {
-		        if (planetAttacks) {
-		            attackingGroup = getPlanetGroupAttacker();
-		        } else {
-		            attackingGroup = getEnemyGroupAttacker();
-		        }
-	        } while (attackingArmy[attackingGroup].size() == 0);
+	        // Elegimos un grupo atacante válido (máximo 10 intentos para evitar bucle infinito)
+	        int attackingGroup = -1;
+	        for (int i = 0; i < 10; i++) {
+	            if (planetAttacks) {
+	                attackingGroup = rand.nextInt(7); // incluye flota y defensas
+	            } else {
+	                attackingGroup = getEnemyGroupAttacker(); // solo flota
+	            }
+	            if (attackingGroup >= 0 && attackingArmy[attackingGroup].size() > 0) {
+	                break;
+	            }
+	        }
 
 	        if (attackingGroup == -1 || attackingArmy[attackingGroup].isEmpty()) {
 	            planetAttacks = !planetAttacks;
+	            turnosSinAtaque++;
 	            continue;
 	        }
-	        MilitaryUnit attacker = attackingArmy[attackingGroup].get(attackingArmy[attackingGroup].size()-1);
+
+	        MilitaryUnit attacker = attackingArmy[attackingGroup]
+	                                .get(attackingArmy[attackingGroup].size() - 1);
 
 	        boolean repeatAttack;
 	        do {
 	            int defendingGroup = getGroupDefender(defendingArmy);
-	            if (defendingGroup == -1 || defendingArmy[defendingGroup].isEmpty()) break;
 
-	            MilitaryUnit defender = defendingArmy[defendingGroup].get(defendingArmy[defendingGroup].size()-1);
+	            if (defendingGroup == -1 || defendingArmy[defendingGroup].isEmpty()) {
+	                break;
+	            }
 
-	            battleDevelopment += String.format("Attacks %s: %s attacks %s\n",
-	                    atacante,
-	                    attacker.getClass().getSimpleName(),
-	                    defender.getClass().getSimpleName());
+	            MilitaryUnit defender = defendingArmy[defendingGroup]
+	                                    .get(defendingArmy[defendingGroup].size() - 1);
+
+	            // Registro de ataque
+	            battleDevelopment += "Attacks " + atacante + ": "
+	                                + attacker.getClass().getSimpleName()
+	                                + " attacks " + defender.getClass().getSimpleName() + "\n";
 
 	            int damage = attacker.attack();
-	            battleDevelopment += attacker.getClass().getSimpleName() + " generates the damage = " + damage + "\n";
+	            battleDevelopment += attacker.getClass().getSimpleName()
+	                                + " generates the damage = " + damage + "\n";
 
 	            int newArmor = Math.max(0, defender.getActualArmor() - damage);
-	            battleDevelopment += defender.getClass().getSimpleName() + " stays with armor = " + newArmor + "\n";
+	            battleDevelopment += defender.getClass().getSimpleName()
+	                                + " stays with armor = " + newArmor + "\n";
 
 	            ataque_nave(attacker, defender, planetAttacks);
 
@@ -2012,18 +2077,25 @@ class Battle implements Variables {
 	        } while (repeatAttack);
 
 	        removedestroyships();
-	        planetAttacks = !planetAttacks; // cambia el turno
+	        planetAttacks = !planetAttacks;
+	        turnosSinAtaque = 0; // hubo combate
 	    }
-	    updateResourcesLoose(); // Calcula pérdidas al finalizar
-	    int totalPlanetLoss = resourcesLooses[0][2];
-	    int totalEnemyLoss = resourcesLooses[1][2];
-	    if (totalPlanetLoss < totalEnemyLoss) {
-	    	int bonificacion = planeta.getTechnologyAtack();
-	    	planeta.setMetal(planeta.getMetal() + (resourcesLooses[1][1] * (1 + bonificacion / 10)));
-	    	planeta.setDeuterium(planeta.getDeuterium() + (resourcesLooses[1][0] * (1 + bonificacion / 10)));
-	    } else if (totalPlanetLoss > totalEnemyLoss) {
-	    	planeta.roboResources();
+
+	    updateResourcesLoose();
+
+	    int totalPlanetLoss = resourcesLooses[0][0] + resourcesLooses[0][1];
+	    int totalEnemyLoss = resourcesLooses[1][0] + resourcesLooses[1][1];
+
+	    if (totalEnemyLoss > totalPlanetLoss) {
+	        int bonificacion = planeta.getTechnologyAtack();
+	        int metalGanado = (resourcesLooses[1][0] * (10 + bonificacion)) / 10;
+	        int deutGanado = (resourcesLooses[1][1] * (10 + bonificacion)) / 10;
+	        planeta.setMetal(planeta.getMetal() + metalGanado);
+	        planeta.setDeuterium(planeta.getDeuterium() + deutGanado);
+	    } else {
+	        planeta.roboResources();
 	    }
-	    resetArmyArmor();    // Reinicia armaduras al final
+
+	    resetArmyArmor();
 	}
 }

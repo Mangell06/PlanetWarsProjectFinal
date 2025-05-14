@@ -14,7 +14,7 @@ public class PlanetWars {
 			Connection conn = DatabaseConnector.connect();
 
 			// Crear nuevo planeta (planet_id = 1)
-			Planet planet = new Planet(14, "Prueba 14", 1, 1, 50000, 20000, conn);
+			Planet planet = new Planet(17, "Death Star", 1, 1, 50000, 20000, conn);
 
 			planet.setUpgradeAttackTechnologyDeuteriumCost(2000);
 			planet.setUpgradeDefenseTechnologyDeuteriumCost(2000);
@@ -25,8 +25,11 @@ public class PlanetWars {
 			planet.getRepository().iniciarBatalla(planet, numBatalla);
 			
 			// Crear ejercito del jugador
-			planet.newLightHunter(2);
-			planet.newHeavyHunter(1);
+			planet.newLightHunter(3);
+			planet.newHeavyHunter(5);
+			planet.newIonCannon(3);
+			planet.newMissileLauncher(2);
+			planet.newPlasmaCannon(5);
 			
 			// Crear ejército enemigo básico
 			ArrayList<MilitaryUnit>[] enemyArmy = createEnemyArmy();
@@ -179,6 +182,19 @@ class Planet {
 	public void setRepository(PlanetRepository repository) {
 		this.repository = repository;
 	}
+	
+	public void roboResources() {
+        int metalLoss = 50000;
+        int deuteriumLoss = 25000;
+        metal = Math.max(0, metal - metalLoss);
+        deuterium = Math.max(0, deuterium - deuteriumLoss);
+        if (metal < 0) {
+            metal = 0;
+        }
+        if (deuterium < 0) {
+            deuterium = 0;
+        }
+    }
 
 	public void upgradeTechnologyDefense() throws ResourceException {
 		try {
@@ -208,7 +224,7 @@ class Planet {
 	}
 	
 	public void newLightHunter(int n) {
-		for (int i = 0; i <= n; i++) {
+		for (int i = 0; i < n; i++) {
 			try {
 				if (Variables.METAL_COST_LIGTHHUNTER > metal || Variables.DEUTERIUM_COST_LIGTHHUNTER > deuterium) {
 					throw new ResourceException("You don't have enough resource");
@@ -374,8 +390,13 @@ class PlanetRepository {
 			throw new ResourceException("You don't have enough deuterium to upgrade attack technology.");
 		}
 		
-		planet.setMetal(planet.getMetal() - metalCost);
-		planet.setDeuterium(planet.getDeuterium() - deuteriumCost);
+		if (planet.getMetal() > 0 || planet.getDeuterium() > 0) {
+			planet.setMetal(planet.getMetal() - metalCost);
+			planet.setDeuterium(planet.getDeuterium() - deuteriumCost);
+		} else {
+			planet.setMetal(0);
+			planet.setDeuterium(0);
+		}
 		
 		String query = "UPDATE planet_stats SET resource_metal_amount = resource_metal_amount - ?, "
 				+ "resource_deuterion_amount = resource_deuterion_amount - ?, "
@@ -388,6 +409,37 @@ class PlanetRepository {
 		pdsmt.executeUpdate();
 	}
 	
+	public void actualizarRecursosFlotas(Planet planet, int metalGanado, int deuteriumGanado, ArrayList<MilitaryUnit>[] armyActual) {
+		try {
+			// Contadores por tipo de unidad
+			int[] unidades = new int[7]; // [0] = LightHunter ... [6] = PlasmaCannon
+			for (int i = 0; i < 7; i++) {
+				unidades[i] = armyActual[i].size();
+			}
+			
+			String sql = "UPDATE planet_stats SET resource_metal_amount = GREATEST(resource_metal_amount + ?, 0), " +
+                    "resource_deuterion_amount = GREATEST(resource_deuterion_amount + ?, 0), " +
+                    "missilelauncher_remaining = ?, ioncannon_remaining = ?, plasmacannon_remaining = ?, " +
+                    "lighthunter_remaining = ?, heavyhunter_remaining = ?, battleship_remaining = ?, armoredship_remaining = ? " +
+                    "WHERE planet_id = ?";
+			
+			PreparedStatement ps = conn.prepareStatement(sql);
+	        ps.setInt(1, metalGanado);
+	        ps.setInt(2, deuteriumGanado);
+	        ps.setInt(3, unidades[4]); // missilelauncher
+	        ps.setInt(4, unidades[5]); // ioncannon
+	        ps.setInt(5, unidades[6]); // plasmacannon
+	        ps.setInt(6, unidades[0]); // lighthunter
+	        ps.setInt(7, unidades[1]); // heavyhunter
+	        ps.setInt(8, unidades[2]); // battleship
+	        ps.setInt(9, unidades[3]); // armoredship
+	        ps.setInt(10, planet.getPlanet_id());
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("Error to update the information: " + e.getMessage());
+		}
+	}
+	
 	public void iniciarBatalla(Planet planet, int numBatalla) {
 	    try {
 	        // Verificar si ya existe la batalla
@@ -398,7 +450,7 @@ class PlanetRepository {
 	        ResultSet rs = checkStmt.executeQuery();
 
 	        if (rs.next()) {
-	            System.out.println("La batalla ya existe, se omite el insert.");
+	            System.out.println("Battle exists in MySQL.");
 	            return;
 	        }
 
@@ -433,6 +485,21 @@ class PlanetRepository {
 	    } catch (SQLException e) {
 	        System.out.println("Error to start the battle: " + e.getMessage());
 	    }
+	}
+	
+	public void actualizarRecursos(Planet planet, int metalWon, int deuteriumWon) {
+		try {
+			// Almacenar el metal ganado en la batalla
+	        String acquiredResource = "UPDATE battle_stats SET resource_metal_acquired = ?, resource_deuterion_acquired = ? WHERE planet_id = ? AND num_battle = ?";
+	        PreparedStatement updatePs = conn.prepareStatement(acquiredResource);
+	        updatePs.setInt(1, metalWon);
+	        updatePs.setInt(2, deuteriumWon);
+	        updatePs.setInt(3, planet.getPlanet_id());
+	        updatePs.setInt(4, planet.getNumBatalla());
+	        updatePs.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("Error to insert the information: " + e.getMessage());
+		}
 	}
 
 	
@@ -469,8 +536,7 @@ class PlanetRepository {
 	        }
 	        
 	        String columna = unidad + "_destroyed";
-	        String query = "UPDATE `" + tabla + "` SET `" + columna + "` = `" + columna + "` + 1 "
-	                   + "WHERE planet_id = ? AND num_battle = ?";
+	        String query = "UPDATE " + tabla + " SET " + columna + " = COALESCE(" + columna + ", 0) + 1 WHERE planet_id = ? AND num_battle = ?";
 
 	        PreparedStatement ps = conn.prepareStatement(query);
 	        ps.setInt(1, planet.getPlanet_id());
@@ -513,18 +579,12 @@ class PlanetRepository {
 	            insertStmt.executeUpdate();
 	        }
 	        
-	        String columna = unidad + "_destroyed";
-	        String query = "UPDATE `" + tabla + "` SET `" + columna + "` = `" + columna + "` + 1 "
-	                   + "WHERE planet_id = ? AND num_battle = ?";
-
-	        PreparedStatement ps = conn.prepareStatement(query);
+	        String columna = unidad + "_built";
+	        String updateQuery = "UPDATE " + tabla + " SET " + columna + " = COALESCE(" + columna + ", 0) + 1 WHERE planet_id = ? AND num_battle = ?";
+	        PreparedStatement ps = conn.prepareStatement(updateQuery);
 	        ps.setInt(1, planet.getPlanet_id());
 	        ps.setInt(2, numBatalla);
-	        int filas = ps.executeUpdate();
-			
-			if (filas == 0) {
-				System.out.println("No se actualizó ninguna fila en creación.");
-			}
+	        ps.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("Error to access: " + e.getMessage());
 		}
@@ -590,6 +650,7 @@ abstract class ship implements MilitaryUnit, Variables{
 	private int armor;
 	private int initialArmor;
 	private int baseDamage;
+	private boolean destroyed;
 	
 	public ship(int armor, int baseDamage) {
 		super();
@@ -617,6 +678,13 @@ abstract class ship implements MilitaryUnit, Variables{
 	}
 	public void setBaseDamage(int baseDamage) {
 		this.baseDamage = baseDamage;
+	}
+
+	public boolean isDestroyed() {
+		return destroyed;
+	}
+	public void trueDestroyed() {
+		this.destroyed = true;
 	}
 }
 
@@ -909,6 +977,7 @@ abstract class Defense implements MilitaryUnit,  Variables{
 	private int armor;
 	private int initialArmor;
 	private int baseDamage;
+	private boolean destroyed;
 	
 	public Defense(int armor, int baseDamage) {
 		super();
@@ -936,6 +1005,13 @@ abstract class Defense implements MilitaryUnit,  Variables{
 	}
 	public void setBaseDamage(int baseDamage) {
 		this.baseDamage = baseDamage;
+	}
+
+	public boolean isDestroyed() {
+		return destroyed;
+	}
+	public void trueDestroyed() {
+		this.destroyed = true;
 	}
 }
 
@@ -1089,7 +1165,11 @@ class Battle implements Variables {
 	    
 	}
 	
+	
+	
 	public String getBattleReport(int battles) {
+		updateactualunits();
+		
 		String mostrar = "";
 		String[] unitNames = {"Light Hunter","Heavy Hunter","Battle Ship","Armored Ship","Missile Launcher","Ion Cannon","Plasma Cannon"};
 		mostrar += "BATTLE NUMBER: " + battles;
@@ -1142,10 +1222,10 @@ class Battle implements Variables {
 		int[][] coste_recursos_actuales = new int[2][3];
 		coste_recursos_actuales[0] = fleetResourceCost(planetArmy);
 		coste_recursos_actuales[1] = fleetResourceCost(enemyArmy);
-		resourcesLooses[0][0] = coste_recursos_actuales[0][0] - initialCostFleet[0][0];
-		resourcesLooses[0][1] = coste_recursos_actuales[0][1] - initialCostFleet[0][1];
-		resourcesLooses[1][0] = coste_recursos_actuales[1][0] - initialCostFleet[1][0];
-		resourcesLooses[1][1] = coste_recursos_actuales[1][1] - initialCostFleet[1][1];
+		resourcesLooses[0][0] = initialCostFleet[0][0] - coste_recursos_actuales[0][0];
+		resourcesLooses[0][1] = initialCostFleet[0][1] - coste_recursos_actuales[0][1];
+		resourcesLooses[1][0] = initialCostFleet[1][0] - coste_recursos_actuales[1][0];
+		resourcesLooses[1][1] = initialCostFleet[1][1] - coste_recursos_actuales[1][1];
 		resourcesLooses[0][2] = resourcesLooses[0][0] + 5 * resourcesLooses[0][1];
 		resourcesLooses[1][2] = resourcesLooses[1][0] + 5 * resourcesLooses[1][1];
 	}
@@ -1285,8 +1365,19 @@ class Battle implements Variables {
 	public void ataque_nave(MilitaryUnit atacante, MilitaryUnit atacara, boolean atacamos) {
         atacara.tekeDamage(atacante.attack());
         if (atacara.getActualArmor() <= 0) {
-        	String unidad = atacara.getClass().getSimpleName(); // Pillamos el nombre de la unidad
-            planet.getRepository().registrarBaja(planet, unidad, numBatalla); // Ponemos en la base de datos la unidad derrotada
+        	if (atacara instanceof ship) {
+        		ship unidad = (ship) atacara;
+        		if (!unidad.isDestroyed()) {
+        			unidad.trueDestroyed();
+        			planet.getRepository().registrarBaja(planet, unidad.getClass().getSimpleName().toLowerCase(), numBatalla);
+        		}
+        	} else if (atacara instanceof Defense) {
+        		Defense unidad = (Defense) atacara;
+        		if (!unidad.isDestroyed()) {
+        			unidad.trueDestroyed();
+        			planet.getRepository().registrarBaja(planet, unidad.getClass().getSimpleName().toLowerCase(), numBatalla);
+        		}
+        	}
             if (atacara.getChanceGeneratinWaste() > (int) (Math.random()*100+1)) {
                 wasteMetalDeuterium[0] += atacara.getMetalCost();
                 wasteMetalDeuterium[1] += atacara.getDeuteriumCost();
@@ -1335,7 +1426,7 @@ class Battle implements Variables {
 	    wasteMetalDeuterium = new int[2];
 	    enemyDrops = new int[2];
 	    planetDrops = new int[2];
-	    resourcesLooses = new int[2][3];
+	    resourcesLooses = new int[2][3]; //metal= resourcesLooses[1][1] * (1 + nivel_tecnologia_ataque / 10) deuterium = resourcesLooses[1][0] * (1 + nivel_tecnologia_ataque / 10)
 
 	    initInitialArmies(); // Guarda conteo inicial
 	    resetArmyArmor();    // Reinicia armaduras
@@ -1408,8 +1499,21 @@ class Battle implements Variables {
 	        planetAttacks = !planetAttacks; // cambia el turno
 	    }
 	    updateResourcesLoose(); // Calcula pérdidas al finalizar
+	    int totalPlanetLoss = resourcesLooses[0][2];
+	    int totalEnemyLoss = resourcesLooses[1][2];
+	    int bonificacion = 0;
+	    if (totalPlanetLoss < totalEnemyLoss) {
+	    	bonificacion = planet.getTechnologyAttack();
+	    	planet.setMetal(planet.getMetal() + (resourcesLooses[1][1] * (1 + bonificacion / 10)));
+	    	planet.setDeuterium(planet.getDeuterium() + (resourcesLooses[1][0] * (1 + bonificacion / 10)));
+	    } else if (totalPlanetLoss > totalEnemyLoss) {
+	    	planet.roboResources();
+	    }
 	    resetArmyArmor();    // Reinicia armaduras al final
 	    
+	    
+	    planet.getRepository().actualizarRecursos(planet, resourcesLooses[1][1] * (1 + bonificacion / 10), resourcesLooses[1][0] * (1 + bonificacion / 10));
+	    planet.getRepository().actualizarRecursosFlotas(planet, resourcesLooses[1][1] * (1 + bonificacion / 10), resourcesLooses[1][0] * (1 + bonificacion / 10), planet.getArmy());
 	    planet.getRepository().eliminarLogAnterior(planet, numBatalla);
 	    
 	    String[] lineas = getBattleDevelopment().split("\n");

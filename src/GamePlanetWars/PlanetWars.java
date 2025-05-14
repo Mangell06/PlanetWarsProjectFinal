@@ -47,18 +47,18 @@ public class PlanetWars {
 		
 		enemySpawnTimer.schedule(new TimerTask() {
 		    public void run() {
-		    	if (game.getJuego() != null && game.getJuego().getPlaneta() != null) {
+		    	if (game.getJuego() != null && game.getJuego().getPlaneta() != null && !game.getJuego().isDetener()) {
 		    		int metal = Variables.METAL_BASE_ENEMY_ARMY + game.getJuego().getPlaneta().getTechnologyDefense() * 10000;
 		    		int deuterium = Variables.DEUTERIUM_BASE_ENEMY_ARMY + game.getJuego().getPlaneta().getTechnologyDefense() * 500;
 		    		game.createEnemyArmy(metal, deuterium);
 		    		game.getJuego().updateEnemyInformation();
 		    		game.getJuego().setMessageBattleComming("Se han encontrado enemigos");
 			        game.getJuego().repaint();
-		    	}}}, 30000, 60000);
+		    	}}}, 60000, 30000);
 		
 		battleTimer.schedule(new TimerTask() {
 		    public void run() {
-		    	if (game.getJuego() != null && game.getJuego().getPlaneta() != null) {
+		    	if (game.getJuego() != null && game.getJuego().getPlaneta() != null && !game.getJuego().isDetener()) {
 		    	boolean hay_ejercito_aliado = false;
 		    	for (int i = 0; i < game.getJuego().getPlaneta().getArmy().length; i++) {
 		    		if (game.getJuego().getPlaneta().getArmy()[i].size() > 0) {
@@ -86,16 +86,16 @@ public class PlanetWars {
 		        game.getJuego().updateEnemyInformation();
 		        game.getJuego().setMessageBattleComming("Por ahora no hay enemigos");
 	    		game.getJuego().repaint();
-		    	}}}, 40000, 70000);
+		    	}}}, 90000, 60000);
 		
 		resourceTimer.schedule(new TimerTask() {
 		    public void run() {
-		    	if (game.getJuego() != null && game.getJuego().getPlaneta() != null) {
+		    	if (game.getJuego() != null && game.getJuego().getPlaneta() != null && !game.getJuego().isDetener()) {
 			        game.getJuego().getPlaneta().setMetal(game.getJuego().getPlaneta().getMetal() + (Variables.PLANET_METAL_GENERATED + game.getJuego().getPlaneta().getTechnologyDefense() * 250));
 			        game.getJuego().getPlaneta().setDeuterium(game.getJuego().getPlaneta().getDeuterium() + (Variables.PLANET_DEUTERIUM_GENERATED + game.getJuego().getPlaneta().getTechnologyDefense() * 100));
 			        game.getJuego().update_information();
 			        game.getJuego().repaint();
-		    	}}}, 5000, 20000);}
+		    	}}}, 5000, 15000);}
 }
 
 class VentanaJuego extends JFrame {
@@ -187,6 +187,7 @@ class Game extends JPanel {
     private JButton subirataque, subirdefensa;
     private JTextArea battledevelopment, battlereport;
     private ArrayList<MilitaryUnit>[] enemyArmy;
+    private boolean detener = false;
     
     public ArrayList<MilitaryUnit>[] getEnemyArmy() {
 		return enemyArmy;
@@ -206,6 +207,10 @@ class Game extends JPanel {
 	public void setMessageBattleComming(String mensaje) {
 		messagebattlecomming.setText(mensaje);;
 		repaint();
+	}
+
+	public boolean isDetener() {
+		return detener;
 	}
 
 	public Game(User usuario, Planet planeta) {
@@ -632,6 +637,7 @@ class Game extends JPanel {
 	    updateEnemyInformation();
 	    reconstruirShop();
 	    repaint();
+	    detener = false;
 	}
 
 	
@@ -661,6 +667,7 @@ class Game extends JPanel {
 	    barraderechastats.repaint();
 	    if (planeta.getMetal() <= 0 || planeta.getDeuterium() <= 0) {
 	        try {
+	        	detener = true;
 	            BufferedImage tierradestruida = ImageIO.read(new File(".\\src\\Assets\\Asset_EarthDestroyed.png"));
 	            planetstat.setImagen(tierradestruida);
 	            repaint();
@@ -668,7 +675,7 @@ class Game extends JPanel {
 	            String material = planeta.getMetal() <= 0 ? "Metal" : "Deuterium";
 	            JOptionPane.showMessageDialog(null, "Game Over", "Tu planeta no tiene más " + material, JOptionPane.INFORMATION_MESSAGE);
 
-	            reiniciarPlaneta(new Planet(planeta.getImagen(), 1, 1, 100000, 1000000, 40000, 20000));
+	            reiniciarPlaneta(new Planet(planeta.getImagen(), 1, 1, 100000, 1000000, 20000, 20000));
 	            return;
 	        } catch (IOException e) {
 	            System.out.println(e.getMessage());
@@ -797,7 +804,7 @@ class PanelIniciarSesion extends JPanel {
                 } else {
                     try {
                         BufferedImage img = ImageIO.read(new File(".\\src\\Assets\\Asset_EarthBasic.png"));
-                        Planet planeta = new Planet(img, 1, 1, 100000, 1000000, 40000, 20000);
+                        Planet planeta = new Planet(img, 1, 1, 100000, 1000000, 20000, 20000);
                         User user = new User(username, password);
                         ventana.mostrarPanelJuego(user, planeta);
                     } catch (IOException ex) {

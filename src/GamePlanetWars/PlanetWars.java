@@ -14,7 +14,7 @@ public class PlanetWars {
 			Connection conn = DatabaseConnector.connect();
 
 			// Crear nuevo planeta (planet_id = 1)
-			Planet planet = new Planet(17, "Death Star", 1, 1, 50000, 20000, conn);
+			Planet planet = new Planet(2, 1, 1, 50000, 20000, conn);
 
 			planet.setUpgradeAttackTechnologyDeuteriumCost(2000);
 			planet.setUpgradeDefenseTechnologyDeuteriumCost(2000);
@@ -72,7 +72,6 @@ public class PlanetWars {
 class Planet {
 	private int planet_id;
 	private int numBatalla;
-	private String name;
 	private int technologyDefense;
 	private int technologyAttack;
 	private int metal;
@@ -83,10 +82,9 @@ class Planet {
 	private PlanetRepository repository;
 	
 	@SuppressWarnings("unchecked")
-	public Planet(int planet_id, String name,  int technologyDefense, int technologyAtack, int metal, int deuterium, Connection conn) {
+	public Planet(int planet_id, int technologyDefense, int technologyAtack, int metal, int deuterium, Connection conn) {
 		super();
 		this.planet_id = planet_id;
-		this.name = name;
 		this.technologyDefense = technologyDefense;
 		this.technologyAttack = technologyAtack;
 		this.metal = metal;
@@ -160,13 +158,6 @@ class Planet {
 	}
 	public void setNumBatalla(int numBatalla) {
 		this.numBatalla = numBatalla;
-	}
-
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public int getTechnologyAttack() {
@@ -365,16 +356,15 @@ class PlanetRepository {
 	
 	public void crear_planeta(Planet planet) {
 		try {
-			String query = "INSERT INTO Planet_stats (planet_id, name, resource_metal_amount, "
+			String query = "INSERT INTO Planet_stats (planet_id, resource_metal_amount, "
 					+ "resource_deuterion_amount, technology_defense_level, technology_attack_level, "
 					+ "battles_counter, missilelauncher_remaining, ioncannon_remaining, "
 					+ "plasmacannon_remaining, lighthunter_remaining, heavyhunter_remaining, "
 					+ "battleship_remaining, armoredship_remaining)"
-					+ "VALUES (?, ?, ?, ?, ?, ?, 0, 0, 0, 0, 0, 0, 0, 0)";
+					+ "VALUES (?, ?, ?, ?, ?, 0, 0, 0, 0, 0, 0, 0, 0)";
 		
 			PreparedStatement pdsmt = conn.prepareStatement(query);
 			pdsmt.setInt(1, planet.getPlanet_id());
-			pdsmt.setString(2, planet.getName());
 			pdsmt.setInt(3, planet.getMetal());
 			pdsmt.setInt(4, planet.getDeuterium());
 			pdsmt.setInt(5, planet.getTechnologyDefense());
@@ -1365,19 +1355,6 @@ class Battle implements Variables {
 	public void ataque_nave(MilitaryUnit atacante, MilitaryUnit atacara, boolean atacamos) {
         atacara.tekeDamage(atacante.attack());
         if (atacara.getActualArmor() <= 0) {
-        	if (atacara instanceof ship) {
-        		ship unidad = (ship) atacara;
-        		if (!unidad.isDestroyed()) {
-        			unidad.trueDestroyed();
-        			planet.getRepository().registrarBaja(planet, unidad.getClass().getSimpleName().toLowerCase(), numBatalla);
-        		}
-        	} else if (atacara instanceof Defense) {
-        		Defense unidad = (Defense) atacara;
-        		if (!unidad.isDestroyed()) {
-        			unidad.trueDestroyed();
-        			planet.getRepository().registrarBaja(planet, unidad.getClass().getSimpleName().toLowerCase(), numBatalla);
-        		}
-        	}
             if (atacara.getChanceGeneratinWaste() > (int) (Math.random()*100+1)) {
                 wasteMetalDeuterium[0] += atacara.getMetalCost();
                 wasteMetalDeuterium[1] += atacara.getDeuteriumCost();
@@ -1398,6 +1375,19 @@ class Battle implements Variables {
 		for (int i = 0; i < planetArmy.length; i++) {
 			for (int j = 0; j < planetArmy[i].size(); j++) {
 				if (planetArmy[i].get(j).getActualArmor() <= 0) {
+					if (planetArmy[i].get(j) instanceof ship) {
+		        		ship unidad = (ship) planetArmy[i].get(j);
+		        		if (!unidad.isDestroyed()) {
+		        			unidad.trueDestroyed();
+		        			planet.getRepository().registrarBaja(planet, unidad.getClass().getSimpleName().toLowerCase(), numBatalla);
+		        		}
+		        	} else if (planetArmy[i].get(j) instanceof Defense) {
+		        		Defense unidad = (Defense) planetArmy[i].get(j);
+		        		if (!unidad.isDestroyed()) {
+		        			unidad.trueDestroyed();
+		        			planet.getRepository().registrarBaja(planet, unidad.getClass().getSimpleName().toLowerCase(), numBatalla);
+		        		}
+		        	}
 					planetArmy[i].remove(j);
 				}
 			}

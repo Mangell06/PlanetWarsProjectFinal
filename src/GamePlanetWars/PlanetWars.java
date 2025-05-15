@@ -51,8 +51,8 @@ public class PlanetWars {
 		enemySpawnTimer.schedule(new TimerTask() {
 		    public void run() {
 		    	if (game.getJuego() != null && game.getJuego().getPlaneta() != null && !game.getJuego().isDetener()) {
-		    		int metal = Variables.METAL_BASE_ENEMY_ARMY + game.getJuego().getPlaneta().getTechnologyDefense() * 10000;
-		    		int deuterium = Variables.DEUTERIUM_BASE_ENEMY_ARMY + game.getJuego().getPlaneta().getTechnologyDefense() * 500;
+		    		int metal = Variables.METAL_BASE_ENEMY_ARMY + game.getJuego().getPlaneta().getTechnologyDefense() * 2;
+		    		int deuterium = Variables.DEUTERIUM_BASE_ENEMY_ARMY + game.getJuego().getPlaneta().getTechnologyDefense() * 2;
 		    		game.createEnemyArmy(metal, deuterium);
 		    		game.getJuego().updateEnemyInformation();
 		    		game.getJuego().setMessageBattleComming("Se han encontrado enemigos");

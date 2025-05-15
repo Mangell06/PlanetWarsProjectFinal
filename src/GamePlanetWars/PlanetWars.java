@@ -69,9 +69,6 @@ public class PlanetWars {
 		    		}
 		    	}
 		    	if (hay_ejercito_aliado) {
-		    		int numBatalla = game.getJuego().getPlaneta().getRepository().getNextBattleNumber(game.getJuego().getPlaneta());
-		    		game.getJuego().getPlaneta().setNumBatalla(numBatalla);
-		    		game.getJuego().getPlaneta().getRepository().iniciarBatalla(game.getJuego().getPlaneta(), numBatalla);
 		    	    Battle batalla = new Battle(game.getJuego().getPlaneta().getArmy(), game.getJuego().getEnemyArmy(), game.getJuego().getPlaneta(), game.getJuego().getPlaneta().getNumBatalla());
 		    	    game.getJuego().setMessageBattleComming("Luchando!!!");
 		    	    game.getJuego().repaint();
@@ -788,6 +785,7 @@ class PanelIniciarSesion extends JPanel {
     private JTextField name;
     private JPasswordField pass;
     private JLabel error;
+    private Game game;
 
     public PanelIniciarSesion(VentanaJuego ventana) {
         this.ventana = ventana;
@@ -859,6 +857,9 @@ class PanelIniciarSesion extends JPanel {
                 			Connection conn = DatabaseConnector.connect();
                 			BufferedImage img = ImageIO.read(new File(".\\src\\Assets\\Asset_EarthBasic.png"));
                             Planet planeta = new Planet(1,img, 1, 1, 100000, 1000000, 20000, 20000, conn);
+                            int numBatalla = game.getPlaneta().getRepository().getNextBattleNumber(game.getPlaneta());
+        		    		game.getPlaneta().setNumBatalla(numBatalla);
+        		    		game.getPlaneta().getRepository().iniciarBatalla(game.getPlaneta(), numBatalla);
                             User user = new User(username, password);
                             ventana.mostrarPanelJuego(user, planeta);
             		} catch (ClassNotFoundException ex) {

@@ -39,6 +39,17 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.*;
+
+import java.io.File;
+
 public class PlanetWars {
 	
 	public static void main(String[] args) {
@@ -84,6 +95,7 @@ public class PlanetWars {
 		    	    game.getJuego().setMessageBattleComming("Luchando!!!");
 		    	    game.getJuego().repaint();
 		    	    batalla.startBattle(game.getJuego().getPlaneta());
+		    	    batalla.exportBattleToXML(game.getJuego().getBatallas().size());
 		    	    game.getJuego().addbattles(batalla);
 		    	    game.getJuego().update_information();
 		    	    try {
@@ -208,7 +220,11 @@ class Game extends JPanel {
     	batallas.add(batalla);
     }
     
-    public ArrayList<MilitaryUnit>[] getEnemyArmy() {
+    public ArrayList<Battle> getBatallas() {
+		return batallas;
+	}
+
+	public ArrayList<MilitaryUnit>[] getEnemyArmy() {
 		return enemyArmy;
 	}
 
@@ -262,8 +278,8 @@ class Game extends JPanel {
         add(north,BorderLayout.NORTH);
         north.add(name);
         menu = new JTabbedPane();
-        menu.setForeground(Color.WHITE);
-        menu.setBackground(Color.BLACK);
+        menu.setForeground(Color.BLACK);
+        menu.setBackground(Color.WHITE);
         stats = new JPanel();
         stats.setBackground(Color.BLACK);
         metal = new JLabel("Metal");
@@ -281,15 +297,15 @@ class Game extends JPanel {
         stats.setLayout(new BorderLayout());
         planetstat = new FondoPanel(planeta.getImagen(), planeta, true);
         barraderechastats = new JPanel();
-        barraderechastats.setBackground(Color.BLACK);
+        barraderechastats.setBackground(Color.DARK_GRAY);
         barraizquierdastats = new JPanel();
-        barraizquierdastats.setBackground(Color.BLACK);
+        barraizquierdastats.setBackground(Color.DARK_GRAY);
         barraizquierdastats.add(metal);
         barraizquierdastats.add(deuterium);
         barraizquierdastats.add(leveltechnologyattack);
         barraizquierdastats.add(leveltechnologydefense);
         shop = new JPanel();
-        shop.setBackground(Color.BLACK);
+        shop.setBackground(Color.DARK_GRAY);
         JPanel mensajesPanel = new JPanel();
         mensajesPanel.setBackground(Color.BLACK);
         mensajesPanel.setLayout(new BoxLayout(mensajesPanel, BoxLayout.Y_AXIS));
@@ -345,7 +361,7 @@ class Game extends JPanel {
     		botoncito.setMaximumSize(new Dimension(60,20));
     		botoncito.setAlignmentX(Component.CENTER_ALIGNMENT);
     		compra.add(botoncito);
-    		compra.setBackground(Color.GRAY);
+    		compra.setBackground(Color.DARK_GRAY);
     		shop.add(compra);
     	    botoncito.addActionListener(new ActionListener() {
     	        public void actionPerformed(ActionEvent e) {
@@ -570,7 +586,7 @@ class Game extends JPanel {
 	
 	public void reconstruirShop() {
 	    shop.removeAll();
-	    shop.setBackground(Color.BLACK);
+	    shop.setBackground(Color.DARK_GRAY);
 	    JPanel mensajesPanel = new JPanel();
 	    mensajesPanel.setBackground(Color.BLACK);
 	    mensajesPanel.setLayout(new BoxLayout(mensajesPanel, BoxLayout.Y_AXIS));
@@ -594,7 +610,7 @@ class Game extends JPanel {
 	    for (int i = 0; i < planeta.getArmy().length; i++) {
 	        final int index = i;
 	        JPanel compra = new JPanel();
-	        compra.setBackground(Color.GRAY);
+	        compra.setBackground(Color.DARK_GRAY);
 	        compra.setLayout(new BoxLayout(compra, BoxLayout.Y_AXIS));
 	        compra.setPreferredSize(new Dimension(170, 170));
 	        compra.setMinimumSize(new Dimension(170, 170));
@@ -680,7 +696,7 @@ class Game extends JPanel {
 	    preciodefensa.setText("Price Deuterium: " + nuevo.getUpgradeDefenseTechnologyDeuteriumCost());
 	    planetstat.setPlaneta(nuevo);
 	    barraderechastats.removeAll();
-	    barraderechastats.setBackground(Color.BLACK);
+	    barraderechastats.setBackground(Color.DARK_GRAY);
 	    for (int i = 0; i < nuevo.getArmy().length; i++) {
 	        FondoPanel naveimagen = new FondoPanel(imagenesUnidades[i], nuevo, false);
 	        naveimagen.setPreferredSize(new Dimension(120, 60));
@@ -712,7 +728,7 @@ class Game extends JPanel {
 	    preciodefensa.setText("Price Deuterium: " + planeta.getUpgradeDefenseTechnologyDeuteriumCost());
 
 	    barraderechastats.removeAll();
-	    barraderechastats.setBackground(Color.BLACK);
+	    barraderechastats.setBackground(Color.DARK_GRAY);
 	    for (int i = 0; i < planeta.getArmy().length; i++) {
 	        FondoPanel naveimagen = new FondoPanel(imagenesUnidades[i], planeta, false);
 	        naveimagen.setPreferredSize(new Dimension(120, 60));
@@ -2141,6 +2157,94 @@ class Battle implements Variables {
 			initialArmies[1][i] = enemyArmy[i].size();
 		}
 	}
+	
+	 public void exportBattleToXML(int battleNumber) {
+	        try {
+	            String[] unitNames = {"Light Hunter", "Heavy Hunter", "Battle Ship", "Armored Ship", "Missile Launcher", "Ion Cannon", "Plasma Cannon"};
+
+	            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+	            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+	            Document doc = docBuilder.newDocument();
+
+	            Element rootElement = doc.createElement("battle");
+	            rootElement.setAttribute("number", String.valueOf(battleNumber));
+	            doc.appendChild(rootElement);
+
+	            // Estadísticas de unidades
+	            Element statistics = doc.createElement("statistics");
+	            rootElement.appendChild(statistics);
+
+	            for (int i = 0; i < unitNames.length; i++) {
+	                Element unit = doc.createElement("unit");
+	                unit.setAttribute("name", unitNames[i]);
+
+	                unit.appendChild(createElement(doc, "planet_initial", initialArmies[0][i]));
+	                unit.appendChild(createElement(doc, "planet_drops", initialArmies[0][i] - actualNumberUnitsPlanet[i]));
+	                unit.appendChild(createElement(doc, "enemy_initial", initialArmies[1][i]));
+	                unit.appendChild(createElement(doc, "enemy_drops", initialArmies[1][i] - actualNumberUnitsEnemy[i]));
+
+	                statistics.appendChild(unit);
+	            }
+
+	            // Pérdidas de recursos
+	            Element losses = doc.createElement("resources_losses");
+	            losses.appendChild(createLossElement(doc, "planet", resourcesLooses[0][0], resourcesLooses[0][1]));
+	            losses.appendChild(createLossElement(doc, "enemy", resourcesLooses[1][0], resourcesLooses[1][1]));
+	            rootElement.appendChild(losses);
+
+	            // Chatarra
+	            Element waste = doc.createElement("waste_generated");
+	            waste.appendChild(createElement(doc, "metal", wasteMetalDeuterium[0]));
+	            waste.appendChild(createElement(doc, "deuterium", wasteMetalDeuterium[1]));
+	            rootElement.appendChild(waste);
+
+	            // Recolección de chatarra
+	            Element drops = doc.createElement("rubble_collected");
+	            drops.appendChild(createElement(doc, "planet", planetDrops[0]));
+	            drops.appendChild(createElement(doc, "enemy", enemyDrops[0]));
+	            rootElement.appendChild(drops);
+
+	            // Ganador
+	            int totalPlanetLoss = resourcesLooses[0][0] + resourcesLooses[0][1];
+	            int totalEnemyLoss = resourcesLooses[1][0] + resourcesLooses[1][1];
+	            String winner = (totalEnemyLoss > totalPlanetLoss) ? "Planet" :
+	                            (totalEnemyLoss < totalPlanetLoss) ? "Enemy" : "Draw";
+	            rootElement.appendChild(createElementWithText(doc, "winner", winner));
+
+	            // Guardar como XML
+	            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+	            Transformer transformer = transformerFactory.newTransformer();
+	            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+	            DOMSource source = new DOMSource(doc);
+	            StreamResult result = new StreamResult(new File("batalla" + battleNumber + ".xml"));
+	            transformer.transform(source, result);
+
+	            System.out.println("Archivo XML generado: batalla" + battleNumber + ".xml");
+
+	        } catch (ParserConfigurationException | TransformerException e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    private Element createElement(Document doc, String tag, int value) {
+	        Element elem = doc.createElement(tag);
+	        elem.appendChild(doc.createTextNode(String.valueOf(value)));
+	        return elem;
+	    }
+
+	    private Element createElementWithText(Document doc, String tag, String text) {
+	        Element elem = doc.createElement(tag);
+	        elem.appendChild(doc.createTextNode(text));
+	        return elem;
+	    }
+
+	    private Element createLossElement(Document doc, String side, int metal, int deuterium) {
+	        Element el = doc.createElement(side);
+	        el.appendChild(createElement(doc, "metal", metal));
+	        el.appendChild(createElement(doc, "deuterium", deuterium));
+	        el.appendChild(createElement(doc, "weighted", metal + deuterium));
+	        return el;
+	    }
 	
 	public int[] countArmyforType(ArrayList<MilitaryUnit>[] army) {
 		int[] count = new int[army.length];

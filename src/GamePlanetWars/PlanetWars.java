@@ -1,5 +1,4 @@
 package GamePlanetWars;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -1395,20 +1394,37 @@ class Battle implements Variables {
 	
 	// Elimina todas las naves con la armadura por debajo o igual a 0.
 	public void removedestroyships() {
-		for (int i = 0; i < planetArmy.length; i++) {
-			for (int j = 0; j < planetArmy[i].size(); j++) {
-				if (planetArmy[i].get(j).getActualArmor() <= 0) {
-					planetArmy[i].remove(j);
-				}
-			}
-		}
-		for (int i = 0; i < enemyArmy.length; i++) {
-			for (int j = 0; j < enemyArmy[i].size(); j++) {
-				if (enemyArmy[i].get(j).getActualArmor() <= 0) {
-					enemyArmy[i].remove(j);
-				}
-			}
-		}
+	    for (int i = 0; i < planetArmy.length; i++) {
+	        for (int j = 0; j < planetArmy[i].size(); j++) {
+	            MilitaryUnit unit = planetArmy[i].get(j);
+	            if (unit.getActualArmor() <= 0) {
+	                if (unit instanceof ship) {
+	                    ship s = (ship) unit;
+	                    if (!s.isDestroyed()) {
+	                        s.trueDestroyed();
+	                        planet.getRepository().registrarBaja(planet, s.getClass().getSimpleName().toLowerCase(), numBatalla);
+	                    }
+	                } else if (unit instanceof Defense) {
+	                    Defense d = (Defense) unit;
+	                    if (!d.isDestroyed()) {
+	                        d.trueDestroyed();
+	                        planet.getRepository().registrarBaja(planet, d.getClass().getSimpleName().toLowerCase(), numBatalla);
+	                    }
+	                }
+	                planetArmy[i].remove(j);
+	                j--;
+	            }
+	        }
+	    }
+
+	    for (int i = 0; i < enemyArmy.length; i++) {
+	        for (int j = 0; j < enemyArmy[i].size(); j++) {
+	            if (enemyArmy[i].get(j).getActualArmor() <= 0) {
+	                enemyArmy[i].remove(j);
+	                j--;
+	            }
+	        }
+	    }
 	}
 
 	

@@ -53,8 +53,6 @@ import java.io.File;
 public class PlanetWars {
 	
 	public static void main(String[] args) {
-		 File file = new File("res/img/Asset_EarthBasic.png");
-	     
 		Connection conn = null;
 	try {
 		conn = DatabaseConnector.connect();

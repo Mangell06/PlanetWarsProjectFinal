@@ -52,9 +52,7 @@ import java.io.File;
 
 public class PlanetWars {
 	
-	public static void main(String[] args) {
-		 File file = new File("res/img/Asset_EarthBasic.png");
-	     
+	public static void main(String[] args) {	     
 		Connection conn = null;
 	try {
 		conn = DatabaseConnector.connect();
@@ -90,9 +88,6 @@ public class PlanetWars {
 		    		}
 		    	}
 		    	if (hay_ejercito_aliado) {
-		    		int numBatalla = game.getJuego().getPlaneta().getRepository().getNextBattleNumber(game.getJuego().getPlaneta());
-		    		game.getJuego().getPlaneta().setNumBatalla(numBatalla);
-		    		game.getJuego().getPlaneta().getRepository().iniciarBatalla(game.getJuego().getPlaneta(), game.getJuego().getPlaneta().getNumBatalla());
 		    	    Battle batalla = new Battle(game.getJuego().getPlaneta().getArmy(), game.getJuego().getEnemyArmy(), game.getJuego().getPlaneta(), game.getJuego().getPlaneta().getNumBatalla());
 		    	    game.getJuego().setMessageBattleComming("Luchando!!!");
 		    	    game.getJuego().repaint();
@@ -898,6 +893,10 @@ class PanelIniciarSesion extends JPanel {
                             Planet planeta = new Planet(0,img, 1, 1, 100000, 1000000, 20000, 20000, conn);
                             planeta.createid();
                             planeta.getRepository().crear_planeta(planeta);
+                            int numBatalla = planeta.getRepository().getNextBattleNumber(planeta);
+        		    		planeta.setNumBatalla(numBatalla);
+        		    		planeta.getRepository().iniciarBatalla(planeta, planeta.getNumBatalla());
+
                             
                             // Insertar usuario en la tabla users
                             String insertUser = "INSERT INTO users (planet_id, user_name, password) VALUES (?, ?, ?)";
@@ -913,10 +912,7 @@ class PanelIniciarSesion extends JPanel {
                         error.setText("Error cargando la imagen del planeta");
                     }
                 }
-            } else if (command.equals("Iniciar Partida")) {
-                // Aquí se puede implementar carga de datos desde archivo
-                error.setText("Funcionalidad aún no implementada.");
-                
+            } else if (command.equals("Iniciar Partida")) {          
                 try {
                 	String buscarUser = "SELECT planet_id FROM users WHERE user_name = ? AND password = ?";
                 	PreparedStatement buscarStmt = conn.prepareStatement(buscarUser);

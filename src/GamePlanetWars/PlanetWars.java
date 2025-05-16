@@ -212,6 +212,7 @@ class Game extends JPanel {
     private JTextArea battlereport;
     private JTextField elegirreport;
     private ArrayList<MilitaryUnit>[] enemyArmy;
+    private String[] nombres = new String[7];
     private boolean detener = false;
     private ArrayList<Battle> batallas = new ArrayList<Battle>();
     
@@ -239,7 +240,7 @@ class Game extends JPanel {
 	}
 	
 	public void setMessageBattleComming(String mensaje) {
-		messagebattlecomming.setText(mensaje);;
+		messagebattlecomming.setText(mensaje);
 		repaint();
 	}
 
@@ -268,6 +269,13 @@ class Game extends JPanel {
         } catch (IOException e) {
             System.out.println("Error loading unit images: " + e.getMessage());
         }
+        nombres[0] = "LightHunter";
+        nombres[1] = "HeavyHunter";
+        nombres[2] = "BattleShip";
+        nombres[3] = "ArmoredShip";
+        nombres[4] = "MissileLauncher";
+        nombres[5] = "IonCannon";
+        nombres[6] = "Plasma Cannon";
         name = new JLabel(usuario.getName());
         name.setForeground(Color.WHITE);
         north = new JPanel();
@@ -332,6 +340,11 @@ class Game extends JPanel {
         	naveimagen.setPreferredSize(new Dimension(120,60)); 
         	naveimagen.setMinimumSize(new Dimension(120,60)); 
         	naveimagen.setMaximumSize(new Dimension(120,60));
+	        JLabel nombrenave2 = new JLabel(nombres[i]);
+	        nombrenave2.setForeground(Color.WHITE);
+	        nombrenave2.setAlignmentX(Component.CENTER_ALIGNMENT);
+	        barraderechastats.add(nombrenave2);
+        	barraderechastats.add(Box.createVerticalStrut(5));
     		barraderechastats.add(naveimagen);
     		JPanel compra = new JPanel();
     		compra.setBackground(Color.BLACK);
@@ -344,7 +357,10 @@ class Game extends JPanel {
         	compra.setMinimumSize(new Dimension(170,170)); 
         	compra.setMaximumSize(new Dimension(170,170));
         	compra.add(Box.createVerticalStrut(10));
-        	compra.add(new JLabel(""));
+	        JLabel nombrenave = new JLabel(nombres[i]);
+	        nombrenave.setForeground(Color.WHITE);
+	        nombrenave.setAlignmentX(Component.CENTER_ALIGNMENT);
+        	compra.add(nombrenave);
         	compra.add(Box.createVerticalStrut(5));
     		compra.add(naveimagenshop);
         	compra.add(Box.createVerticalStrut(10));
@@ -525,6 +541,7 @@ class Game extends JPanel {
 	public void updateEnemyInformation() {
 		battlescomming.removeAll();
 		battlescomming.add(messagebattlecomming);
+    	battlescomming.add(Box.createVerticalStrut(20));
 		for (int i = 0; i < 4; i++) {
 			if (enemyArmy[i] != null) {
 	        	FondoPanel naveimagencomming = new FondoPanel(imagenesUnidades[i], planeta, false);
@@ -540,6 +557,11 @@ class Game extends JPanel {
 	        	naveimagencomming.setPreferredSize(new Dimension(120,80)); 
 	        	naveimagencomming.setMinimumSize(new Dimension(120,80)); 
 	        	naveimagencomming.setMaximumSize(new Dimension(120,80));
+		        JLabel nombrenave = new JLabel(nombres[i]);
+		        nombrenave.setForeground(Color.WHITE);
+		        nombrenave.setAlignmentX(Component.CENTER_ALIGNMENT);
+	        	battlescomming.add(nombrenave);
+	        	battlescomming.add(Box.createVerticalStrut(5));
 	        	battlescomming.add(naveimagencomming);
 	        	JLabel textoayudita = new JLabel("" + 0);
 	        	textoayudita.setForeground(Color.WHITE);
@@ -634,8 +656,13 @@ class Game extends JPanel {
 	        botoncito.setMinimumSize(new Dimension(60, 20));
 	        botoncito.setMaximumSize(new Dimension(60, 20));
 	        botoncito.setAlignmentX(Component.CENTER_ALIGNMENT);
-
+	        
 	        compra.add(Box.createVerticalStrut(10));
+	        JLabel nombrenave = new JLabel(nombres[i]);
+	        nombrenave.setForeground(Color.WHITE);
+        	compra.add(nombrenave);
+	        nombrenave.setAlignmentX(Component.CENTER_ALIGNMENT);
+        	compra.add(Box.createVerticalStrut(5));
 	        compra.add(naveimagenshop);
 	        compra.add(Box.createVerticalStrut(10));
 	        compra.add(cantidad);
@@ -739,6 +766,11 @@ class Game extends JPanel {
 	        JLabel textoayudita = new JLabel("" + planeta.getArmy()[i].size());
 	        textoayudita.setForeground(Color.WHITE);
 
+	        JLabel nombrenave2 = new JLabel(nombres[i]);
+	        nombrenave2.setForeground(Color.WHITE);
+	        nombrenave2.setAlignmentX(Component.CENTER_ALIGNMENT);
+	        barraderechastats.add(nombrenave2);
+        	barraderechastats.add(Box.createVerticalStrut(5));
 	        barraderechastats.add(naveimagen);
 	        barraderechastats.add(textoayudita);
 	    }

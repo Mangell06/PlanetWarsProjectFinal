@@ -53,6 +53,7 @@ import java.io.File;
 public class PlanetWars {
 	
 	public static void main(String[] args) {
+		
 		Connection conn = null;
 	try {
 		conn = DatabaseConnector.connect();
@@ -259,13 +260,13 @@ class Game extends JPanel {
         setLayout(new BorderLayout());
         try {
         	imagenesUnidades = new BufferedImage[7];
-        	imagenesUnidades[0] = ImageIO.read(new File("src/Assets/Asset_LightHunter.png")); // getClass().getResourceAsStream("/Assets/Asset_LightHunter.png")
-        	imagenesUnidades[1] = ImageIO.read(new File("src/Assets/Asset_HeavyHunter.png"));
-        	imagenesUnidades[2] = ImageIO.read(new File("src/Assets/Asset_BattleShip.png"));
-        	imagenesUnidades[3] = ImageIO.read(new File("src/Assets/Asset_ArmoredShip.png"));
-        	imagenesUnidades[4] = ImageIO.read(new File("src/Assets/Asset_MissileLauncher.png"));
-        	imagenesUnidades[5] = ImageIO.read(new File("src/Assets/Asset_IonCannon.png"));
-        	imagenesUnidades[6] = ImageIO.read(new File("src/Assets/Asset_PlasmaCannon.png"));
+        	imagenesUnidades[0] = ImageIO.read(new File("/Assets/Asset_LightHunter.png")); // getClass().getResourceAsStream("/Assets/Asset_LightHunter.png")
+        	imagenesUnidades[1] = ImageIO.read(new File("/Assets/Asset_HeavyHunter.png"));
+        	imagenesUnidades[2] = ImageIO.read(new File("/Assets/Asset_BattleShip.png"));
+        	imagenesUnidades[3] = ImageIO.read(new File("/Assets/Asset_ArmoredShip.png"));
+        	imagenesUnidades[4] = ImageIO.read(new File("/Assets/Asset_MissileLauncher.png"));
+        	imagenesUnidades[5] = ImageIO.read(new File("/Assets/Asset_IonCannon.png"));
+        	imagenesUnidades[6] = ImageIO.read(new File("/Assets/Asset_PlasmaCannon.png"));
         } catch (IOException e) {
             System.out.println("Error loading unit images: " + e.getMessage());
         }
@@ -747,7 +748,7 @@ class Game extends JPanel {
 	    if (planeta.getMetal() <= 0 || planeta.getDeuterium() <= 0) {
 	        try {
 	        	detener = true;
-	            BufferedImage tierradestruida = ImageIO.read(new File("src/Assets/Asset_EarthDestroyed.png"));
+	            BufferedImage tierradestruida = ImageIO.read(new File("/Assets/Asset_EarthDestroyed.png"));
 	            planetstat.setImagen(tierradestruida);
 	            repaint();
 
@@ -882,8 +883,8 @@ class PanelIniciarSesion extends JPanel {
                 } else if (username.length() < 3 || username.length() > 12) {
                     error.setText("El nombre debe tener entre 3 y 12 caracteres.");
                 } else {
-                    try {
-                			BufferedImage img = ImageIO.read(new File("src/Assets/Asset_EarthBasic.png"));
+                    try {	
+                			BufferedImage img = ImageIO.read(new File("/Assets/Asset_EarthBasic.png"));
                     		// Verificar si el usuario introducido ya existe
                     		String sql = "SELECT planet_id FROM users WHERE user_name = ?";
                     		PreparedStatement ps = conn.prepareStatement(sql);
@@ -945,7 +946,7 @@ class PanelIniciarSesion extends JPanel {
                 	int deuterium = planetaRs.getInt("resource_deuterion_amount");
                 	int techDef = planetaRs.getInt("technology_defense_level");
                 	int techAtk = planetaRs.getInt("technology_attack_level");
-        			BufferedImage img = ImageIO.read(new File("./Assets/Asset_EarthBasic.png"));
+        			BufferedImage img = ImageIO.read(new File("/Assets/Asset_EarthBasic.png"));
         			
         			Planet planeta = new Planet(planetId, img, techDef, techAtk, metal, deuterium, 20000, 20000, conn);
         			User user = new User(username, password);
@@ -1787,7 +1788,7 @@ class LightHunter extends Ship {
 	public LightHunter(int armor, int baseDamage) {
 		super(armor,baseDamage);
 		try {
-		    this.imagen = ImageIO.read(new File("src/Assets/Asset_LightHunter.png"));
+		    this.imagen = ImageIO.read(new File("./src/Assets/Asset_LightHunter.png"));
 		} catch (IOException e) {
 		   	System.out.println(e.getMessage());
 		}
@@ -1841,7 +1842,7 @@ class HeavyHunter extends Ship {
 	public HeavyHunter(int armor, int baseDamage) {
 		super(armor, baseDamage);
 		try {
-		    this.imagen = ImageIO.read(new File("src/Assets/Asset_HeavyHunter.png"));
+		    this.imagen = ImageIO.read(new File("./src/Assets/Asset_HeavyHunter.png"));
 		} catch (IOException e) {
 		   	System.out.println(e.getMessage());
 		}
@@ -1895,7 +1896,7 @@ class BattleShip extends Ship {
 	public BattleShip(int armor, int baseDamage) {
 		super(armor, baseDamage);
 		try {
-		    this.imagen = ImageIO.read(new File("src/Assets/Asset_BattleShip.png"));
+		    this.imagen = ImageIO.read(new File("./src/Assets/Asset_BattleShip.png"));
 		} catch (IOException e) {
 		   	System.out.println(e.getMessage());
 		}
@@ -1949,7 +1950,7 @@ class ArmoredShip extends Ship {
 	public ArmoredShip(int armor, int baseDamage) {
 		super(armor, baseDamage);
 		try {
-		    this.imagen = ImageIO.read(new File("src/Assets/Asset_ArmoredShip.png"));
+		    this.imagen = ImageIO.read(new File("./src/Assets/Asset_ArmoredShip.png"));
 		} catch (IOException e) {
 		   	System.out.println(e.getMessage());
 		}
@@ -2047,7 +2048,7 @@ class MissileLauncher extends Defense {
 	public MissileLauncher(int armor, int baseDamage) {
 		super(armor, baseDamage);	
 		try {
-		    this.imagen = ImageIO.read(new File("src/Assets/Asset_MissileLauncher.png"));
+		    this.imagen = ImageIO.read(new File("./src/Assets/Asset_MissileLauncher.png"));
 		} catch (IOException e) {
 		   	System.out.println(e.getMessage());
 		}
@@ -2097,7 +2098,7 @@ class IonCannon extends Defense {
 	public IonCannon(int armor, int baseDamage) {
 		super(armor, baseDamage);
 		try {
-		    this.imagen = ImageIO.read(new File("src/Assets/Asset_IonCannon.png"));
+		    this.imagen = ImageIO.read(new File("./src/Assets/Asset_IonCannon.png"));
 		} catch (IOException e) {
 		   	System.out.println(e.getMessage());
 		}
@@ -2148,7 +2149,7 @@ class PlasmaCannon extends Defense {
 	public PlasmaCannon(int armor, int baseDamage) {
 		super(armor, baseDamage);
 		try {
-		    this.imagen = ImageIO.read(new File("src/Assets/Asset_PlasmaCannon.png"));
+		    this.imagen = ImageIO.read(new File("./src/Assets/Asset_PlasmaCannon.png"));
 		} catch (IOException e) {
 		   	System.out.println(e.getMessage());
 		}

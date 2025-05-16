@@ -341,6 +341,8 @@ class Game extends JPanel {
         	compra.setMinimumSize(new Dimension(170,170)); 
         	compra.setMaximumSize(new Dimension(170,170));
         	compra.add(Box.createVerticalStrut(10));
+        	compra.add(new JLabel(""));)
+        	compra.add(Box.createVerticalStrut(5));
     		compra.add(naveimagenshop);
         	compra.add(Box.createVerticalStrut(10));
         	JTextField cantidad = new JTextField("1");
@@ -2324,7 +2326,7 @@ class Battle implements Variables {
 	            StreamResult result = new StreamResult(new File("batalla" + battleNumber + ".xml"));
 	            transformer.transform(source, result);
 
-	            System.out.println("Archivo XML generado: batalla" + battleNumber + ".xml");
+	            System.out.println("Archivo XML generado: batalla" + battleNumber + 1 + ".xml");
 
 	        } catch (ParserConfigurationException | TransformerException e) {
 	            e.printStackTrace();

@@ -24,9 +24,7 @@
             <planet_drops>0</planet_drops>
             <enemy_initial>1</enemy_initial>
             <enemy_drops>0</enemy_drops>
-
-
-@@ -46,23 +46,23 @@
+        </unit>
     </statistics>
     <resources_losses>
         <planet>

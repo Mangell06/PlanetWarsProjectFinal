@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<battle number="0">
+    <statistics>
+        <unit name="Light Hunter">
+            <planet_initial>1</planet_initial>
+            <planet_drops>0</planet_drops>
+            <enemy_initial>11</enemy_initial>
+            <enemy_drops>0</enemy_drops>
+        </unit>
+        <unit name="Heavy Hunter">
+            <planet_initial>0</planet_initial>
+            <planet_drops>0</planet_drops>
+            <enemy_initial>11</enemy_initial>
+            <enemy_drops>0</enemy_drops>
+        </unit>
+        <unit name="Battle Ship">
+            <planet_initial>0</planet_initial>
+            <planet_drops>0</planet_drops>
+            <enemy_initial>1</enemy_initial>
+            <enemy_drops>0</enemy_drops>
+        </unit>
+        <unit name="Armored Ship">
+            <planet_initial>0</planet_initial>
+            <planet_drops>0</planet_drops>
+            <enemy_initial>1</enemy_initial>
+            <enemy_drops>0</enemy_drops>
+        </unit>
+        <unit name="Missile Launcher">
+            <planet_initial>0</planet_initial>
+            <planet_drops>0</planet_drops>
+            <enemy_initial>0</enemy_initial>
+            <enemy_drops>0</enemy_drops>
+        </unit>
+        <unit name="Ion Cannon">
+            <planet_initial>0</planet_initial>
+            <planet_drops>0</planet_drops>
+            <enemy_initial>0</enemy_initial>
+            <enemy_drops>0</enemy_drops>
+        </unit>
+        <unit name="Plasma Cannon">
+            <planet_initial>0</planet_initial>
+            <planet_drops>0</planet_drops>
+            <enemy_initial>0</enemy_initial>
+            <enemy_drops>0</enemy_drops>
+        </unit>
+    </statistics>
+    <resources_losses>
+        <planet>
+            <metal>3000</metal>
+            <deuterium>50</deuterium>
+            <weighted>3050</weighted>
+        </planet>
+        <enemy>
+            <metal>0</metal>
+            <deuterium>0</deuterium>
+            <weighted>0</weighted>
+        </enemy>
+    </resources_losses>
+    <waste_generated>
+        <metal>0</metal>
+        <deuterium>0</deuterium>
+    </waste_generated>
+    <rubble_collected>
+        <planet>0</planet>
+        <enemy>0</enemy>
+    </rubble_collected>
+    <winner>Enemy</winner>
+</battle>

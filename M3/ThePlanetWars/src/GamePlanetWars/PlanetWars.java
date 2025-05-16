@@ -215,7 +215,8 @@ class Game extends JPanel {
     private String[] nombres = new String[7];
     private boolean detener = false;
     private ArrayList<Battle> batallas = new ArrayList<Battle>();
-    private ArrayList<Variables> preciosmetal, preciosdeuterium = new ArrayList<Variables>();
+    private int[] preciosmetal = new int[7];
+    private int[] preciosdeuterium = new int[7];
     
     public void addbattles(Battle batalla) {
     	batallas.add(batalla);
@@ -257,20 +258,20 @@ class Game extends JPanel {
         for (int i = 0; i < enemyArmy.length; i++) {
 		    enemyArmy[i] = new ArrayList<>();
 		}
-        preciosmetal.add(Variables.METAL_COST_LIGTHHUNTER);
-        preciosdeuterium.add(Variables.DEUTERIUM_COST_LIGTHHUNTER);
-        preciosmetal.add(Variables.METAL_COST_HEAVYHUNTER);
-        preciosdeuterium.add(Variables.DEUTERIUM_COST_HEAVYHUNTER);
-        preciosmetal.add(Variables.METAL_COST_BATTLESHIP);
-        preciosdeuterium.add(Variables.DEUTERIUM_COST_BATTLESHIP);
-        preciosmetal.add(Variables.METAL_COST_ARMOREDSHIP);
-        preciosdeuterium.add(Variables.DEUTERIUM_COST_ARMOREDSHIP);
-        preciosmetal.add(Variables.METAL_COST_MISSILELAUNCHER);
-        preciosdeuterium.add(Variables.DEUTERIUM_COST_MISSILELAUNCHER);
-        preciosmetal.add(Variables.METAL_COST_IONCANNON);
-        preciosdeuterium.add(Variables.DEUTERIUM_COST_IONCANNON);
-        preciosmetal.add(Variables.METAL_COST_PLASMACANNON);
-        preciosdeuterium.add(Variables.DEUTERIUM_COST_PLASMACANNON);
+        preciosmetal[0] = Variables.METAL_COST_LIGTHHUNTER;
+        preciosdeuterium[0] = Variables.DEUTERIUM_COST_LIGTHHUNTER;
+        preciosmetal[1] = Variables.METAL_COST_HEAVYHUNTER;
+        preciosdeuterium[1] = Variables.DEUTERIUM_COST_HEAVYHUNTER;
+        preciosmetal[2] = Variables.METAL_COST_BATTLESHIP;
+        preciosdeuterium[2] = Variables.DEUTERIUM_COST_BATTLESHIP;
+        preciosmetal[3] = Variables.METAL_COST_ARMOREDSHIP;
+        preciosdeuterium[3] = Variables.DEUTERIUM_COST_ARMOREDSHIP;
+        preciosmetal[4] = Variables.METAL_COST_MISSILELAUNCHER;
+        preciosdeuterium[4] = Variables.DEUTERIUM_COST_MISSILELAUNCHER;
+        preciosmetal[5] = Variables.METAL_COST_IONCANNON;
+        preciosdeuterium[5] = Variables.DEUTERIUM_COST_IONCANNON;
+        preciosmetal[6] = Variables.METAL_COST_PLASMACANNON;
+        preciosdeuterium[6] = Variables.DEUTERIUM_COST_PLASMACANNON;
         setLayout(new BorderLayout());
         try {
         	imagenesUnidades = new BufferedImage[7];
@@ -368,17 +369,17 @@ class Game extends JPanel {
         	naveimagenshop.setPreferredSize(new Dimension(120,80)); 
         	naveimagenshop.setMinimumSize(new Dimension(120,80)); 
         	naveimagenshop.setMaximumSize(new Dimension(120,80));
-        	compra.setPreferredSize(new Dimension(170,170)); 
-        	compra.setMinimumSize(new Dimension(170,170)); 
-        	compra.setMaximumSize(new Dimension(170,170));
+        	compra.setPreferredSize(new Dimension(220,220)); 
+        	compra.setMinimumSize(new Dimension(220,220)); 
+        	compra.setMaximumSize(new Dimension(220,220));
         	compra.add(Box.createVerticalStrut(10));
 	        JLabel nombrenave = new JLabel(nombres[i]);
 	        nombrenave.setForeground(Color.WHITE);
 	        nombrenave.setAlignmentX(Component.CENTER_ALIGNMENT);
         	compra.add(nombrenave);
         	compra.add(Box.createVerticalStrut(5));
-        	JLabel preciometalnave = new JLabel("Price of metal = " + preciosmetal.get(i));
-        	JLabel preciodeuteriumnave = new JLabel("Price of Deuterium = " + preciosdeuterium.get(i+1));
+        	JLabel preciometalnave = new JLabel("Price of metal = " + preciosmetal[i]);
+        	JLabel preciodeuteriumnave = new JLabel("Price of Deuterium = " + preciosdeuterium[i]);
 	        preciometalnave.setForeground(Color.WHITE);
 	        preciodeuteriumnave.setForeground(Color.WHITE);
 	        preciometalnave.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -659,9 +660,9 @@ class Game extends JPanel {
 	        JPanel compra = new JPanel();
 	        compra.setBackground(Color.DARK_GRAY);
 	        compra.setLayout(new BoxLayout(compra, BoxLayout.Y_AXIS));
-	        compra.setPreferredSize(new Dimension(170, 170));
-	        compra.setMinimumSize(new Dimension(170, 170));
-	        compra.setMaximumSize(new Dimension(170, 170));
+	        compra.setPreferredSize(new Dimension(220, 220));
+	        compra.setMinimumSize(new Dimension(220, 220));
+	        compra.setMaximumSize(new Dimension(220, 220));
 
 	        FondoPanel naveimagenshop = new FondoPanel(imagenesUnidades[i], planeta, false);
 	        naveimagenshop.setPreferredSize(new Dimension(120, 80));
@@ -669,8 +670,8 @@ class Game extends JPanel {
 	        naveimagenshop.setMaximumSize(new Dimension(120, 80));
 	        
 
-        	JLabel preciometalnave = new JLabel("Price of metal = " + preciosmetal.get(i));
-        	JLabel preciodeuteriumnave = new JLabel("Price of Deuterium = " + preciosdeuterium.get(i+1));
+        	JLabel preciometalnave = new JLabel("Price of metal = " + preciosmetal[i]);
+        	JLabel preciodeuteriumnave = new JLabel("Price of Deuterium = " + preciosdeuterium[i]);
 	        preciometalnave.setForeground(Color.WHITE);
 	        preciodeuteriumnave.setForeground(Color.WHITE);
 	        preciometalnave.setAlignmentX(Component.CENTER_ALIGNMENT);

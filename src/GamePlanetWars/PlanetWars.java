@@ -87,6 +87,9 @@ public class PlanetWars {
 		    		}
 		    	}
 		    	if (hay_ejercito_aliado) {
+		    		int numBatalla = game.getJuego().getPlaneta().getRepository().getNextBattleNumber(game.getJuego().getPlaneta());
+		    		game.getJuego().getPlaneta().setNumBatalla(numBatalla);
+		    		game.getJuego().getPlaneta().getRepository().iniciarBatalla(game.getJuego().getPlaneta(), game.getJuego().getPlaneta().getNumBatalla());
 		    	    Battle batalla = new Battle(game.getJuego().getPlaneta().getArmy(), game.getJuego().getEnemyArmy(), game.getJuego().getPlaneta(), game.getJuego().getPlaneta().getNumBatalla());
 		    	    game.getJuego().setMessageBattleComming("Luchando!!!");
 		    	    game.getJuego().repaint();
@@ -341,7 +344,7 @@ class Game extends JPanel {
         	compra.setMinimumSize(new Dimension(170,170)); 
         	compra.setMaximumSize(new Dimension(170,170));
         	compra.add(Box.createVerticalStrut(10));
-        	compra.add(new JLabel(""));)
+        	compra.add(new JLabel(""));
         	compra.add(Box.createVerticalStrut(5));
     		compra.add(naveimagenshop);
         	compra.add(Box.createVerticalStrut(10));

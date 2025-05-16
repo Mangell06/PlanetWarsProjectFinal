@@ -2,19 +2,19 @@
 <battle number="0">
     <statistics>
         <unit name="Light Hunter">
-            <planet_initial>5</planet_initial>
-            <planet_drops>4</planet_drops>
-            <enemy_initial>13</enemy_initial>
-            <enemy_drops>5</enemy_drops>
+            <planet_initial>1</planet_initial>
+            <planet_drops>0</planet_drops>
+            <enemy_initial>11</enemy_initial>
+            <enemy_drops>0</enemy_drops>
         </unit>
         <unit name="Heavy Hunter">
             <planet_initial>0</planet_initial>
             <planet_drops>0</planet_drops>
-            <enemy_initial>10</enemy_initial>
-            <enemy_drops>4</enemy_drops>
+            <enemy_initial>11</enemy_initial>
+            <enemy_drops>0</enemy_drops>
         </unit>
         <unit name="Battle Ship">
-            <planet_initial>1</planet_initial>
+            <planet_initial>0</planet_initial>
             <planet_drops>0</planet_drops>
             <enemy_initial>1</enemy_initial>
             <enemy_drops>0</enemy_drops>
@@ -26,8 +26,8 @@
             <enemy_drops>0</enemy_drops>
         </unit>
         <unit name="Missile Launcher">
-            <planet_initial>1</planet_initial>
-            <planet_drops>1</planet_drops>
+            <planet_initial>0</planet_initial>
+            <planet_drops>0</planet_drops>
             <enemy_initial>0</enemy_initial>
             <enemy_drops>0</enemy_drops>
         </unit>
@@ -46,23 +46,23 @@
     </statistics>
     <resources_losses>
         <planet>
-            <metal>17000</metal>
-            <deuterium>250</deuterium>
-            <weighted>17250</weighted>
+            <metal>3000</metal>
+            <deuterium>50</deuterium>
+            <weighted>3050</weighted>
         </planet>
         <enemy>
-            <metal>41000</metal>
-            <deuterium>450</deuterium>
-            <weighted>41450</weighted>
+            <metal>0</metal>
+            <deuterium>0</deuterium>
+            <weighted>0</weighted>
         </enemy>
     </resources_losses>
     <waste_generated>
-        <metal>43000</metal>
-        <deuterium>450</deuterium>
+        <metal>0</metal>
+        <deuterium>0</deuterium>
     </waste_generated>
     <rubble_collected>
-        <planet>8000</planet>
-        <enemy>35000</enemy>
+        <planet>0</planet>
+        <enemy>0</enemy>
     </rubble_collected>
-    <winner>Planet</winner>
+    <winner>Enemy</winner>
 </battle>

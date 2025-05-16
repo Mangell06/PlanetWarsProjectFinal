@@ -73,7 +73,7 @@ public class PlanetWars {
 		    		int deuterium = (int) (Variables.DEUTERIUM_BASE_ENEMY_ARMY + techLevel * 0.3);
 		    		game.createEnemyArmy(metal, deuterium);
 		    		game.getJuego().updateEnemyInformation();
-		    		game.getJuego().setMessageBattleComming("Se han encontrado enemigos");
+		    		game.getJuego().setMessageBattleComming("Enemies have been found.");
 			        game.getJuego().repaint();
 		    	}}}, 60000, 30000);
 		
@@ -91,7 +91,7 @@ public class PlanetWars {
 		    		game.getJuego().getPlaneta().setNumBatalla(numBatalla);
 		    		game.getJuego().getPlaneta().getRepository().iniciarBatalla(game.getJuego().getPlaneta(), game.getJuego().getPlaneta().getNumBatalla());
 		    	    Battle batalla = new Battle(game.getJuego().getPlaneta().getArmy(), game.getJuego().getEnemyArmy(), game.getJuego().getPlaneta(), game.getJuego().getPlaneta().getNumBatalla());
-		    	    game.getJuego().setMessageBattleComming("Luchando!!!");
+		    	    game.getJuego().setMessageBattleComming("Struggling!!!");
 		    	    game.getJuego().repaint();
 		    	    batalla.startBattle(game.getJuego().getPlaneta());
 		    	    batalla.exportBattleToXML(game.getJuego().getBatallas().size());
@@ -108,7 +108,7 @@ public class PlanetWars {
 			    	}
 		        game.getJuego().restaurar_enemigo();
 		        game.getJuego().updateEnemyInformation();
-		        game.getJuego().setMessageBattleComming("Por ahora no hay enemigos");
+		        game.getJuego().setMessageBattleComming("There are no enemies for now.");
 	    		game.getJuego().repaint();
 		    	}}}, 90000, 60000);
 		
@@ -215,6 +215,8 @@ class Game extends JPanel {
     private String[] nombres = new String[7];
     private boolean detener = false;
     private ArrayList<Battle> batallas = new ArrayList<Battle>();
+    private int[] preciosmetal = new int[7];
+    private int[] preciosdeuterium = new int[7];
     
     public void addbattles(Battle batalla) {
     	batallas.add(batalla);
@@ -256,6 +258,20 @@ class Game extends JPanel {
         for (int i = 0; i < enemyArmy.length; i++) {
 		    enemyArmy[i] = new ArrayList<>();
 		}
+        preciosmetal[0] = Variables.METAL_COST_LIGTHHUNTER;
+        preciosdeuterium[0] = Variables.DEUTERIUM_COST_LIGTHHUNTER;
+        preciosmetal[1] = Variables.METAL_COST_HEAVYHUNTER;
+        preciosdeuterium[1] = Variables.DEUTERIUM_COST_HEAVYHUNTER;
+        preciosmetal[2] = Variables.METAL_COST_BATTLESHIP;
+        preciosdeuterium[2] = Variables.DEUTERIUM_COST_BATTLESHIP;
+        preciosmetal[3] = Variables.METAL_COST_ARMOREDSHIP;
+        preciosdeuterium[3] = Variables.DEUTERIUM_COST_ARMOREDSHIP;
+        preciosmetal[4] = Variables.METAL_COST_MISSILELAUNCHER;
+        preciosdeuterium[4] = Variables.DEUTERIUM_COST_MISSILELAUNCHER;
+        preciosmetal[5] = Variables.METAL_COST_IONCANNON;
+        preciosdeuterium[5] = Variables.DEUTERIUM_COST_IONCANNON;
+        preciosmetal[6] = Variables.METAL_COST_PLASMACANNON;
+        preciosdeuterium[6] = Variables.DEUTERIUM_COST_PLASMACANNON;
         setLayout(new BorderLayout());
         try {
         	imagenesUnidades = new BufferedImage[7];
@@ -353,16 +369,25 @@ class Game extends JPanel {
         	naveimagenshop.setPreferredSize(new Dimension(120,80)); 
         	naveimagenshop.setMinimumSize(new Dimension(120,80)); 
         	naveimagenshop.setMaximumSize(new Dimension(120,80));
-        	compra.setPreferredSize(new Dimension(170,170)); 
-        	compra.setMinimumSize(new Dimension(170,170)); 
-        	compra.setMaximumSize(new Dimension(170,170));
+        	compra.setPreferredSize(new Dimension(220,220)); 
+        	compra.setMinimumSize(new Dimension(220,220)); 
+        	compra.setMaximumSize(new Dimension(220,220));
         	compra.add(Box.createVerticalStrut(10));
 	        JLabel nombrenave = new JLabel(nombres[i]);
 	        nombrenave.setForeground(Color.WHITE);
 	        nombrenave.setAlignmentX(Component.CENTER_ALIGNMENT);
         	compra.add(nombrenave);
         	compra.add(Box.createVerticalStrut(5));
+        	JLabel preciometalnave = new JLabel("Price of metal = " + preciosmetal[i]);
+        	JLabel preciodeuteriumnave = new JLabel("Price of Deuterium = " + preciosdeuterium[i]);
+	        preciometalnave.setForeground(Color.WHITE);
+	        preciodeuteriumnave.setForeground(Color.WHITE);
+	        preciometalnave.setAlignmentX(Component.CENTER_ALIGNMENT);
+	        preciodeuteriumnave.setAlignmentX(Component.CENTER_ALIGNMENT);
     		compra.add(naveimagenshop);
+        	compra.add(Box.createVerticalStrut(5));
+    		compra.add(preciometalnave);
+    		compra.add(preciodeuteriumnave);
         	compra.add(Box.createVerticalStrut(10));
         	JTextField cantidad = new JTextField("1");
         	cantidad.setHorizontalAlignment(JTextField.CENTER);
@@ -414,17 +439,17 @@ class Game extends JPanel {
     	                 int compradas = despues - antes;
     	                 update_information();
     	                 if (compradas == 0) {
-    	                	    mensajeCompra.setText("❌ No se pudieron comprar unidades.");
+    	                	    mensajeCompra.setText("❌ No units could be purchased.");
     	                	    unidadesCompradas.setText("");
     	                	} else if (compradas != n) {
-    	                		mensajeCompra.setText("❌ No se pudieron comprar todas las unidades.");
-    	                	    unidadesCompradas.setText("✅ Compradas: " + compradas);
+    	                		mensajeCompra.setText("❌ Not all units could be purchased.");
+    	                	    unidadesCompradas.setText("✅ Purchased: " + compradas);
     	                	}else {
     	                	    mensajeCompra.setText("");
-    	                	    unidadesCompradas.setText("✅ Compradas: " + compradas);
+    	                	    unidadesCompradas.setText("✅ Purchased: " + compradas);
     	                	}
     	             } catch (NumberFormatException ex) {
-    	            	 texto.setText("La cantidad debe ser un numero");
+    	            	 texto.setText("The amount must be a number");
     	            	 unidadesCompradas.setText("");
 	                	 mensajeCompra.setText("");
     	             }
@@ -521,17 +546,17 @@ class Game extends JPanel {
 	        	try {
 	        		int n = Integer.parseInt(elegirreport.getText());
 	        		if (batallas.size() == 0) {
-	        			battlereport.setText("Aun no a habido batallas");
+	        			battlereport.setText("There have been no battles yet.");
 	        		}
 	        		if(batallas.size() > 0) {
 		        		if (n > 0 && n <= batallas.size()) {
 		        			battlereport.setText(batallas.get(n-1).getBattleReport(n));
 		        		} else {
-		        			battlereport.setText("Las batallas solo estan entre 1 (La primera) hasta " + batallas.size() + " (La ultima hasta la fecha)");
+		        			battlereport.setText("The battles are only between 1 (The first) until " + batallas.size() + " (The last one to date)");
 		        		}
 	        		}
 	        	}catch (NumberFormatException ex) {
-	        		battlereport.setText("Tiene que ser un numero");
+	        		battlereport.setText("It has to be a number.");
 	        	}
 	        }});
         menu.addTab("Battle reports", reports);
@@ -585,18 +610,18 @@ class Game extends JPanel {
 				despues_nivel = planeta.getTechnologyAtack();
 				if (anterior_nivel == despues_nivel) {
 					nosubirdefensa.setText("");
-					nosubirataque.setText("No tienes suficientes recursos");
+					nosubirataque.setText("You don't have enough resources.");
 				} else {
 					nosubirataque.setText("");
 					nosubirdefensa.setText("");
 				}
-			} else if (e.getActionCommand().equals("Update Level technology defense")) {
+			} else if (e.getActionCommand().equals("Update Level technology defense.")) {
 				anterior_nivel = planeta.getTechnologyDefense();
 				planeta.upgradeTechnologyDefense();
 				despues_nivel = planeta.getTechnologyDefense();
 				if (anterior_nivel == despues_nivel) {
 					nosubirataque.setText("");
-					nosubirdefensa.setText("No tienes suficientes recursos");
+					nosubirdefensa.setText("You don't have enough resources.");
 				} else {
 					nosubirataque.setText("");
 					nosubirdefensa.setText("");
@@ -635,14 +660,22 @@ class Game extends JPanel {
 	        JPanel compra = new JPanel();
 	        compra.setBackground(Color.DARK_GRAY);
 	        compra.setLayout(new BoxLayout(compra, BoxLayout.Y_AXIS));
-	        compra.setPreferredSize(new Dimension(170, 170));
-	        compra.setMinimumSize(new Dimension(170, 170));
-	        compra.setMaximumSize(new Dimension(170, 170));
+	        compra.setPreferredSize(new Dimension(220, 220));
+	        compra.setMinimumSize(new Dimension(220, 220));
+	        compra.setMaximumSize(new Dimension(220, 220));
 
 	        FondoPanel naveimagenshop = new FondoPanel(imagenesUnidades[i], planeta, false);
 	        naveimagenshop.setPreferredSize(new Dimension(120, 80));
 	        naveimagenshop.setMinimumSize(new Dimension(120, 80));
 	        naveimagenshop.setMaximumSize(new Dimension(120, 80));
+	        
+
+        	JLabel preciometalnave = new JLabel("Price of metal = " + preciosmetal[i]);
+        	JLabel preciodeuteriumnave = new JLabel("Price of Deuterium = " + preciosdeuterium[i]);
+	        preciometalnave.setForeground(Color.WHITE);
+	        preciodeuteriumnave.setForeground(Color.WHITE);
+	        preciometalnave.setAlignmentX(Component.CENTER_ALIGNMENT);
+	        preciodeuteriumnave.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 	        JTextField cantidad = new JTextField("1");
 	        cantidad.setHorizontalAlignment(JTextField.CENTER);
@@ -664,6 +697,9 @@ class Game extends JPanel {
 	        nombrenave.setAlignmentX(Component.CENTER_ALIGNMENT);
         	compra.add(Box.createVerticalStrut(5));
 	        compra.add(naveimagenshop);
+        	compra.add(Box.createVerticalStrut(5));
+    		compra.add(preciometalnave);
+    		compra.add(preciodeuteriumnave);
 	        compra.add(Box.createVerticalStrut(10));
 	        compra.add(cantidad);
 	        compra.add(Box.createVerticalStrut(5));
@@ -689,17 +725,17 @@ class Game extends JPanel {
 	                int compradas = planeta.getArmy()[index].size() - antes;
 	                update_information();
 	                if (compradas == 0) {
-	                    mensajeCompra.setText("❌ No se pudieron comprar unidades.");
+	                    mensajeCompra.setText("❌ No units could be purchased.");
 	                    unidadesCompradas.setText("");
 	                } else if (compradas != n) {
-	                    mensajeCompra.setText("❌ No se pudieron comprar todas las unidades.");
-	                    unidadesCompradas.setText("✅ Compradas: " + compradas);
+	                    mensajeCompra.setText("❌ Not all units could be purchased.");
+	                    unidadesCompradas.setText("✅ Purchased: " + compradas);
 	                } else {
 	                    mensajeCompra.setText("");
-	                    unidadesCompradas.setText("✅ Compradas: " + compradas);
+	                    unidadesCompradas.setText("✅ Purchased: " + compradas);
 	                }
 	            } catch (NumberFormatException ex) {
-	                texto.setText("La cantidad debe ser un numero");
+	                texto.setText("The amount must be a number.");
 	                mensajeCompra.setText("");
 	                unidadesCompradas.setText("");
 	            }});
@@ -740,7 +776,7 @@ class Game extends JPanel {
 
 	    updateEnemyInformation();
 	    reconstruirShop();
-	    battlereport.setText("Busca aqui los reportes de tus batallas");
+	    battlereport.setText("Find your battle reports here.");
 	    elegirreport.setText("1");
 	    repaint();
 	    detener = false;
@@ -911,9 +947,9 @@ class PanelIniciarSesion extends JPanel {
 
             if (command.equals("Crear Cuenta")) {
                 if (!validarPassword(password)) {
-                    error.setText("Contraseña débil. Usa mayúsculas, minúsculas, números y símbolos.");
+                    error.setText("Weak password. Use uppercase and lowercase letters, numbers, and symbols.");
                 } else if (username.length() < 3 || username.length() > 12) {
-                    error.setText("El nombre debe tener entre 3 y 12 caracteres.");
+                    error.setText("The name must be between 3 and 12 characters.");
                 } else {
                     try {	
                 			BufferedImage img = ImageIO.read(new File("res/img/Asset_EarthBasic.png"));
@@ -924,7 +960,7 @@ class PanelIniciarSesion extends JPanel {
                     		ResultSet rs = ps.executeQuery();
                     		
                     		if (rs.next()) {
-                    			error.setText("❌ El usuario ya existe.");
+                    			error.setText("❌ The user already exists.");
                     			return;
                     		}
                             Planet planeta = new Planet(0,img, 1, 1, 100000, 1000000, 20000, 20000, conn);
@@ -945,8 +981,10 @@ class PanelIniciarSesion extends JPanel {
                             
                             User user = new User(username, password);
                             ventana.mostrarPanelJuego(user, planeta);
-                    } catch (IOException | SQLException ez) {
-                        error.setText("Error cargando la imagen del planeta");
+                    } catch (IOException ez) {
+                        error.setText("Error loading planet image");
+                    } catch (SQLException ev) {
+                    	error.setText("Error loading information from the database");                    
                     }
                 }
             } else if (command.equals("Iniciar Partida")) {          
@@ -1213,6 +1251,7 @@ class Planet {
 			  repository.registrarCreacion(this, "lighthunter", this.getNumBatalla());
 			} catch (ResourceException | SQLException e) {
 				System.out.println(e.getMessage());
+				break;
 			}
 		}
 	}
@@ -1230,6 +1269,7 @@ class Planet {
 				repository.registrarCreacion(this, "heavyhunter", this.getNumBatalla());
 			} catch (ResourceException | SQLException e) {
 				System.out.println(e.getMessage());
+				break;
 			}
 		}
 	}
@@ -1247,6 +1287,7 @@ class Planet {
 			  repository.registrarCreacion(this, "battleship", this.getNumBatalla());
 			} catch (ResourceException | SQLException e) {
 				System.out.println(e.getMessage());
+				break;
 			}
 		}
 	}
@@ -1264,6 +1305,7 @@ class Planet {
 			  repository.registrarCreacion(this, "armoredship", this.getNumBatalla());
 			} catch (ResourceException | SQLException e) {
 				System.out.println(e.getMessage());
+				break;
 			}
 		}
 	}
@@ -1281,6 +1323,7 @@ class Planet {
 			  repository.registrarCreacion(this, "missilelauncher", this.getNumBatalla());
 			} catch (ResourceException | SQLException e) {
 				System.out.println(e.getMessage());
+				break;
 			}
 		}
 	}
@@ -1876,7 +1919,7 @@ class HeavyHunter extends Ship {
 	public HeavyHunter(int armor, int baseDamage) {
 		super(armor, baseDamage);
 		try {
-		    this.imagen = ImageIO.read(new File("./srcres/img/Asset_HeavyHunter.png"));
+		    this.imagen = ImageIO.read(new File("res/img/Asset_HeavyHunter.png"));
 		} catch (IOException e) {
 		   	System.out.println(e.getMessage());
 		}
@@ -1930,7 +1973,7 @@ class BattleShip extends Ship {
 	public BattleShip(int armor, int baseDamage) {
 		super(armor, baseDamage);
 		try {
-		    this.imagen = ImageIO.read(new File("./srcres/img/Asset_BattleShip.png"));
+		    this.imagen = ImageIO.read(new File("res/img/Asset_BattleShip.png"));
 		} catch (IOException e) {
 		   	System.out.println(e.getMessage());
 		}
@@ -1984,7 +2027,7 @@ class ArmoredShip extends Ship {
 	public ArmoredShip(int armor, int baseDamage) {
 		super(armor, baseDamage);
 		try {
-		    this.imagen = ImageIO.read(new File("./srcres/img/Asset_ArmoredShip.png"));
+		    this.imagen = ImageIO.read(new File("res/img/Asset_ArmoredShip.png"));
 		} catch (IOException e) {
 		   	System.out.println(e.getMessage());
 		}
@@ -2082,7 +2125,7 @@ class MissileLauncher extends Defense {
 	public MissileLauncher(int armor, int baseDamage) {
 		super(armor, baseDamage);	
 		try {
-		    this.imagen = ImageIO.read(new File("./srcres/img/Asset_MissileLauncher.png"));
+		    this.imagen = ImageIO.read(new File("res/img/Asset_MissileLauncher.png"));
 		} catch (IOException e) {
 		   	System.out.println(e.getMessage());
 		}
@@ -2132,7 +2175,7 @@ class IonCannon extends Defense {
 	public IonCannon(int armor, int baseDamage) {
 		super(armor, baseDamage);
 		try {
-		    this.imagen = ImageIO.read(new File("./srcres/img/Asset_IonCannon.png"));
+		    this.imagen = ImageIO.read(new File("res/img/Asset_IonCannon.png"));
 		} catch (IOException e) {
 		   	System.out.println(e.getMessage());
 		}
@@ -2361,8 +2404,6 @@ class Battle implements Variables {
 	            DOMSource source = new DOMSource(doc);
 	            StreamResult result = new StreamResult(new File("batalla" + battleNumber + ".xml"));
 	            transformer.transform(source, result);
-
-	            System.out.println("Archivo XML generado: batalla" + battleNumber + 1 + ".xml");
 
 	        } catch (ParserConfigurationException | TransformerException e) {
 	            e.printStackTrace();

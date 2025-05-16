@@ -88,6 +88,8 @@ public class PlanetWars {
 		    		}
 		    	}
 		    	if (hay_ejercito_aliado) {
+		    		int numBatalla = game.getJuego().getPlaneta().getRepository().getNextBattleNumber(game.getJuego().getPlaneta());
+		    		game.getJuego().getPlaneta().setNumBatalla(numBatalla);
 		    		game.getJuego().getPlaneta().getRepository().iniciarBatalla(game.getJuego().getPlaneta(), game.getJuego().getPlaneta().getNumBatalla());
 		    	    Battle batalla = new Battle(game.getJuego().getPlaneta().getArmy(), game.getJuego().getEnemyArmy(), game.getJuego().getPlaneta(), game.getJuego().getPlaneta().getNumBatalla());
 		    	    game.getJuego().setMessageBattleComming("Luchando!!!");
@@ -882,7 +884,7 @@ class PanelIniciarSesion extends JPanel {
                 } else {
                     try {
                     		// Verificar si el usuario introducido ya existe
-                    		String sql = "SELECT planet_id FROM uswrs WHERE user_name = ?";
+                    		String sql = "SELECT planet_id FROM users WHERE user_name = ?";
                     		PreparedStatement ps = conn.prepareStatement(sql);
                     		ps.setString(1, username);
                     		ResultSet rs = ps.executeQuery();

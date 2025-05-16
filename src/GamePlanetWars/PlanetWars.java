@@ -51,8 +51,7 @@ import org.w3c.dom.*;
 import java.io.File;
 
 public class PlanetWars {
-	
-	public static void main(String[] args) {	     
+	public static void main(String[] args) {
 		Connection conn = null;
 	try {
 		conn = DatabaseConnector.connect();

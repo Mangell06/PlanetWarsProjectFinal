@@ -1212,6 +1212,7 @@ class Planet {
 			  repository.registrarCreacion(this, "lighthunter", this.getNumBatalla());
 			} catch (ResourceException | SQLException e) {
 				System.out.println(e.getMessage());
+				break;
 			}
 		}
 	}
@@ -1229,6 +1230,7 @@ class Planet {
 				repository.registrarCreacion(this, "heavyhunter", this.getNumBatalla());
 			} catch (ResourceException | SQLException e) {
 				System.out.println(e.getMessage());
+				break;
 			}
 		}
 	}
@@ -1246,6 +1248,7 @@ class Planet {
 			  repository.registrarCreacion(this, "battleship", this.getNumBatalla());
 			} catch (ResourceException | SQLException e) {
 				System.out.println(e.getMessage());
+				break;
 			}
 		}
 	}
@@ -1263,6 +1266,7 @@ class Planet {
 			  repository.registrarCreacion(this, "armoredship", this.getNumBatalla());
 			} catch (ResourceException | SQLException e) {
 				System.out.println(e.getMessage());
+				break;
 			}
 		}
 	}
@@ -1280,6 +1284,7 @@ class Planet {
 			  repository.registrarCreacion(this, "missilelauncher", this.getNumBatalla());
 			} catch (ResourceException | SQLException e) {
 				System.out.println(e.getMessage());
+				break;
 			}
 		}
 	}

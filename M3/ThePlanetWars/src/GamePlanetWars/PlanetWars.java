@@ -125,7 +125,17 @@ public class PlanetWars {
 class VentanaJuego extends JFrame {
 	PanelIniciarSesion iniciarSesion;
 	Game juego;
+	BufferedImage icono;
 	public VentanaJuego(Connection conn) {
+		icono = null;
+		try {
+		    icono = ImageIO.read(new File("res/img/Asset_IconoJuego.png"));
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+		if (icono != null) {
+		    setIconImage(icono);
+		}
 		setTitle("Planet Wars");
 		setSize(1280,720);
 		iniciarSesion = new PanelIniciarSesion(this, conn);

@@ -915,38 +915,39 @@ class PanelIniciarSesion extends JPanel {
                 } else if (username.length() < 3 || username.length() > 12) {
                     error.setText("El nombre debe tener entre 3 y 12 caracteres.");
                 } else {
-                    try {	
-                			BufferedImage img = ImageIO.read(new File("res/img/Asset_EarthBasic.png"));
-                    		// Verificar si el usuario introducido ya existe
-                    		String sql = "SELECT planet_id FROM users WHERE user_name = ?";
-                    		PreparedStatement ps = conn.prepareStatement(sql);
-                    		ps.setString(1, username);
-                    		ResultSet rs = ps.executeQuery();
-                    		
-                    		if (rs.next()) {
-                    			error.setText("❌ El usuario ya existe.");
-                    		}
-                            Planet planeta = new Planet(0,img, 1, 1, 100000, 1000000, 20000, 20000, conn);
-                            planeta.createid();
-                            planeta.getRepository().crear_planeta(planeta);
-                            int numBatalla = planeta.getRepository().getNextBattleNumber(planeta);
-        		    		planeta.setNumBatalla(numBatalla);
-        		    		planeta.getRepository().iniciarBatalla(planeta, planeta.getNumBatalla());
+                    try {
+            			BufferedImage img = ImageIO.read(new File("res/img/Asset_EarthBasic.png"));
+                		// Verificar si el usuario introducido ya existe
+                		String sql = "SELECT planet_id FROM users WHERE user_name = ?";
+                		PreparedStatement ps = conn.prepareStatement(sql);
+                		ps.setString(1, username);
+                		ResultSet rs = ps.executeQuery();
+                		
+                		if (rs.next()) {
+                			error.setText("❌ El usuario ya existe.");
+                			return;
+                		}
+                        Planet planeta = new Planet(0,img, 1, 1, 100000, 1000000, 20000, 20000, conn);
+                        planeta.createid();
+                        planeta.getRepository().crear_planeta(planeta);
+                        int numBatalla = planeta.getRepository().getNextBattleNumber(planeta);
+    		    		planeta.setNumBatalla(numBatalla);
+    		    		planeta.getRepository().iniciarBatalla(planeta, planeta.getNumBatalla());
 
-                            
-                            // Insertar usuario en la tabla users
-                            String insertUser = "INSERT INTO users (planet_id, user_name, password) VALUES (?, ?, ?)";
-                            PreparedStatement insert = conn.prepareStatement(insertUser);
-                            insert.setString(2, username);
-                            insert.setString(3, password);
-                            insert.setInt(1, planeta.getPlanet_id());
-                            insert.executeUpdate();
-                            
-                            User user = new User(username, password);
-                            ventana.mostrarPanelJuego(user, planeta);
-                    } catch (IOException | SQLException ez) {
-                        error.setText("Error cargando la imagen del planeta");
-                    }
+                        
+                        // Insertar usuario en la tabla users
+                        String insertUser = "INSERT INTO users (planet_id, user_name, password) VALUES (?, ?, ?)";
+                        PreparedStatement insert = conn.prepareStatement(insertUser);
+                        insert.setString(2, username);
+                        insert.setString(3, password);
+                        insert.setInt(1, planeta.getPlanet_id());
+                        insert.executeUpdate();
+                        
+                        User user = new User(username, password);
+                        ventana.mostrarPanelJuego(user, planeta);
+                } catch (IOException | SQLException ez) {
+                    error.setText("Error cargando la imagen del planeta");
+                }
                 }
             } else if (command.equals("Iniciar Partida")) {          
                 try {

@@ -51,9 +51,7 @@ import org.w3c.dom.*;
 import java.io.File;
 
 public class PlanetWars {
-	
 	public static void main(String[] args) {
-		
 		Connection conn = null;
 	try {
 		conn = DatabaseConnector.connect();
@@ -214,6 +212,7 @@ class Game extends JPanel {
     private JTextArea battlereport;
     private JTextField elegirreport;
     private ArrayList<MilitaryUnit>[] enemyArmy;
+    private String[] nombres = new String[7];
     private boolean detener = false;
     private ArrayList<Battle> batallas = new ArrayList<Battle>();
     
@@ -241,7 +240,7 @@ class Game extends JPanel {
 	}
 	
 	public void setMessageBattleComming(String mensaje) {
-		messagebattlecomming.setText(mensaje);;
+		messagebattlecomming.setText(mensaje);
 		repaint();
 	}
 
@@ -260,16 +259,23 @@ class Game extends JPanel {
         setLayout(new BorderLayout());
         try {
         	imagenesUnidades = new BufferedImage[7];
-        	imagenesUnidades[0] = ImageIO.read(new File("/Assets/Asset_LightHunter.png")); // getClass().getResourceAsStream("/Assets/Asset_LightHunter.png")
-        	imagenesUnidades[1] = ImageIO.read(new File("/Assets/Asset_HeavyHunter.png"));
-        	imagenesUnidades[2] = ImageIO.read(new File("/Assets/Asset_BattleShip.png"));
-        	imagenesUnidades[3] = ImageIO.read(new File("/Assets/Asset_ArmoredShip.png"));
-        	imagenesUnidades[4] = ImageIO.read(new File("/Assets/Asset_MissileLauncher.png"));
-        	imagenesUnidades[5] = ImageIO.read(new File("/Assets/Asset_IonCannon.png"));
-        	imagenesUnidades[6] = ImageIO.read(new File("/Assets/Asset_PlasmaCannon.png"));
+        	imagenesUnidades[0] = ImageIO.read(new File("res/img/Asset_LightHunter.png")); // new File("res/img/Asset_LightHunter.png")
+        	imagenesUnidades[1] = ImageIO.read(new File("res/img/Asset_HeavyHunter.png"));
+        	imagenesUnidades[2] = ImageIO.read(new File("res/img/Asset_BattleShip.png"));
+        	imagenesUnidades[3] = ImageIO.read(new File("res/img/Asset_ArmoredShip.png"));
+        	imagenesUnidades[4] = ImageIO.read(new File("res/img/Asset_MissileLauncher.png"));
+        	imagenesUnidades[5] = ImageIO.read(new File("res/img/Asset_IonCannon.png"));
+        	imagenesUnidades[6] = ImageIO.read(new File("res/img/Asset_PlasmaCannon.png"));
         } catch (IOException e) {
             System.out.println("Error loading unit images: " + e.getMessage());
         }
+        nombres[0] = "LightHunter";
+        nombres[1] = "HeavyHunter";
+        nombres[2] = "BattleShip";
+        nombres[3] = "ArmoredShip";
+        nombres[4] = "MissileLauncher";
+        nombres[5] = "IonCannon";
+        nombres[6] = "Plasma Cannon";
         name = new JLabel(usuario.getName());
         name.setForeground(Color.WHITE);
         north = new JPanel();
@@ -334,6 +340,11 @@ class Game extends JPanel {
         	naveimagen.setPreferredSize(new Dimension(120,60)); 
         	naveimagen.setMinimumSize(new Dimension(120,60)); 
         	naveimagen.setMaximumSize(new Dimension(120,60));
+	        JLabel nombrenave2 = new JLabel(nombres[i]);
+	        nombrenave2.setForeground(Color.WHITE);
+	        nombrenave2.setAlignmentX(Component.CENTER_ALIGNMENT);
+	        barraderechastats.add(nombrenave2);
+        	barraderechastats.add(Box.createVerticalStrut(5));
     		barraderechastats.add(naveimagen);
     		JPanel compra = new JPanel();
     		compra.setBackground(Color.BLACK);
@@ -346,6 +357,11 @@ class Game extends JPanel {
         	compra.setMinimumSize(new Dimension(170,170)); 
         	compra.setMaximumSize(new Dimension(170,170));
         	compra.add(Box.createVerticalStrut(10));
+	        JLabel nombrenave = new JLabel(nombres[i]);
+	        nombrenave.setForeground(Color.WHITE);
+	        nombrenave.setAlignmentX(Component.CENTER_ALIGNMENT);
+        	compra.add(nombrenave);
+        	compra.add(Box.createVerticalStrut(5));
     		compra.add(naveimagenshop);
         	compra.add(Box.createVerticalStrut(10));
         	JTextField cantidad = new JTextField("1");
@@ -525,6 +541,7 @@ class Game extends JPanel {
 	public void updateEnemyInformation() {
 		battlescomming.removeAll();
 		battlescomming.add(messagebattlecomming);
+    	battlescomming.add(Box.createVerticalStrut(20));
 		for (int i = 0; i < 4; i++) {
 			if (enemyArmy[i] != null) {
 	        	FondoPanel naveimagencomming = new FondoPanel(imagenesUnidades[i], planeta, false);
@@ -540,6 +557,11 @@ class Game extends JPanel {
 	        	naveimagencomming.setPreferredSize(new Dimension(120,80)); 
 	        	naveimagencomming.setMinimumSize(new Dimension(120,80)); 
 	        	naveimagencomming.setMaximumSize(new Dimension(120,80));
+		        JLabel nombrenave = new JLabel(nombres[i]);
+		        nombrenave.setForeground(Color.WHITE);
+		        nombrenave.setAlignmentX(Component.CENTER_ALIGNMENT);
+	        	battlescomming.add(nombrenave);
+	        	battlescomming.add(Box.createVerticalStrut(5));
 	        	battlescomming.add(naveimagencomming);
 	        	JLabel textoayudita = new JLabel("" + 0);
 	        	textoayudita.setForeground(Color.WHITE);
@@ -634,8 +656,13 @@ class Game extends JPanel {
 	        botoncito.setMinimumSize(new Dimension(60, 20));
 	        botoncito.setMaximumSize(new Dimension(60, 20));
 	        botoncito.setAlignmentX(Component.CENTER_ALIGNMENT);
-
+	        
 	        compra.add(Box.createVerticalStrut(10));
+	        JLabel nombrenave = new JLabel(nombres[i]);
+	        nombrenave.setForeground(Color.WHITE);
+        	compra.add(nombrenave);
+	        nombrenave.setAlignmentX(Component.CENTER_ALIGNMENT);
+        	compra.add(Box.createVerticalStrut(5));
 	        compra.add(naveimagenshop);
 	        compra.add(Box.createVerticalStrut(10));
 	        compra.add(cantidad);
@@ -739,6 +766,11 @@ class Game extends JPanel {
 	        JLabel textoayudita = new JLabel("" + planeta.getArmy()[i].size());
 	        textoayudita.setForeground(Color.WHITE);
 
+	        JLabel nombrenave2 = new JLabel(nombres[i]);
+	        nombrenave2.setForeground(Color.WHITE);
+	        nombrenave2.setAlignmentX(Component.CENTER_ALIGNMENT);
+	        barraderechastats.add(nombrenave2);
+        	barraderechastats.add(Box.createVerticalStrut(5));
 	        barraderechastats.add(naveimagen);
 	        barraderechastats.add(textoayudita);
 	    }
@@ -748,7 +780,7 @@ class Game extends JPanel {
 	    if (planeta.getMetal() <= 0 || planeta.getDeuterium() <= 0) {
 	        try {
 	        	detener = true;
-	            BufferedImage tierradestruida = ImageIO.read(new File("/Assets/Asset_EarthDestroyed.png"));
+	            BufferedImage tierradestruida = ImageIO.read(new File("res/img/Asset_EarthDestroyed.png"));
 	            planetstat.setImagen(tierradestruida);
 	            repaint();
 
@@ -884,7 +916,7 @@ class PanelIniciarSesion extends JPanel {
                     error.setText("El nombre debe tener entre 3 y 12 caracteres.");
                 } else {
                     try {	
-                			BufferedImage img = ImageIO.read(new File("/Assets/Asset_EarthBasic.png"));
+                			BufferedImage img = ImageIO.read(new File("res/img/Asset_EarthBasic.png"));
                     		// Verificar si el usuario introducido ya existe
                     		String sql = "SELECT planet_id FROM users WHERE user_name = ?";
                     		PreparedStatement ps = conn.prepareStatement(sql);
@@ -897,13 +929,17 @@ class PanelIniciarSesion extends JPanel {
                             Planet planeta = new Planet(0,img, 1, 1, 100000, 1000000, 20000, 20000, conn);
                             planeta.createid();
                             planeta.getRepository().crear_planeta(planeta);
+                            int numBatalla = planeta.getRepository().getNextBattleNumber(planeta);
+        		    		planeta.setNumBatalla(numBatalla);
+        		    		planeta.getRepository().iniciarBatalla(planeta, planeta.getNumBatalla());
+
                             
                             // Insertar usuario en la tabla users
-                            String insertUser = "INSERT INTO users (user_name, password, planet_id) VALUES (?, ?, ?)";
-                            PreparedStatement insert = conn.prepareStatement(sql);
-                            insert.setString(1, username);
-                            insert.setString(2, password);
-                            insert.setInt(3, planeta.getPlanet_id());
+                            String insertUser = "INSERT INTO users (planet_id, user_name, password) VALUES (?, ?, ?)";
+                            PreparedStatement insert = conn.prepareStatement(insertUser);
+                            insert.setString(2, username);
+                            insert.setString(3, password);
+                            insert.setInt(1, planeta.getPlanet_id());
                             insert.executeUpdate();
                             
                             User user = new User(username, password);
@@ -912,10 +948,7 @@ class PanelIniciarSesion extends JPanel {
                         error.setText("Error cargando la imagen del planeta");
                     }
                 }
-            } else if (command.equals("Iniciar Partida")) {
-                // Aquí se puede implementar carga de datos desde archivo
-                error.setText("Funcionalidad aún no implementada.");
-                
+            } else if (command.equals("Iniciar Partida")) {          
                 try {
                 	String buscarUser = "SELECT planet_id FROM users WHERE user_name = ? AND password = ?";
                 	PreparedStatement buscarStmt = conn.prepareStatement(buscarUser);
@@ -946,7 +979,7 @@ class PanelIniciarSesion extends JPanel {
                 	int deuterium = planetaRs.getInt("resource_deuterion_amount");
                 	int techDef = planetaRs.getInt("technology_defense_level");
                 	int techAtk = planetaRs.getInt("technology_attack_level");
-        			BufferedImage img = ImageIO.read(new File("/Assets/Asset_EarthBasic.png"));
+        			BufferedImage img = ImageIO.read(new File("res/img/Asset_EarthBasic.png"));
         			
         			Planet planeta = new Planet(planetId, img, techDef, techAtk, metal, deuterium, 20000, 20000, conn);
         			User user = new User(username, password);
@@ -1788,7 +1821,7 @@ class LightHunter extends Ship {
 	public LightHunter(int armor, int baseDamage) {
 		super(armor,baseDamage);
 		try {
-		    this.imagen = ImageIO.read(new File("./src/Assets/Asset_LightHunter.png"));
+		    this.imagen = ImageIO.read(new File("res/img/Asset_LightHunter.png"));
 		} catch (IOException e) {
 		   	System.out.println(e.getMessage());
 		}
@@ -1842,7 +1875,7 @@ class HeavyHunter extends Ship {
 	public HeavyHunter(int armor, int baseDamage) {
 		super(armor, baseDamage);
 		try {
-		    this.imagen = ImageIO.read(new File("./src/Assets/Asset_HeavyHunter.png"));
+		    this.imagen = ImageIO.read(new File("./srcres/img/Asset_HeavyHunter.png"));
 		} catch (IOException e) {
 		   	System.out.println(e.getMessage());
 		}
@@ -1896,7 +1929,7 @@ class BattleShip extends Ship {
 	public BattleShip(int armor, int baseDamage) {
 		super(armor, baseDamage);
 		try {
-		    this.imagen = ImageIO.read(new File("./src/Assets/Asset_BattleShip.png"));
+		    this.imagen = ImageIO.read(new File("./srcres/img/Asset_BattleShip.png"));
 		} catch (IOException e) {
 		   	System.out.println(e.getMessage());
 		}
@@ -1950,7 +1983,7 @@ class ArmoredShip extends Ship {
 	public ArmoredShip(int armor, int baseDamage) {
 		super(armor, baseDamage);
 		try {
-		    this.imagen = ImageIO.read(new File("./src/Assets/Asset_ArmoredShip.png"));
+		    this.imagen = ImageIO.read(new File("./srcres/img/Asset_ArmoredShip.png"));
 		} catch (IOException e) {
 		   	System.out.println(e.getMessage());
 		}
@@ -2048,7 +2081,7 @@ class MissileLauncher extends Defense {
 	public MissileLauncher(int armor, int baseDamage) {
 		super(armor, baseDamage);	
 		try {
-		    this.imagen = ImageIO.read(new File("./src/Assets/Asset_MissileLauncher.png"));
+		    this.imagen = ImageIO.read(new File("./srcres/img/Asset_MissileLauncher.png"));
 		} catch (IOException e) {
 		   	System.out.println(e.getMessage());
 		}
@@ -2098,7 +2131,7 @@ class IonCannon extends Defense {
 	public IonCannon(int armor, int baseDamage) {
 		super(armor, baseDamage);
 		try {
-		    this.imagen = ImageIO.read(new File("./src/Assets/Asset_IonCannon.png"));
+		    this.imagen = ImageIO.read(new File("./srcres/img/Asset_IonCannon.png"));
 		} catch (IOException e) {
 		   	System.out.println(e.getMessage());
 		}
@@ -2149,7 +2182,7 @@ class PlasmaCannon extends Defense {
 	public PlasmaCannon(int armor, int baseDamage) {
 		super(armor, baseDamage);
 		try {
-		    this.imagen = ImageIO.read(new File("./src/Assets/Asset_PlasmaCannon.png"));
+		    this.imagen = ImageIO.read(new File("res/img/Asset_PlasmaCannon.png"));
 		} catch (IOException e) {
 		   	System.out.println(e.getMessage());
 		}
@@ -2328,7 +2361,7 @@ class Battle implements Variables {
 	            StreamResult result = new StreamResult(new File("batalla" + battleNumber + ".xml"));
 	            transformer.transform(source, result);
 
-	            System.out.println("Archivo XML generado: batalla" + battleNumber + ".xml");
+	            System.out.println("Archivo XML generado: batalla" + battleNumber + 1 + ".xml");
 
 	        } catch (ParserConfigurationException | TransformerException e) {
 	            e.printStackTrace();

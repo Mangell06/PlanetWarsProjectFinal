@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<battle number="0">
+    <statistics>
+        <unit name="Light Hunter">
+            <planet_initial>5</planet_initial>
+            <planet_drops>4</planet_drops>
+            <enemy_initial>13</enemy_initial>
+            <enemy_drops>5</enemy_drops>
+        </unit>
+        <unit name="Heavy Hunter">
+            <planet_initial>0</planet_initial>
+            <planet_drops>0</planet_drops>
+            <enemy_initial>10</enemy_initial>
+            <enemy_drops>4</enemy_drops>
+        </unit>
+        <unit name="Battle Ship">
+            <planet_initial>1</planet_initial>
+            <planet_drops>0</planet_drops>
+            <enemy_initial>1</enemy_initial>
+            <enemy_drops>0</enemy_drops>
+        </unit>
+        <unit name="Armored Ship">
+            <planet_initial>0</planet_initial>
+            <planet_drops>0</planet_drops>
+            <enemy_initial>1</enemy_initial>
+            <enemy_drops>0</enemy_drops>
+        </unit>
+        <unit name="Missile Launcher">
+            <planet_initial>1</planet_initial>
+            <planet_drops>1</planet_drops>
+            <enemy_initial>0</enemy_initial>
+            <enemy_drops>0</enemy_drops>
+        </unit>
+        <unit name="Ion Cannon">
+            <planet_initial>0</planet_initial>
+            <planet_drops>0</planet_drops>
+            <enemy_initial>0</enemy_initial>
+            <enemy_drops>0</enemy_drops>
+        </unit>
+        <unit name="Plasma Cannon">
+            <planet_initial>0</planet_initial>
+            <planet_drops>0</planet_drops>
+            <enemy_initial>0</enemy_initial>
+            <enemy_drops>0</enemy_drops>
+        </unit>
+    </statistics>
+    <resources_losses>
+        <planet>
+            <metal>17000</metal>
+            <deuterium>250</deuterium>
+            <weighted>17250</weighted>
+        </planet>
+        <enemy>
+            <metal>41000</metal>
+            <deuterium>450</deuterium>
+            <weighted>41450</weighted>
+        </enemy>
+    </resources_losses>
+    <waste_generated>
+        <metal>43000</metal>
+        <deuterium>450</deuterium>
+    </waste_generated>
+    <rubble_collected>
+        <planet>8000</planet>
+        <enemy>35000</enemy>
+    </rubble_collected>
+    <winner>Planet</winner>
+</battle>

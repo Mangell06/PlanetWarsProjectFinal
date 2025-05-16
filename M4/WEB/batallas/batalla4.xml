@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<battle number="1">
+<battle number="4">
     <statistics>
         <unit name="Light Hunter">
-            <planet_initial>0</planet_initial>
-            <planet_drops>0</planet_drops>
-            <enemy_initial>11</enemy_initial>
-            <enemy_drops>5</enemy_drops>
+            <planet_initial>6</planet_initial>
+            <planet_drops>5</planet_drops>
+            <enemy_initial>6</enemy_initial>
+            <enemy_drops>3</enemy_drops>
         </unit>
         <unit name="Heavy Hunter">
             <planet_initial>0</planet_initial>
             <planet_drops>0</planet_drops>
-            <enemy_initial>11</enemy_initial>
-            <enemy_drops>2</enemy_drops>
+            <enemy_initial>13</enemy_initial>
+            <enemy_drops>4</enemy_drops>
         </unit>
         <unit name="Battle Ship">
             <planet_initial>1</planet_initial>
@@ -46,23 +46,23 @@
     </statistics>
     <resources_losses>
         <planet>
-            <metal>45000</metal>
-            <deuterium>7000</deuterium>
-            <weighted>52000</weighted>
+            <metal>18000</metal>
+            <deuterium>300</deuterium>
+            <weighted>18300</weighted>
         </planet>
         <enemy>
-            <metal>28000</metal>
+            <metal>35000</metal>
             <deuterium>350</deuterium>
-            <weighted>28350</weighted>
+            <weighted>35350</weighted>
         </enemy>
     </resources_losses>
     <waste_generated>
-        <metal>70000</metal>
-        <deuterium>7300</deuterium>
+        <metal>28000</metal>
+        <deuterium>350</deuterium>
     </waste_generated>
     <rubble_collected>
-        <planet>45000</planet>
-        <enemy>25000</enemy>
+        <planet>9000</planet>
+        <enemy>19000</enemy>
     </rubble_collected>
-    <winner>Enemy</winner>
+    <winner>Planet</winner>
 </battle>

@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<battle number="1">
+<battle number="5">
     <statistics>
         <unit name="Light Hunter">
-            <planet_initial>0</planet_initial>
-            <planet_drops>0</planet_drops>
-            <enemy_initial>11</enemy_initial>
-            <enemy_drops>5</enemy_drops>
+            <planet_initial>10</planet_initial>
+            <planet_drops>7</planet_drops>
+            <enemy_initial>13</enemy_initial>
+            <enemy_drops>2</enemy_drops>
         </unit>
         <unit name="Heavy Hunter">
             <planet_initial>0</planet_initial>
             <planet_drops>0</planet_drops>
-            <enemy_initial>11</enemy_initial>
-            <enemy_drops>2</enemy_drops>
+            <enemy_initial>10</enemy_initial>
+            <enemy_drops>0</enemy_drops>
         </unit>
         <unit name="Battle Ship">
-            <planet_initial>1</planet_initial>
+            <planet_initial>0</planet_initial>
             <planet_drops>0</planet_drops>
             <enemy_initial>1</enemy_initial>
             <enemy_drops>0</enemy_drops>
@@ -46,23 +46,23 @@
     </statistics>
     <resources_losses>
         <planet>
-            <metal>45000</metal>
-            <deuterium>7000</deuterium>
-            <weighted>52000</weighted>
+            <metal>24000</metal>
+            <deuterium>400</deuterium>
+            <weighted>24400</weighted>
         </planet>
         <enemy>
-            <metal>28000</metal>
-            <deuterium>350</deuterium>
-            <weighted>28350</weighted>
+            <metal>6000</metal>
+            <deuterium>100</deuterium>
+            <weighted>6100</weighted>
         </enemy>
     </resources_losses>
     <waste_generated>
-        <metal>70000</metal>
-        <deuterium>7300</deuterium>
+        <metal>9000</metal>
+        <deuterium>150</deuterium>
     </waste_generated>
     <rubble_collected>
-        <planet>45000</planet>
-        <enemy>25000</enemy>
+        <planet>9000</planet>
+        <enemy>0</enemy>
     </rubble_collected>
     <winner>Enemy</winner>
 </battle>

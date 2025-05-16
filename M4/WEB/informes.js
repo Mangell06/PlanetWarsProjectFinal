@@ -10,7 +10,7 @@ function generarInforme() {
         resultado.innerText = "Informe de la batalla " + num_info + " generado con exito";
 
         const xmlUrl = `batallas/batalla${num_info}.xml`;
-        const xslUrl = `batallas/pruebas.xsl`;
+        const xslUrl = `batallas/batallas_trans.xsl`;
         
         Promise.all([
         fetch(xmlUrl).then(res => {

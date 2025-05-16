@@ -925,6 +925,7 @@ class PanelIniciarSesion extends JPanel {
                     		
                     		if (rs.next()) {
                     			error.setText("❌ El usuario ya existe.");
+                    			return;
                     		}
                             Planet planeta = new Planet(0,img, 1, 1, 100000, 1000000, 20000, 20000, conn);
                             planeta.createid();

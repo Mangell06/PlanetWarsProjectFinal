@@ -15,7 +15,7 @@
 - Interfaz gráfica amigable hecha con Java Swing.
 - Sistema de login para cuentas.
 
-## 📦 Instalación
+## 📦 Instalación con IDE
 
 No necesitas instalar nada especial, solo sigue estos pasos:
 
@@ -24,3 +24,9 @@ No necesitas instalar nada especial, solo sigue estos pasos:
 3. Abre tu IDE favorito (por ejemplo Eclipse o Visual Studio).
 4. Ve al directorio y ábrelo con el IDE.
 5. Ejecuta y ya puedes jugar :D
+
+## 📦 Instalación exe
+
+1. **Descarga el proyecto** (ZIP o clonación desde el repositorio).
+2. **Descomprime** el archivo si es necesario.
+3. ejecuta el .exe del juego y ya puedes jugar :D

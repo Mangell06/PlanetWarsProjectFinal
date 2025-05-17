@@ -902,7 +902,7 @@ class PanelIniciarSesion extends JPanel {
         this.conn = conn;
         // Norte - Título
         JPanel north = new JPanel();
-        JLabel title = new JLabel("Planet Wars - Iniciar Sesión");
+        JLabel title = new JLabel("Planet Wars - Login");
         title.setFont(new Font("Arial", Font.BOLD, 28));
         north.setBackground(new Color(30, 30, 30));
         title.setForeground(Color.WHITE);

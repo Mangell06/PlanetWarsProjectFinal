@@ -615,7 +615,7 @@ class Game extends JPanel {
 					nosubirataque.setText("");
 					nosubirdefensa.setText("");
 				}
-			} else if (e.getActionCommand().equals("Update Level technology defense.")) {
+			} else if (e.getActionCommand().equals("Update Level technology defense")) {
 				anterior_nivel = planeta.getTechnologyDefense();
 				planeta.upgradeTechnologyDefense();
 				despues_nivel = planeta.getTechnologyDefense();
@@ -1019,8 +1019,19 @@ class PanelIniciarSesion extends JPanel {
                 	int techDef = planetaRs.getInt("technology_defense_level");
                 	int techAtk = planetaRs.getInt("technology_attack_level");
         			BufferedImage img = ImageIO.read(new File("res/img/Asset_EarthBasic.png"));
-        			
-        			Planet planeta = new Planet(planetId, img, techDef, techAtk, metal, deuterium, 20000, 20000, conn);
+        			int preciodef = 20000;
+        			for (int i = 1; i <= techDef; i++) {
+        				if (i != 1) {
+        					preciodef *= 1.1;
+        				}
+        			}
+        			int precioatk = 20000;
+        			for (int i = 1; i <= techAtk; i++) {
+        				if (i != 1) {
+        					precioatk *= 1.1;
+        				}
+        			}
+        			Planet planeta = new Planet(planetId, img, techDef, techAtk, metal, deuterium, preciodef, precioatk, conn);
         			User user = new User(username, password);
         			ventana.mostrarPanelJuego(user, planeta);
                 } catch (SQLException ex) {

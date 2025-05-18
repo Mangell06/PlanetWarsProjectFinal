@@ -306,7 +306,7 @@ class Game extends JPanel {
         name.setForeground(Color.WHITE);
         north = new JPanel();
         north.setBackground(Color.BLACK);
-        messagebattlecomming = new JLabel("Por ahora no hay enemigos");
+        messagebattlecomming = new JLabel("There are no enemies for now.");
         messagebattlecomming.setForeground(Color.WHITE);
         add(north,BorderLayout.NORTH);
         north.add(name);

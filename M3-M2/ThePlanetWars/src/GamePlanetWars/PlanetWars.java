@@ -831,7 +831,7 @@ class Game extends JPanel {
 	            repaint();
 
 	            String material = planeta.getMetal() <= 0 ? "Metal" : "Deuterium";
-	            JOptionPane.showMessageDialog(null, "Game Over", "Tu planeta no tiene más " + material, JOptionPane.INFORMATION_MESSAGE);
+	            JOptionPane.showMessageDialog(null, "Game Over", "Your planet has no more resources." + material, JOptionPane.INFORMATION_MESSAGE);
 
 	            reiniciarPlaneta(new Planet(planeta.getPlanet_id(),planeta.getImagen(), 1, 1, 100000, 1000000, 20000, 20000, planeta.getRepository().getConn()));
 	            return;
@@ -868,7 +868,7 @@ class FondoPanel extends JPanel {
             g.drawImage(escalada, 0, 0, this);
         }
         if (warning && (planeta != null && (planeta.getMetal() <= 5000 || planeta.getDeuterium() <= 5000))) {
-        	String mensaje = "⚠ ¡PELIGRO! Recursos críticos";
+        	String mensaje = "⚠ DANGER! Critical resources";
             Font font = new Font("Arial", Font.BOLD, 15);
             FontMetrics metrics = g2.getFontMetrics(font);
             int textWidth = metrics.stringWidth(mensaje);

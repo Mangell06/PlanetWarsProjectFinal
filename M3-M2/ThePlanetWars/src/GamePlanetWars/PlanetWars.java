@@ -919,8 +919,8 @@ class PanelIniciarSesion extends JPanel {
         form.setLayout(new BoxLayout(form, BoxLayout.Y_AXIS));
         form.setBackground(Color.DARK_GRAY);
 
-        name = new JTextField("Nombre de usuario", 20);
-        pass = new JPasswordField("Contraseña", 20);
+        name = new JTextField("UserName", 20);
+        pass = new JPasswordField("Password", 20);
         error = new JLabel(" ");
         error.setForeground(Color.RED);
 
@@ -938,8 +938,8 @@ class PanelIniciarSesion extends JPanel {
         // Sur - Botones
         JPanel south = new JPanel();
         south.setBackground(new Color(30, 30, 30));
-        JButton startaccount = new JButton("Iniciar Partida");
-        JButton createaccount = new JButton("Crear Cuenta");
+        JButton startaccount = new JButton("Login");
+        JButton createaccount = new JButton("Register");
         south.add(startaccount);
         south.add(createaccount);
         add(south, BorderLayout.SOUTH);
@@ -955,7 +955,7 @@ class PanelIniciarSesion extends JPanel {
             String username = name.getText();
             String password = new String(pass.getPassword());
 
-            if (command.equals("Crear Cuenta")) {
+            if (command.equals("Register")) {
                 if (!validarPassword(password)) {
                     error.setText("Weak password. Use uppercase and lowercase letters, numbers, and symbols.");
                 } else if (username.length() < 3 || username.length() > 12) {
@@ -997,7 +997,7 @@ class PanelIniciarSesion extends JPanel {
                     	error.setText("Error loading information from the database");                    
                     }
                 }
-            } else if (command.equals("Iniciar Partida")) {          
+            } else if (command.equals("Login")) {          
                 try {
                 	String buscarUser = "SELECT planet_id FROM users WHERE user_name = ? AND password = ?";
                 	PreparedStatement buscarStmt = conn.prepareStatement(buscarUser);

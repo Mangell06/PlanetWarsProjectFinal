@@ -338,9 +338,9 @@ header {
 
  /* Estilo del contenedor del carrusel */
  .carousel-container {
-  position: relative;
-  max-width: 180px;
-  max-height: 400px;
+  position: center;
+  max-width: 100px;
+  max-height: 300px;
   margin: auto;
   overflow: hidden;
   border-radius: 8px;
@@ -369,25 +369,25 @@ input[type="radio"] {
 /* estilos.css */
 
 .carousel {
-width: 180%;
-max-width: 400px;
-overflow: hidden;
-border-radius: 8px;
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .carousel-images {
-display: flex;
-width: 100%; /* 100% por imagen si hay 4 imágenes */
-animation: slide 15s infinite;
+  display: flex;
+  animation: slide 12s infinite ease-in-out;
+  width: 300%;
 }
 
 .carousel-images img {
-width: 100%;
-height: auto;
-flex: 1 0 100%; /* Cada imagen ocupa el 100% del contenedor */
+  width: 100%;
+  flex: 1 0 100%;
+  object-fit: cover;
 }
-
 /*Boton del menu*/
 .menu-btn{
   background-color: #000000;
@@ -548,16 +548,11 @@ flex: 1 0 100%; /* Cada imagen ocupa el 100% del contenedor */
 
 /* Animación del carrusel */
 @keyframes slide {
-  0% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(0);
-  }
-  }
+  0% { transform: translateX(0); }
+  33.33% { transform: translateX(-100%); }
+  66.66% { transform: translateX(-200%); }
+  100% { transform: translateX(-300%); }
+}
 
 /*Para otras pantallas*/
 

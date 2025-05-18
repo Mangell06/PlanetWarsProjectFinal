@@ -532,7 +532,7 @@ class Game extends JPanel {
         reports = new JPanel();
         reports.setLayout(new BoxLayout(reports, BoxLayout.Y_AXIS));
         reports.setBackground(Color.BLACK);
-        battlereport = new JTextArea("Busca aqui los reportes de tus batallas");
+        battlereport = new JTextArea("Find your battle reports here.");
         battlereport.setPreferredSize(new Dimension(1000,400));
         battlereport.setMinimumSize(new Dimension(1000,400));
         battlereport.setMaximumSize(new Dimension(1000,400));
@@ -545,7 +545,7 @@ class Game extends JPanel {
         reports.add(Box.createVerticalStrut(10));
         reports.add(elegirreport);
         reports.add(Box.createVerticalStrut(10));
-        buscarreport = new JButton("Buscar");
+        buscarreport = new JButton("Find");
         buscarreport.setPreferredSize(new Dimension(100,50));
         buscarreport.setMinimumSize(new Dimension(100,50));
         buscarreport.setMaximumSize(new Dimension(100,50));
